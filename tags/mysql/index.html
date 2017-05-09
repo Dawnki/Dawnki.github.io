@@ -13,7 +13,7 @@
     
     
     
-    <title>Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
+    <title>标签: mysql | Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -23,7 +23,7 @@
     <meta name="description" content="偶尔有干货">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Dawnki&#39;s Blog">
-<meta property="og:url" content="https://dawnki.github.io/index.html">
+<meta property="og:url" content="https://dawnki.github.io/tags/mysql/index.html">
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="偶尔有干货">
 <meta name="twitter:card" content="summary">
@@ -59,7 +59,7 @@
     <div class="scroll-wrap flex-col">
       <ul class="nav">
         
-            <li class="waves-block waves-effect active">
+            <li class="waves-block waves-effect">
               <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
                 主页
@@ -73,7 +73,7 @@
               </a>
             </li>
         
-            <li class="waves-block waves-effect">
+            <li class="waves-block waves-effect active">
               <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
                 标签
@@ -119,7 +119,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">Dawnki&#39;s Blog</div>
+        <div class="flex-col header-title ellipsis">标签: mysql</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -138,40 +138,54 @@
         
     </div>
 </header>
-<header class="content-header index-header">
+<header class="content-header tags-header">
 
     <div class="container fade-scale">
-        <h1 class="title">Dawnki&#39;s Blog</h1>
+        <h1 class="title">标签: mysql</h1>
         <h5 class="subtitle">
-            
-                一只菜鸟程序猿的自我救赎
             
         </h5>
     </div>
 
     
+<div class="tabs-bar container">
+    <nav class="tags-list">
+        <a href="/tags" style="-webkit-order:-1;order:-1" class="tags-list-item waves-effect waves-button waves-light
+            ">全部</a>
+        
+
+            <a href="/tags/mysql/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light active">mysql</a>
+
+        
+
+            <a href="/tags/linux/" style="-webkit-order:1;order:1" class="tags-list-item waves-effect waves-button waves-light">linux</a>
+
+        
+    </nav>
+    <!-- PC show more-->
+    <div class="tags-list-more">
+        <a href="javascript:;" onclick="BLOG.tabBar(this)" class="action tags-list-item waves-effect waves-circle waves-light"><i class="icon icon-ellipsis-h"></i></a>
+    </div>
+</div>
+
 
 
 </header>
 
-<div class="container body-wrap">
-
-    <ul class="post-list">
+<div class="container body-wrap fade">
     
-        <li class="post-list-item fade">
-            <article id="post-mysql-question"
-  class="article-card article-type-post" itemprop="blogPost">
+            <div class="waterfall">
+          
 
+            <div class="waterfall-item">
+  <article class="article-card archive-article">
     <div class="post-meta">
-        <time class="post-time" title="2017-05-09 21:02:09" datetime="2017-05-09T13:02:09.000Z"  itemprop="datePublished">2017-05-09</time>
+      <time class="post-time" title="2017-05-09 21:02:09" datetime="2017-05-09T13:02:09.000Z"  itemprop="datePublished">2017-05-09</time>
 
-        
+      
 
-
-        
 
     </div>
-
     
 
 
@@ -183,19 +197,6 @@
 
 
 
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。
-寻找正凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.
-锁定/etc/m...
-    
-
-        <a href="/2017/05/09/mysql-question/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
     
     <div class="post-footer">
         
@@ -203,57 +204,15 @@
 
     </div>
     
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-hello-world"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-05-09 18:51:21" datetime="2017-05-09T10:51:21.767Z"  itemprop="datePublished">2017-05-09</time>
-
-        
-
-
-        
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/05/09/hello-world/">Hello World</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Qu...
-    
-
-        <a href="/2017/05/09/hello-world/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-</article>
-
-        </li>
-    
-    </ul>
-
-    
-
+  </article>
 </div>
+
+        
+            </div>
+        
+    
+</div>
+
 
         <footer class="footer">
     <div class="top">
@@ -292,7 +251,7 @@ Qu...
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/&title=Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/tags/mysql/&title=Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -302,22 +261,22 @@ Qu...
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/&title=Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/tags/mysql/&title=Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/tags/mysql/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Dawnki's Blog&url=https://dawnki.github.io/&via=https://dawnki.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=Dawnki's Blog&url=https://dawnki.github.io/tags/mysql/&via=https://dawnki.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/tags/mysql/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -328,7 +287,7 @@ Qu...
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABVElEQVR42u3aQQ6EIAxAUe9/aWdrQgZ/W1hIPyszTuC5kNbS68Ljfozxl393x+vFQ5asg1j3dORY4/x8LVmyOrPIdKseZr6WLFmyoiyOliVL1g4WAVXmkSWrJyv6OcrT3+25vCxZR7B4Vad+vaW+JUvWx1l3cERf++QqsmQ1Y/EXOBdieRiWJasza/7yR8tAJMlG88uS1YxFpoi2HfD/v2xPsmS1YeUad6JlXB74ZcmSxZt4csE7UGCSJasZq3JsGS0MlYq/smQ1YPGSEA/DuWObcBVKlqzjWCRF5scnfOaXPghZspqxeIIbTaz5poNCtSxZx7HWpr+5jWBZH4QsWZ9l5fri+GLbewZlyTqIFd0Uoocl/AFkyZJVqeRUNp2XXF6WLFmpaE8+bku1XlmyZIEiL/lARduNLFktWfXEN3f8iQ5XZMlqwMrFzVLD66ohS9YJrB+ac1Tsd7rfAwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAB0ElEQVR42u3aQW7DMAxE0dz/0i6QVYBC8R9RZF3ga1Uktf2cBUEN9Xrhdb0X+fzzk9VV5NvSkitXbpl7fV2E+/s/V6+xuicxyJUrd577vdAsL148jBPTQilXrtyncSuvx7+VK1fu/+KSpoQUuD+ou3Llyt3iks3P3nYo3TId26vJlSu3wE0D046/G/NduXLlhtwrXDwSJZT46XLlyh3hkkEpecDZrdRNmZMrV24zl4cafFxa77ZuSphcuXJHuLy0dRyzCAqrXLlyB7npKDTd/JDwNK67cuXKHeHWj16dGp8sr5IrV+4Ilw9LNm9aoJdmO3Llyi1weVOSbnX2miGU7MqVK7eZy0vM3hGNU20N+r3lypXbwE03PyRSSUe2pOWSK1duNzc9EpGy0gNeN8MVuXLljnBTFn+l9D78CJdcuXK7uTy2SDumSiAiV67cJ3BJWJlubOLokySicuXKHeTytTco3YtF0ORHrly5Ddy0oHBWGnbE+a5cuXKbuZNjEh6RLAucXLlyB7lpzpo2RryVQfmuXLlyH8ONbx02T4cLmVy5cge5aYHj4xYUqciVK3eQyxuUveNW/PNjsYhcuXIL3L1GhB+x4oe30mGMXLlyG7g/Uy7dRBK/cPYAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
