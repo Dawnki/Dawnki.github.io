@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-05-09T09:38:21.031Z</updated>
+  <updated>2017-05-09T06:01:31.370Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -16,107 +16,10 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>php</title>
-    <link href="https://dawnki.github.io/2017/06/09/php/"/>
-    <id>https://dawnki.github.io/2017/06/09/php/</id>
-    <published>2017-06-09T09:30:16.000Z</published>
-    <updated>2017-05-09T09:38:21.031Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="sdfjadklsj"><a href="#sdfjadklsj" class="headerlink" title="sdfjadklsj"></a>sdfjadklsj</h1><h1 id="ksdjfkladjsl"><a href="#ksdjfkladjsl" class="headerlink" title="ksdjfkladjsl"></a>ksdjfkladjsl</h1><h2 id="adsklfjklds"><a href="#adsklfjklds" class="headerlink" title="adsklfjklds"></a>adsklfjklds</h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;sdfjadklsj&quot;&gt;&lt;a href=&quot;#sdfjadklsj&quot; class=&quot;headerlink&quot; title=&quot;sdfjadklsj&quot;&gt;&lt;/a&gt;sdfjadklsj&lt;/h1&gt;&lt;h1 id=&quot;ksdjfkladjsl&quot;&gt;&lt;a href=&quot;#ksdjfklad
-    
-    </summary>
-    
-      <category term="PHP应用" scheme="https://dawnki.github.io/categories/PHP%E5%BA%94%E7%94%A8/"/>
-    
-    
-      <category term="php5.6" scheme="https://dawnki.github.io/tags/php5-6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>php123</title>
-    <link href="https://dawnki.github.io/2017/06/09/php1/"/>
-    <id>https://dawnki.github.io/2017/06/09/php1/</id>
-    <published>2017-06-09T09:30:16.000Z</published>
-    <updated>2017-05-09T09:41:05.220Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="sdfjadklsj"><a href="#sdfjadklsj" class="headerlink" title="sdfjadklsj"></a>sdfjadklsj</h1><h1 id="ksdjfkladjsl"><a href="#ksdjfkladjsl" class="headerlink" title="ksdjfkladjsl"></a>ksdjfkladjsl</h1><h2 id="adsklfjklds"><a href="#adsklfjklds" class="headerlink" title="adsklfjklds"></a>adsklfjklds</h2><p>fghfghjghjghjghj</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;sdfjadklsj&quot;&gt;&lt;a href=&quot;#sdfjadklsj&quot; class=&quot;headerlink&quot; title=&quot;sdfjadklsj&quot;&gt;&lt;/a&gt;sdfjadklsj&lt;/h1&gt;&lt;h1 id=&quot;ksdjfkladjsl&quot;&gt;&lt;a href=&quot;#ksdjfklad
-    
-    </summary>
-    
-      <category term="PHP应用" scheme="https://dawnki.github.io/categories/PHP%E5%BA%94%E7%94%A8/"/>
-    
-    
-      <category term="php5.6" scheme="https://dawnki.github.io/tags/php5-6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>laravel5.2</title>
-    <link href="https://dawnki.github.io/2017/05/09/laravel5-2/"/>
-    <id>https://dawnki.github.io/2017/05/09/laravel5-2/</id>
-    <published>2017-05-09T08:58:50.000Z</published>
-    <updated>2017-05-09T08:59:31.837Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="应该很好用吧"><a href="#应该很好用吧" class="headerlink" title="应该很好用吧"></a>应该很好用吧</h1><h2 id="例如-路由"><a href="#例如-路由" class="headerlink" title="例如 路由"></a>例如 路由</h2><h2 id="例如-验证"><a href="#例如-验证" class="headerlink" title="例如 验证"></a>例如 验证</h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;应该很好用吧&quot;&gt;&lt;a href=&quot;#应该很好用吧&quot; class=&quot;headerlink&quot; title=&quot;应该很好用吧&quot;&gt;&lt;/a&gt;应该很好用吧&lt;/h1&gt;&lt;h2 id=&quot;例如-路由&quot;&gt;&lt;a href=&quot;#例如-路由&quot; class=&quot;headerlink&quot; title=
-    
-    </summary>
-    
-    
-      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>laravel使用</title>
-    <link href="https://dawnki.github.io/2017/05/09/laravel/"/>
-    <id>https://dawnki.github.io/2017/05/09/laravel/</id>
-    <published>2017-05-09T08:37:39.000Z</published>
-    <updated>2017-05-09T08:55:53.536Z</updated>
-    
-    <content type="html"><![CDATA[<p>这是一个描述</p>
-<h2 id="Laravel是一个优雅的框架"><a href="#Laravel是一个优雅的框架" class="headerlink" title="Laravel是一个优雅的框架"></a>Laravel是一个优雅的框架</h2><ul>
-<li>abc</li>
-<li>efg</li>
-<li>hijk</li>
-</ul>
-<h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><ol>
-<li>贼好用</li>
-<li>真的 </li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这是一个描述&lt;/p&gt;
-&lt;h2 id=&quot;Laravel是一个优雅的框架&quot;&gt;&lt;a href=&quot;#Laravel是一个优雅的框架&quot; class=&quot;headerlink&quot; title=&quot;Laravel是一个优雅的框架&quot;&gt;&lt;/a&gt;Laravel是一个优雅的框架&lt;/h2&gt;&lt;ul&gt;
-&lt;l
-    
-    </summary>
-    
-    
-      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Hello World</title>
-    <link href="https://dawnki.github.io/2017/04/07/hello-world/"/>
-    <id>https://dawnki.github.io/2017/04/07/hello-world/</id>
-    <published>2017-04-06T17:47:31.668Z</published>
+    <link href="https://dawnki.github.io/2017/05/09/hello-world/"/>
+    <id>https://dawnki.github.io/2017/05/09/hello-world/</id>
+    <published>2017-05-09T10:51:21.767Z</published>
     <updated>2017-05-09T06:01:31.370Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
