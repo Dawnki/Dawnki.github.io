@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-05-09T13:37:54.964Z</updated>
+  <updated>2017-05-09T13:51:26.668Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="https://dawnki.github.io/2017/05/09/mysql-question/"/>
     <id>https://dawnki.github.io/2017/05/09/mysql-question/</id>
     <published>2017-05-09T13:02:09.000Z</published>
-    <updated>2017-05-09T13:37:54.964Z</updated>
+    <updated>2017-05-09T13:51:26.668Z</updated>
     
     <content type="html"><![CDATA[<p>一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。</p>
-<h2 id="寻找正凶"><a href="#寻找正凶" class="headerlink" title="寻找正凶"></a>寻找正凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
+<h2 id="寻找元凶"><a href="#寻找元凶" class="headerlink" title="寻找元凶"></a>寻找元凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
 <p>锁定/etc/my.cnf文件！！</p>
 <p><img src="http://opobbao46.bkt.clouddn.com/my1.png"></p>
 <p>可以看到这个文件的初始权限是拥有者有读写功能，但同组或者其他人只有读的功能，由于舍友为了修改这个文件，帮这个文件加了所有身份都加了写的功能。</p>

@@ -20,20 +20,20 @@
     
     
     <meta name="keywords" content="mysql,linux">
-    <meta name="description" content="一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。 寻找正凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件. 锁定/etc/my.c">
+    <meta name="description" content="一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。 寻找元凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件. 锁定/etc/my.c">
 <meta name="keywords" content="mysql,linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LNMP坑点系列:&quot;mysql.serviceJob for mysql.service failed because the control process exited with error code.&quot;">
 <meta property="og:url" content="https://dawnki.github.io/2017/05/09/mysql-question/index.html">
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
-<meta property="og:description" content="一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。 寻找正凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件. 锁定/etc/my.c">
+<meta property="og:description" content="一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。 寻找元凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件. 锁定/etc/my.c">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/my1.png">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/my2.png">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/my3.png">
-<meta property="og:updated_time" content="2017-05-09T13:37:54.964Z">
+<meta property="og:updated_time" content="2017-05-09T13:51:26.668Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LNMP坑点系列:&quot;mysql.serviceJob for mysql.service failed because the control process exited with error code.&quot;">
-<meta name="twitter:description" content="一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。 寻找正凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件. 锁定/etc/my.c">
+<meta name="twitter:description" content="一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。 寻找元凶经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件. 锁定/etc/my.c">
 <meta name="twitter:image" content="http://opobbao46.bkt.clouddn.com/my1.png">
     
         <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
@@ -170,7 +170,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#寻找正凶"><span class="post-toc-number">1.</span> <span class="post-toc-text">寻找正凶</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解决办法"><span class="post-toc-number">2.</span> <span class="post-toc-text">解决办法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小结"><span class="post-toc-number">3.</span> <span class="post-toc-text">小结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#寻找元凶"><span class="post-toc-number">1.</span> <span class="post-toc-text">寻找元凶</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解决办法"><span class="post-toc-number">2.</span> <span class="post-toc-text">解决办法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小结"><span class="post-toc-number">3.</span> <span class="post-toc-text">小结</span></a></li></ol>
         </nav>
     </aside>
     
@@ -196,7 +196,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <p>一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。</p>
-<h2 id="寻找正凶"><a href="#寻找正凶" class="headerlink" title="寻找正凶"></a>寻找正凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
+<h2 id="寻找元凶"><a href="#寻找元凶" class="headerlink" title="寻找元凶"></a>寻找元凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
 <p>锁定/etc/my.cnf文件！！</p>
 <p><img src="http://opobbao46.bkt.clouddn.com/my1.png"></p>
 <p>可以看到这个文件的初始权限是拥有者有读写功能，但同组或者其他人只有读的功能，由于舍友为了修改这个文件，帮这个文件加了所有身份都加了写的功能。</p>
@@ -216,7 +216,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-05-09T13:37:54.964Z" itemprop="dateUpdated">2017-05-09 21:37:54</time>
+    最后更新时间：<time datetime="2017-05-09T13:51:26.668Z" itemprop="dateUpdated">2017-05-09 21:51:26</time>
 </span><br>
 
 
