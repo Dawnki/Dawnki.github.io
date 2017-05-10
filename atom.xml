@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-05-10T02:04:05.824Z</updated>
+  <updated>2017-05-10T05:08:19.483Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ubuntu完全卸载mysql</title>
+    <link href="https://dawnki.github.io/2017/05/10/%E5%88%A0%E9%99%A4mysql/"/>
+    <id>https://dawnki.github.io/2017/05/10/删除mysql/</id>
+    <published>2017-05-10T04:45:44.000Z</published>
+    <updated>2017-05-10T05:08:19.483Z</updated>
+    
+    <content type="html"><![CDATA[<p>我们安装了mysql之后想卸载mysql时，往往是卸载不完全，导致下次安装又有问题，下面就提供ubuntu完全卸载mysql的方法.</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>Linux: Ubuntu 16:04</li>
+<li>Mysql 5.7</li>
+</ul>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>  <strong>温馨提示:执行之前务必确认是否备份了数据库的数据,数据无价!</strong></p>
+<ul>
+<li>先在shell里执行以下指令</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get autoremove --purge mysql-server*</div><div class="line">sudo apt-get remove mysql-server*</div><div class="line">sudo apt-get autoremove mysql-server*</div><div class="line">sudo apt-get remove mysql-common</div><div class="line">sudo rm -rf /etc/my.cnf</div></pre></td></tr></table></figure>
+<ul>
+<li>建一个shell脚本(文件)叫deleteMysql.sh,内容如下:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">list=`sudo find / -name mysql*`</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$list</span> </div><div class="line"><span class="keyword">do</span></div><div class="line">  sudo rm -rf <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure>
+<ul>
+<li>给这个脚本加上执行权限后执行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo chmod u+x deleteMysql.sh</div><div class="line">sudo ./deleteMysql.sh</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这下子mysql应该算是完全卸载了，然后就可以跑路(误)了!!!∑(ﾟДﾟノ)ノ</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我们安装了mysql之后想卸载mysql时，往往是卸载不完全，导致下次安装又有问题，下面就提供ubuntu完全卸载mysql的方法.&lt;/p&gt;
+&lt;h2 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;
+    
+    </summary>
+    
+      <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
+    
+    
+      <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
+    
+      <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
+    
+      <category term="ubunut" scheme="https://dawnki.github.io/tags/ubunut/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Laravel5.2消息队列实践</title>
+    <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
+    <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
+    <published>2017-05-10T03:21:41.000Z</published>
+    <updated>2017-05-10T04:46:45.476Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
+    
+    
+      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
+    
+      <category term="异步消息队列" scheme="https://dawnki.github.io/tags/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
+    
+  </entry>
   
   <entry>
     <title>Sublime Text 安装Package Controller</title>
