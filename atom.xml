@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-05-09T13:51:26.668Z</updated>
+  <updated>2017-05-10T02:04:05.824Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Sublime Text 安装Package Controller</title>
+    <link href="https://dawnki.github.io/2017/05/10/sublimetextPC/"/>
+    <id>https://dawnki.github.io/2017/05/10/sublimetextPC/</id>
+    <published>2017-05-10T00:38:46.000Z</published>
+    <updated>2017-05-10T02:04:05.824Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller.</p>
+<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>安装方法分为简单安装和手动安装,自行选择即可.</p>
+<h3 id="简单的安装方法"><a href="#简单的安装方法" class="headerlink" title="简单的安装方法"></a>简单的安装方法</h3><p>使用Ctrl+`快捷键或者通过View-&gt;Show Console菜单打开命令行，粘贴如下代码：</p>
+<p>Sublime Text 3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib.request,os; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), &apos;wb&apos;).write(urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;,&apos;%20&apos;)).read())</div></pre></td></tr></table></figure>
+<p>如果顺利的话，此时就可以在Preferences菜单下看到Package Settings和Package Control两个菜单了。</p>
+<p>Sublime Text 2 的如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib2,os; pf=&apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), &apos;wb&apos; ).write( urllib2.urlopen( &apos;http://sublime.wbond.net/&apos; +pf.replace( &apos; &apos;,&apos;%20&apos; )).read()); print( &apos;Please restart Sublime Text to finish installation&apos;)</div></pre></td></tr></table></figure>
+<h3 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h3><p>可能由于各种原因，无法使用代码安装，那可以通过以下步骤手动安装Package Control：</p>
+<ol>
+<li><p>点击Preferences &gt; Browse Packages菜单</p>
+</li>
+<li><p>进入打开的目录的上层目录，然后再进入Installed Packages/目录</p>
+</li>
+<li><p>下载Package Control.sublime-package并复制到Installed Packages/目录</p>
+</li>
+<li><p>重启Sublime Text。</p>
+</li>
+</ol>
+<h2 id="如何使用Package-Controller-安装插件"><a href="#如何使用Package-Controller-安装插件" class="headerlink" title="如何使用Package Controller 安装插件"></a>如何使用Package Controller 安装插件</h2><ol>
+<li>快捷键ctrl+shift+P，或者直接在Preferences &gt; Package Controller 来打开</li>
+<li>在输入框中输入 install package 按回车</li>
+<li>在新弹出的框中输入你要安装的插件即可</li>
+</ol>
+<p>效果如下图:</p>
+<p><img src="http://opobbao46.bkt.clouddn.com/sb1.png"></p>
+<p><img src="http://opobbao46.bkt.clouddn.com/sb2.png"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先
+    
+    </summary>
+    
+      <category term="文本编辑器" scheme="https://dawnki.github.io/categories/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/"/>
+    
+    
+      <category term="Sublime Text" scheme="https://dawnki.github.io/tags/Sublime-Text/"/>
+    
+  </entry>
   
   <entry>
     <title>LNMP坑点系列:&quot;mysql.serviceJob for mysql.service failed because the control process exited with error code.&quot;</title>

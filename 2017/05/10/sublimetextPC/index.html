@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Sublime Text 安装Package Controller | Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Sublime Text">
+    <meta name="description" content="前言众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller. 安装方法安装方法分为简单安装和手动安装,自行选择即可. 简单的安装方法使用Ctrl+`快捷键或者通过">
+<meta name="keywords" content="Sublime Text">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sublime Text 安装Package Controller">
+<meta property="og:url" content="https://dawnki.github.io/2017/05/10/sublimetextPC/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="前言众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller. 安装方法安装方法分为简单安装和手动安装,自行选择即可. 简单的安装方法使用Ctrl+`快捷键或者通过">
+<meta property="og:image" content="http://opobbao46.bkt.clouddn.com/sb1.png">
+<meta property="og:image" content="http://opobbao46.bkt.clouddn.com/sb2.png">
+<meta property="og:updated_time" content="2017-05-10T02:04:05.824Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sublime Text 安装Package Controller">
+<meta name="twitter:description" content="前言众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller. 安装方法安装方法分为简单安装和手动安装,自行选择即可. 简单的安装方法使用Ctrl+`快捷键或者通过">
+<meta name="twitter:image" content="http://opobbao46.bkt.clouddn.com/sb1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Sublime Text 安装Package Controller</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Sublime Text 安装Package Controller</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-10T00:38:46.000Z" itemprop="datePublished" class="page-time">
+  2017-05-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/文本编辑器/">文本编辑器</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装方法"><span class="post-toc-number">2.</span> <span class="post-toc-text">安装方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单的安装方法"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">简单的安装方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#手动安装"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">手动安装</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#如何使用Package-Controller-安装插件"><span class="post-toc-number">3.</span> <span class="post-toc-text">如何使用Package Controller 安装插件</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-sublimetextPC"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Sublime Text 安装Package Controller</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-10 08:38:46" datetime="2017-05-10T00:38:46.000Z"  itemprop="datePublished">2017-05-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/文本编辑器/">文本编辑器</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller.</p>
+<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>安装方法分为简单安装和手动安装,自行选择即可.</p>
+<h3 id="简单的安装方法"><a href="#简单的安装方法" class="headerlink" title="简单的安装方法"></a>简单的安装方法</h3><p>使用Ctrl+`快捷键或者通过View-&gt;Show Console菜单打开命令行，粘贴如下代码：</p>
+<p>Sublime Text 3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib.request,os; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), &apos;wb&apos;).write(urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;,&apos;%20&apos;)).read())</div></pre></td></tr></table></figure>
+<p>如果顺利的话，此时就可以在Preferences菜单下看到Package Settings和Package Control两个菜单了。</p>
+<p>Sublime Text 2 的如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib2,os; pf=&apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), &apos;wb&apos; ).write( urllib2.urlopen( &apos;http://sublime.wbond.net/&apos; +pf.replace( &apos; &apos;,&apos;%20&apos; )).read()); print( &apos;Please restart Sublime Text to finish installation&apos;)</div></pre></td></tr></table></figure>
+<h3 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h3><p>可能由于各种原因，无法使用代码安装，那可以通过以下步骤手动安装Package Control：</p>
+<ol>
+<li><p>点击Preferences &gt; Browse Packages菜单</p>
+</li>
+<li><p>进入打开的目录的上层目录，然后再进入Installed Packages/目录</p>
+</li>
+<li><p>下载Package Control.sublime-package并复制到Installed Packages/目录</p>
+</li>
+<li><p>重启Sublime Text。</p>
+</li>
+</ol>
+<h2 id="如何使用Package-Controller-安装插件"><a href="#如何使用Package-Controller-安装插件" class="headerlink" title="如何使用Package Controller 安装插件"></a>如何使用Package Controller 安装插件</h2><ol>
+<li>快捷键ctrl+shift+P，或者直接在Preferences &gt; Package Controller 来打开</li>
+<li>在输入框中输入 install package 按回车</li>
+<li>在新弹出的框中输入你要安装的插件即可</li>
+</ol>
+<p>效果如下图:</p>
+<p><img src="http://opobbao46.bkt.clouddn.com/sb1.png"></p>
+<p><img src="http://opobbao46.bkt.clouddn.com/sb2.png"></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-05-10T02:04:05.824Z" itemprop="dateUpdated">2017-05-10 10:04:05</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱详细我,逗比博主尽最大努力回复O(∩_∩)O~
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sublime-Text/">Sublime Text</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/05/10/sublimetextPC/&title=《Sublime Text 安装Package Controller》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/05/10/sublimetextPC/&title=《Sublime Text 安装Package Controller》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/05/10/sublimetextPC/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Sublime Text 安装Package Controller》 — Dawnki's Blog&url=https://dawnki.github.io/2017/05/10/sublimetextPC/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/05/10/sublimetextPC/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/09/mysql-question/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">LNMP坑点系列:&quot;mysql.serviceJob for mysql.service failed because the control process exited with error code.&quot;</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/05/10/sublimetextPC/&title=《Sublime Text 安装Package Controller》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/05/10/sublimetextPC/&title=《Sublime Text 安装Package Controller》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/05/10/sublimetextPC/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Sublime Text 安装Package Controller》 — Dawnki's Blog&url=https://dawnki.github.io/2017/05/10/sublimetextPC/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/05/10/sublimetextPC/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aQW7DMAwEwPz/0+kLFC8pu4Cp8SlAbUeTw5aU+PnE1ze4Vneu3rb6vHrqhgsDA+O1jOriVs9WvyX5a7I2DAyMcxh5LCZ35vf3vhcDAwMjL+DyQnAVphgYGBhPM6qLyAtEDAwMjF4Tu7Mp1lv6I704BgbGCxn5Iv7/8yPnGxgYGK9ifItXEohJmCYlY2FVGBgYoxl5wN3VdlZ/psJ6MDAwhjKSo8QkNHeGw/I4jupWDAyMIxnVEYrfi6iWj9GWHwYGxmjGfhv5O/eqT/XKRAwMjHMY1UGKXqlXJVXXgIGBMY+x34juFI47ZSIGBgZGvq/VG+HqHW0u14OBgXEYI29u8wIuPx5I2uCLXUMMDIzRjKS57QVxHtbJNzanRTAwMF7LyLf17zo86EVzYfwCAwNjNKN8U2vMotes9nbVMDAwZjCqDWQvQPPjgeZ3YWBgHMCoHmfedTBZLUyXPxMGBsZoRv5Yr7DrHUkmEXzRi2NgYIxj9DazqoVjXhQ2YxoDA+NIRjX+8vf0RjqagYuBgTGIsTN40XvDzvHDcnIEAwNjHKM3NvFE1OZxX/BhYGCMYOyEXXWzrNeaVn8+DAyMqYy7QjYP8V7gXhSXGBgYBzDyAa+81KtuzG1FPwYGBsZNgxRbkZp05BgYGBhx+PaOOfO29ub/GxgYGC9h5OMO1dY0X2h+GICBgXEaozpgsb8Z12uGq2/AwMAYwfgDphqTYWzOVIQAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
