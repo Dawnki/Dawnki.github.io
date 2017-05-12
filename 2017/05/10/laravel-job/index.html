@@ -20,17 +20,17 @@
     
     
     <meta name="keywords" content="Laravel,异步消息队列">
-    <meta name="description" content="迟点更新~明天要考试了,慌慌慌!!!Orz">
+    <meta name="description" content="在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。 使用情景举几个使用到消息队列的栗子  在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。 当一个服务器要处理一个请求">
 <meta name="keywords" content="Laravel,异步消息队列">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Laravel5.2消息队列实践">
 <meta property="og:url" content="https://dawnki.github.io/2017/05/10/laravel-job/index.html">
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
-<meta property="og:description" content="迟点更新~明天要考试了,慌慌慌!!!Orz">
-<meta property="og:updated_time" content="2017-05-11T07:44:09.323Z">
+<meta property="og:description" content="在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。 使用情景举几个使用到消息队列的栗子  在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。 当一个服务器要处理一个请求">
+<meta property="og:updated_time" content="2017-05-12T18:17:45.679Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel5.2消息队列实践">
-<meta name="twitter:description" content="迟点更新~明天要考试了,慌慌慌!!!Orz">
+<meta name="twitter:description" content="在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。 使用情景举几个使用到消息队列的栗子  在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。 当一个服务器要处理一个请求">
     
         <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
     
@@ -165,6 +165,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用情景"><span class="post-toc-number">1.</span> <span class="post-toc-text">使用情景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实验环境"><span class="post-toc-number">2.</span> <span class="post-toc-text">实验环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#步骤"><span class="post-toc-number">3.</span> <span class="post-toc-text">步骤</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#起步"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">起步</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#建表"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">建表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建任务类并编写任务类"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">创建任务类并编写任务类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#任务类里自带的几个有用方法"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">任务类里自带的几个有用方法</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
 <article id="post-laravel-job"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -188,7 +195,55 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>迟点更新~明天要考试了,慌慌慌!!!Orz</p>
+            <p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
+<h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
+<ul>
+<li>在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。</li>
+<li>当一个服务器要处理一个请求端发来的多组大量数据，而且每组数据处理起来的时间会很慢时，可以采取异步队列，就相当于请求端发过来的数据先存着，放进队列里，然后再异步处理数据(即处理数据的过程不在请求的生命周期里)</li>
+<li>由于比如用户登陆了某网站之后，后台就过xx分钟给用户发延迟邮件来推送广告(怎么有点流氓(°Д°))，这里也可以用到异步队列，虽然可以用设计定时任务来轮询检查的笨方法，不过感觉用轮询来实现异步不是真正的异步</li>
+</ul>
+<p>扯了这么多，刚回到正题了—实践</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>Laravel 5.2</li>
+<li>系统: Windows(wamp) or Linux(lnmp)</li>
+</ul>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h3><p>laravel提供了多种消息队列驱动: sync(同步) database beanstalkd sqs redis<br>默认是sync，不过实际上其他几种异步队列多点，本章先用<strong>database</strong>练练手，前几天刚服务器刚配好redis，迟点再补上redis的吧~</p>
+<p>so,先到 /.env (默认根目录为你的项目目录) 中 填上 QUEUE_DRIVER=database ,当然你也可以到/config/queue.php的default中将sync修改，但是建议修改.env</p>
+<h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><p>修改完队列驱动后，就用Laravel的migration自动生成队列需要的表，到根目录执行artisan</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan queue:table</div><div class="line">php artisan queue:failed-table    #处理出错队列用的表</div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
+<p>此时，数据库中就会出现jobs表和failed_jobs表</p>
+<h3 id="创建任务类并编写任务类"><a href="#创建任务类并编写任务类" class="headerlink" title="创建任务类并编写任务类"></a>创建任务类并编写任务类</h3><p>执行artisan命令快速生成任务类并在/app/jobs/ 目录下面找到刚创建的任务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:job yourJobName</div></pre></td></tr></table></figure>
+<p>刚自动生成的任务类包含了两个初始方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Create a new job instance.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> void</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Execute the job.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> void</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>构造方法__construct用于你给任务类传值or对象用，至于handle方法则是队列任务的处理(即给排在队列里的任务如何执行业务逻辑)</p>
+<p>这时就有个问题了，排在队列里的任务如果处理时失败了，或者因不符合某些业务逻辑需要进行统一的失败操作，那该怎么办呢？</p>
+<p>此时可以在这个任务类中添加一个failed方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">failed</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样laravel就可以识别得到，当一个任务在执行handle方法时，遇到异常了(Throw Exception)，laravel就会自动执行failed方法，并在failed_job表中记录信息。这个用来管控你看不见摸不着的异步队列任务比较有用，你可以根据业务逻辑在failed方法里将错误信息输出到自己的日志或者其他操作。</p>
+<h3 id="任务类里自带的几个有用方法"><a href="#任务类里自带的几个有用方法" class="headerlink" title="任务类里自带的几个有用方法"></a>任务类里自带的几个有用方法</h3><p>通过artisan生成的任务类里，由于使用(use)了InteractsWithQueue这个trait，所以可以使用到里面有几个自带的方法</p>
+<ul>
+<li><p>attempts</p>
+<p>作用:返回任务的已经执行次数(eg.可以用于在handle方法中判断任务执行超过n次时就抛出异常来执行failed方法等等)</p>
+<p>食用方法:在任务类的handle方法或者failed方法中,无参</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;attempts()</div></pre></td></tr></table></figure>
+<ul>
+<li><p>delete</p>
+<p>作用:在队列中删除该任务(jobs表里删除)</p>
+<p>食用方法:同上</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;delete()</div></pre></td></tr></table></figure>
+<ul>
+<li><p>release</p>
+<p>作用:将当前任务再次放进队列中，可传入参数，来控制同一个任务两次运行之间的等待时间</p>
+<p>食用方法:同上，不过有参，参数为int类型 表示多少秒</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;release(<span class="number">10</span>);   <span class="comment">// 同一个任务两次运行之间隔10秒执行</span></div></pre></td></tr></table></figure>
+<p>目前任务类里比较常用的就是这几个方法了。</p>
 
         </div>
 
@@ -196,7 +251,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-05-11T07:44:09.323Z" itemprop="dateUpdated">2017-05-11 15:44:09</time>
+    最后更新时间：<time datetime="2017-05-12T18:17:45.679Z" itemprop="dateUpdated">2017-05-13 02:17:45</time>
 </span><br>
 
 
