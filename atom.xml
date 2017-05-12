@@ -66,7 +66,7 @@
     <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
     <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
     <published>2017-05-10T03:21:41.000Z</published>
-    <updated>2017-05-12T19:31:23.538Z</updated>
+    <updated>2017-05-12T19:48:05.532Z</updated>
     
     <content type="html"><![CDATA[<p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
 <h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
@@ -85,6 +85,7 @@
 <h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><p>修改完队列驱动后，就用Laravel的migration自动生成队列需要的表，到根目录执行artisan</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan queue:table</div><div class="line">php artisan queue:failed-table    #处理出错队列用的表</div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
 <p>此时，数据库中就会出现jobs表和failed_jobs表</p>
+<p><img src="http://opobbao46.bkt.clouddn.com/job1.png"></p>
 <h3 id="创建任务类并编写任务类"><a href="#创建任务类并编写任务类" class="headerlink" title="创建任务类并编写任务类"></a>创建任务类并编写任务类</h3><p>执行artisan命令快速生成任务类并在/app/jobs/ 目录下面找到刚创建的任务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:job yourJobName</div></pre></td></tr></table></figure>
 <p>刚自动生成的任务类包含了两个初始方法</p>
@@ -123,9 +124,15 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;delay(<span class="number">10</span>);       <span class="comment">// 延迟10秒执行</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
 <p>如果想指定队列(分类)</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;onQueue(<span class="string">'test'</span>);  <span class="comment">//可以查看对应job表的queue字段</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<h4 id="shell里要做的事"><a href="#shell里要做的事" class="headerlink" title="shell里要做的事"></a>shell里要做的事</h4><p>当代码里做的事做好了之后，我们一个请求过去服务器的项目程序就能启动任务了吗？不能，因为之前我们说过，除了sync其他驱动都是异步的，而php是单线程的(意味着一个开启一个php脚本相当于开启一个进程，而这个进程里面只有一个线程)，所以我们一个请求只有一个线程，因此我们需要开多一个进程来进行队列监听了，当监听脚本监听到队列有动静时，就对队列进行处理。</p>
+<h4 id="shell里要做的事"><a href="#shell里要做的事" class="headerlink" title="shell里要做的事"></a>shell里要做的事</h4><p>当代码里做的事做好了之后，我们一个请求过去服务器的项目程序就能启动任务了吗？不能，因为之前我们说过，除了sync其他驱动都是异步的，<strong>而php是单线程的(意味着一个开启一个php脚本相当于开启一个进程，而这个进程里面只有一个线程)</strong>，所以我们一个请求只有一个线程，因此我们需要开多一个进程来进行队列监听了，当监听脚本监听到队列有动静时，就对队列进行处理。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen</div></pre></td></tr></table></figure>
-]]></content>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><ol>
+<li>开始监听</li>
+<li>发送请求(可以用psotman试试)到指定控制器来调度队列任务</li>
+<li>观察正在执行监听任务的shell(ctrl+c 退出监听)</li>
+</ol>
+<p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><h4 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h4><h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><h4 id="Todo"><a href="#Todo" class="headerlink" title="Todo"></a>Todo</h4><h4 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h4>]]></content>
     
     <summary type="html">
     
