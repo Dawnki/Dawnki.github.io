@@ -66,7 +66,7 @@
     <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
     <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
     <published>2017-05-10T03:21:41.000Z</published>
-    <updated>2017-05-13T05:38:13.900Z</updated>
+    <updated>2017-05-13T05:41:15.445Z</updated>
     
     <content type="html"><![CDATA[<p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
 <h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
@@ -137,9 +137,9 @@
 </ol>
 <p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
 <hr>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>  通过实践，算是掌握了laravel的队列使用，下面就提一下我遇到的坑点以及改进吧~</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>  通过实践，算是掌握了laravel的队列使用，下面就提一下我遇到的坑点以及改进吧~</p>
 <hr>
-<h4 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h4><ul>
+<h3 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h3><ul>
 <li><p>当你使用了onQueue方法来给任务分类然后调度时，监听的命令该怎么写？</p>
 <p>一开始我天真的认为一句 phpa rtisan queue:listen 就能监听所有分类的任务，结果之后发现我定义的一个分类的任务一直不执行，看了文档又找不到缘故</p>
 </li>
@@ -154,13 +154,13 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --queue test   # 以我上面的例子而言 此处队列分类是test</div><div class="line">php artisan queue:listen --QUEUE test   # help里面说到大写也可以</div></pre></td></tr></table></figure>
 <p>还有其他queue的命令就自己发掘或者看文档吧~</p>
 <hr>
-<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><ul>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
 <li>为了保护监听进程(失败后重启等)，我们可以尝试用一下Supervisor(linux)</li>
 <li>因为现在很多缓存都用redis，所以这个队列任务如果用redis的话，就可以一举两得了~~</li>
 </ul>
 <p>以上两点列入到Todo list中，有空再捣鼓一蛤!!</p>
 <hr>
-<h4 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h4><p>感谢 <a href="http://laravelacademy.org/" target="_blank" rel="external">Laravel学院</a> 的中文文档 ！</p>
+<h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h3><p>感谢 <a href="http://laravelacademy.org/" target="_blank" rel="external">Laravel学院</a> 的中文文档 ！</p>
 ]]></content>
     
     <summary type="html">
