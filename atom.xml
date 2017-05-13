@@ -66,7 +66,7 @@
     <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
     <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
     <published>2017-05-10T03:21:41.000Z</published>
-    <updated>2017-05-13T05:41:15.445Z</updated>
+    <updated>2017-05-13T05:42:29.715Z</updated>
     
     <content type="html"><![CDATA[<p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
 <h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
@@ -141,7 +141,7 @@
 <hr>
 <h3 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h3><ul>
 <li><p>当你使用了onQueue方法来给任务分类然后调度时，监听的命令该怎么写？</p>
-<p>一开始我天真的认为一句 phpa rtisan queue:listen 就能监听所有分类的任务，结果之后发现我定义的一个分类的任务一直不执行，看了文档又找不到缘故</p>
+<p>一开始我天真的认为一句 php artisan queue:listen 就能监听所有分类的任务，结果之后发现我定义的一个分类的任务一直不执行，看了文档又找不到缘故</p>
 </li>
 </ul>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;onQueue(<span class="string">'test'</span>);    <span class="comment">//将一个任务归为test分类</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
