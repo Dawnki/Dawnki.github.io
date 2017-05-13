@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/job1.png">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/job2.png">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/job3.png">
-<meta property="og:updated_time" content="2017-05-13T05:42:29.715Z">
+<meta property="og:updated_time" content="2017-05-13T07:04:37.958Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel5.2消息队列实践">
 <meta name="twitter:description" content="在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。 使用情景举几个使用到消息队列的栗子  在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。 当一个服务器要处理一个请求">
@@ -263,7 +263,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen</div></pre></td></tr></table></figure>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><ol>
 <li>开始监听</li>
-<li>发送请求(可以用psotman试试)到指定控制器来调度队列任务</li>
+<li>发送请求(可以用postman试试)到指定控制器来调度队列任务</li>
 <li>观察正在执行监听任务的shell(ctrl+c 退出监听)</li>
 </ol>
 <p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
@@ -299,7 +299,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-05-13T05:42:29.715Z" itemprop="dateUpdated">2017-05-13 13:42:29</time>
+    最后更新时间：<time datetime="2017-05-13T07:04:37.958Z" itemprop="dateUpdated">2017-05-13 15:04:37</time>
 </span><br>
 
 

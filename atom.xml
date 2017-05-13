@@ -66,7 +66,7 @@
     <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
     <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
     <published>2017-05-10T03:21:41.000Z</published>
-    <updated>2017-05-13T05:42:29.715Z</updated>
+    <updated>2017-05-13T07:04:37.958Z</updated>
     
     <content type="html"><![CDATA[<p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
 <h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
@@ -132,7 +132,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen</div></pre></td></tr></table></figure>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><ol>
 <li>开始监听</li>
-<li>发送请求(可以用psotman试试)到指定控制器来调度队列任务</li>
+<li>发送请求(可以用postman试试)到指定控制器来调度队列任务</li>
 <li>观察正在执行监听任务的shell(ctrl+c 退出监听)</li>
 </ol>
 <p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
