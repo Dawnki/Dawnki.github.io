@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/job1.png">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/job2.png">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/job3.png">
-<meta property="og:updated_time" content="2017-05-13T05:32:12.872Z">
+<meta property="og:updated_time" content="2017-05-13T05:38:13.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel5.2消息队列实践">
 <meta name="twitter:description" content="在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。 使用情景举几个使用到消息队列的栗子  在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。 当一个服务器要处理一个请求">
@@ -211,12 +211,15 @@
 <li>Laravel 5.2</li>
 <li>系统: Windows(wamp) or Linux(lnmp)</li>
 </ul>
-<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>laravel提供了多种消息队列驱动: sync(同步) database beanstalkd sqs redis<br>默认是sync，不过实际上其他几种异步队列多点，本章先用<strong>database</strong>练练手，前几天刚服务器刚配好redis，迟点再补上redis的吧~</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><hr>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>laravel提供了多种消息队列驱动: sync(同步) database beanstalkd sqs redis<br>默认是sync，不过实际上其他几种异步队列多点，本章先用<strong>database</strong>练练手，前几天刚服务器刚配好redis，迟点再补上redis的吧~</p>
 <p>so,先到 /.env (默认根目录为你的项目目录) 中 填上 QUEUE_DRIVER=database ,当然你也可以到/config/queue.php的default中将sync修改，但是建议修改.env</p>
+<hr>
 <h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><p>修改完队列驱动后，就用Laravel的migration自动生成队列需要的表，到根目录执行artisan</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan queue:table</div><div class="line">php artisan queue:failed-table    #处理出错队列用的表</div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
 <p>此时，数据库中就会出现jobs表和failed_jobs表</p>
 <p><img src="http://opobbao46.bkt.clouddn.com/job1.png"></p>
+<hr>
 <h3 id="创建任务类并编写任务类"><a href="#创建任务类并编写任务类" class="headerlink" title="创建任务类并编写任务类"></a>创建任务类并编写任务类</h3><p>执行artisan命令快速生成任务类并在/app/jobs/ 目录下面找到刚创建的任务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:job yourJobName</div></pre></td></tr></table></figure>
 <p>刚自动生成的任务类包含了两个初始方法</p>
@@ -249,6 +252,7 @@
 </ul>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;release(<span class="number">10</span>);   <span class="comment">// 同一个任务两次运行之间隔10秒执行</span></div></pre></td></tr></table></figure>
 <p>目前任务类里比较常用的就是这几个方法了。</p>
+<hr>
 <h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><h4 id="代码里要做的事"><a href="#代码里要做的事" class="headerlink" title="代码里要做的事"></a>代码里要做的事</h4><p>编写好任务类之后，你可以在你的控制器里面创建任务，并且将它调度执行(dispatch)</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName($value);            <span class="comment">// 按实际情况来传值</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
 <p>如果想设置延时</p>
@@ -263,7 +267,9 @@
 <li>观察正在执行监听任务的shell(ctrl+c 退出监听)</li>
 </ol>
 <p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>  通过实践，算是掌握了laravel的队列使用，下面就一下我遇到的坑点以及改进吧~O(∩<em>∩)O~~</em>)</p>
+<hr>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>  通过实践，算是掌握了laravel的队列使用，下面就提一下我遇到的坑点以及改进吧~</p>
+<hr>
 <h4 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h4><ul>
 <li><p>当你使用了onQueue方法来给任务分类然后调度时，监听的命令该怎么写？</p>
 <p>一开始我天真的认为一句 phpa rtisan queue:listen 就能监听所有分类的任务，结果之后发现我定义的一个分类的任务一直不执行，看了文档又找不到缘故</p>
@@ -276,13 +282,15 @@
 <p>可以看到</p>
 <p><img src="http://opobbao46.bkt.clouddn.com/job3.png"></p>
 <p>所以正确的执行姿势应该是</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --queue test   # 以我上面的例子而言 此处队列分类是test</div><div class="line"><span class="meta">#</span>php artisan queue:listen --QUEUE test  # help里面说到大写也可以</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --queue test   # 以我上面的例子而言 此处队列分类是test</div><div class="line">php artisan queue:listen --QUEUE test   # help里面说到大写也可以</div></pre></td></tr></table></figure>
 <p>还有其他queue的命令就自己发掘或者看文档吧~</p>
+<hr>
 <h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><ul>
 <li>为了保护监听进程(失败后重启等)，我们可以尝试用一下Supervisor(linux)</li>
 <li>因为现在很多缓存都用redis，所以这个队列任务如果用redis的话，就可以一举两得了~~</li>
 </ul>
 <p>以上两点列入到Todo list中，有空再捣鼓一蛤!!</p>
+<hr>
 <h4 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h4><p>感谢 <a href="http://laravelacademy.org/" target="_blank" rel="external">Laravel学院</a> 的中文文档 ！</p>
 
         </div>
@@ -291,7 +299,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-05-13T05:32:12.872Z" itemprop="dateUpdated">2017-05-13 13:32:12</time>
+    最后更新时间：<time datetime="2017-05-13T05:38:13.900Z" itemprop="dateUpdated">2017-05-13 13:38:13</time>
 </span><br>
 
 
