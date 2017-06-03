@@ -1,28 +1,201 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Dawnki&#39;s Blog</title>
-  <subtitle>一只菜鸟程序猿的自我救赎</subtitle>
-  <link href="/atom.xml" rel="self"/>
-  
-  <link href="https://dawnki.github.io/"/>
-  <updated>2017-06-03T14:49:08.963Z</updated>
-  <id>https://dawnki.github.io/</id>
-  
-  <author>
-    <name>Dawnki</name>
+<!DOCTYPE html>
+<html>
+<head>
     
-  </author>
-  
-  <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>PHP常用的几种魔术方法</title>
-    <link href="https://dawnki.github.io/2017/06/03/php%E7%9A%84%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/"/>
-    <id>https://dawnki.github.io/2017/06/03/php的魔术方法/</id>
-    <published>2017-06-03T08:05:11.000Z</published>
-    <updated>2017-06-03T14:49:08.963Z</updated>
+
     
-    <content type="html"><![CDATA[<p>补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:<strong>PHP 将所有以 <strong>（两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以 </strong> 为前缀</strong>. 切记切记~~</p>
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>PHP常用的几种魔术方法 | Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="PHP魔术方法,重载">
+    <meta name="description" content="补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:PHP 将所有以 （两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以  为前缀. 切记切记~~ 常用魔术方法__construct() 描述:类构造方法，在实例化类时自动调用  12345678class A &amp;#123;  function">
+<meta name="keywords" content="PHP魔术方法,重载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP常用的几种魔术方法">
+<meta property="og:url" content="https://dawnki.github.io/2017/06/03/php的魔术方法/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:PHP 将所有以 （两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以  为前缀. 切记切记~~ 常用魔术方法__construct() 描述:类构造方法，在实例化类时自动调用  12345678class A &amp;#123;  function">
+<meta property="og:updated_time" content="2017-06-03T14:49:08.963Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP常用的几种魔术方法">
+<meta name="twitter:description" content="补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:PHP 将所有以 （两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以  为前缀. 切记切记~~ 常用魔术方法__construct() 描述:类构造方法，在实例化类时自动调用  12345678class A &amp;#123;  function">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">PHP常用的几种魔术方法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">PHP常用的几种魔术方法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-03T08:05:11.000Z" itemprop="datePublished" class="page-time">
+  2017-06-03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#常用魔术方法"><span class="post-toc-number">1.</span> <span class="post-toc-text">常用魔术方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#construct"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">__construct()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#destruct"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">__destruct()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#toString-NaN"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">__toString()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#get"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">__get()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#set"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">__set()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#isset"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">__isset()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#unset"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">__unset()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#call"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">__call()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#callStatic"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">__callStatic()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#clone"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">__clone()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#sleep"><span class="post-toc-number">1.11.</span> <span class="post-toc-text">__sleep()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#wakeup"><span class="post-toc-number">1.12.</span> <span class="post-toc-text">__wakeup()</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#魔术方法实现重载"><span class="post-toc-number">2.</span> <span class="post-toc-text">魔术方法实现重载</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#属性重载"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">属性重载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方法重载"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">方法重载</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">3.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-php的魔术方法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">PHP常用的几种魔术方法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-03 16:05:11" datetime="2017-06-03T08:05:11.000Z"  itemprop="datePublished">2017-06-03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:<strong>PHP 将所有以 <strong>（两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以 </strong> 为前缀</strong>. 切记切记~~</p>
 <h2 id="常用魔术方法"><a href="#常用魔术方法" class="headerlink" title="常用魔术方法"></a>常用魔术方法</h2><h3 id="construct"><a href="#construct" class="headerlink" title="__construct()"></a>__construct()</h3><ul>
 <li>描述:类构造方法，在实例化类时自动调用</li>
 </ul>
@@ -81,299 +254,263 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__call</span><span class="params">($name,$args)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>($name == <span class="string">'func'</span>)</div><div class="line">        &#123;</div><div class="line">            $args_num = count($args);</div><div class="line">            $invoke_name=$name.$args_num;</div><div class="line">            <span class="keyword">if</span>(method_exists(<span class="keyword">$this</span>,$invoke_name))&#123;</div><div class="line">                call_user_func_array(<span class="keyword">array</span>(<span class="keyword">$this</span>,$invoke_name),$args);  <span class="comment">//参数1:回调方法 参数2:数组形式的参数列表</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">func1</span><span class="params">($arg1)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">echo</span> <span class="string">"invoke func1:"</span>.$arg1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">func2</span><span class="params">($arg1,$arg2)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">echo</span> <span class="string">"invoke func2:"</span>.$arg1.<span class="string">','</span>.$arg2;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">$instance = <span class="keyword">new</span> A();</div><div class="line"></div><div class="line">$instance-&gt;func(<span class="number">1</span>);  <span class="comment">//执行func1</span></div><div class="line"></div><div class="line">$instance-&gt;func(<span class="number">1</span>,<span class="number">2</span>); <span class="comment">//执行func2</span></div></pre></td></tr></table></figure>
 <p><strong>notice:</strong>call_user_func_array方法的第一个参数是callable类型，一个已实例化的 object 的方法被作为 array 传递，下标 0 包含该 object，下标 1 包含方法名。 在同一个类里可以访问 protected 和 private 方法。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://php.net/manual/zh/language.oop5.magic.php" target="_blank" rel="external">PHP官方文档</a></p>
-]]></content>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-06-03T14:49:08.963Z" itemprop="dateUpdated">2017-06-03 22:49:08</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP魔术方法/">PHP魔术方法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/重载/">重载</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
     
-    <summary type="html">
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/06/03/php的魔术方法/&title=《PHP常用的几种魔术方法》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/06/03/php的魔术方法/&title=《PHP常用的几种魔术方法》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/06/03/php的魔术方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP常用的几种魔术方法》 — Dawnki's Blog&url=https://dawnki.github.io/2017/06/03/php的魔术方法/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/06/03/php的魔术方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
     
-      &lt;p&gt;补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:&lt;strong&gt;PHP 将所有以 &lt;strong&gt;（两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以 &lt;/stron
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
-    
-    
-      <category term="PHP魔术方法" scheme="https://dawnki.github.io/tags/PHP%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/"/>
-    
-      <category term="重载" scheme="https://dawnki.github.io/tags/%E9%87%8D%E8%BD%BD/"/>
-    
-  </entry>
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
   
-  <entry>
-    <title>Ubuntu完全卸载mysql</title>
-    <link href="https://dawnki.github.io/2017/05/10/%E5%88%A0%E9%99%A4mysql/"/>
-    <id>https://dawnki.github.io/2017/05/10/删除mysql/</id>
-    <published>2017-05-10T04:45:44.000Z</published>
-    <updated>2017-05-10T05:08:19.483Z</updated>
-    
-    <content type="html"><![CDATA[<p>我们安装了mysql之后想卸载mysql时，往往是卸载不完全，导致下次安装又有问题，下面就提供ubuntu完全卸载mysql的方法.</p>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
-<li>Linux: Ubuntu 16:04</li>
-<li>Mysql 5.7</li>
-</ul>
-<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>  <strong>温馨提示:执行之前务必确认是否备份了数据库的数据,数据无价!</strong></p>
-<ul>
-<li>先在shell里执行以下指令</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get autoremove --purge mysql-server*</div><div class="line">sudo apt-get remove mysql-server*</div><div class="line">sudo apt-get autoremove mysql-server*</div><div class="line">sudo apt-get remove mysql-common</div><div class="line">sudo rm -rf /etc/my.cnf</div></pre></td></tr></table></figure>
-<ul>
-<li>建一个shell脚本(文件)叫deleteMysql.sh,内容如下:</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">list=`sudo find / -name mysql*`</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$list</span> </div><div class="line"><span class="keyword">do</span></div><div class="line">  sudo rm -rf <span class="variable">$i</span></div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure>
-<ul>
-<li>给这个脚本加上执行权限后执行</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo chmod u+x deleteMysql.sh</div><div class="line">sudo ./deleteMysql.sh</div></pre></td></tr></table></figure>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这下子mysql应该算是完全卸载了，然后就可以跑路(误)了!!!∑(ﾟДﾟノ)ノ</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;我们安装了mysql之后想卸载mysql时，往往是卸载不完全，导致下次安装又有问题，下面就提供ubuntu完全卸载mysql的方法.&lt;/p&gt;
-&lt;h2 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;
-    
-    </summary>
-    
-      <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
-    
-    
-      <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
-    
-      <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
-    
-      <category term="ubunut" scheme="https://dawnki.github.io/tags/ubunut/"/>
-    
-  </entry>
+
   
-  <entry>
-    <title>Laravel5.2消息队列实践</title>
-    <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
-    <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
-    <published>2017-05-10T03:21:41.000Z</published>
-    <updated>2017-05-13T07:04:37.958Z</updated>
-    
-    <content type="html"><![CDATA[<p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
-<h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
-<ul>
-<li>在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。</li>
-<li>当一个服务器要处理一个请求端发来的多组大量数据，而且每组数据处理起来的时间会很慢时，可以采取异步队列，就相当于请求端发过来的数据先存着，放进队列里，然后再异步处理数据(即处理数据的过程不在请求的生命周期里)</li>
-<li>由于比如用户登陆了某网站之后，后台就过xx分钟给用户发延迟邮件来推送广告(怎么有点流氓(°Д°))，这里也可以用到异步队列，虽然可以用设计定时任务来轮询检查的笨方法，不过感觉用轮询来实现异步不是真正的异步</li>
-</ul>
-<p>扯了这么多，刚回到正题了—实践</p>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
-<li>Laravel 5.2</li>
-<li>系统: Windows(wamp) or Linux(lnmp)</li>
-</ul>
-<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><hr>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>laravel提供了多种消息队列驱动: sync(同步) database beanstalkd sqs redis<br>默认是sync，不过实际上其他几种异步队列多点，本章先用<strong>database</strong>练练手，前几天刚服务器刚配好redis，迟点再补上redis的吧~</p>
-<p>so,先到 /.env (默认根目录为你的项目目录) 中 填上 QUEUE_DRIVER=database ,当然你也可以到/config/queue.php的default中将sync修改，但是建议修改.env</p>
-<hr>
-<h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><p>修改完队列驱动后，就用Laravel的migration自动生成队列需要的表，到根目录执行artisan</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan queue:table</div><div class="line">php artisan queue:failed-table    #处理出错队列用的表</div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
-<p>此时，数据库中就会出现jobs表和failed_jobs表</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/job1.png"></p>
-<hr>
-<h3 id="创建任务类并编写任务类"><a href="#创建任务类并编写任务类" class="headerlink" title="创建任务类并编写任务类"></a>创建任务类并编写任务类</h3><p>执行artisan命令快速生成任务类并在/app/jobs/ 目录下面找到刚创建的任务</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:job yourJobName</div></pre></td></tr></table></figure>
-<p>刚自动生成的任务类包含了两个初始方法</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Create a new job instance.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> void</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Execute the job.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> void</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>构造方法__construct用于你给任务类传值or对象用，至于handle方法则是队列任务的处理(即给排在队列里的任务如何执行业务逻辑)</p>
-<p>这时就有个问题了，排在队列里的任务如果处理时失败了，或者因不符合某些业务逻辑需要进行统一的失败操作，那该怎么办呢？</p>
-<p>此时可以在这个任务类中添加一个failed方法</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">failed</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样laravel就可以识别得到，当一个任务在执行handle方法时，遇到异常了(Throw Exception)，laravel就会自动捕获异常并执行failed方法，并在failed_job表中记录信息。这个用来管控你看不见摸不着的异步队列任务比较有用，你可以根据业务逻辑在failed方法里将错误信息输出到自己的日志或者其他操作。</p>
-<h4 id="任务类里自带的几个有用方法"><a href="#任务类里自带的几个有用方法" class="headerlink" title="任务类里自带的几个有用方法"></a>任务类里自带的几个有用方法</h4><p>通过artisan生成的任务类里，由于使用(use)了InteractsWithQueue这个trait，所以可以使用到里面有几个自带的方法</p>
-<ul>
-<li><p>attempts</p>
-<p>作用:返回任务的已经执行次数(eg.可以用于在handle方法中判断任务执行超过n次时就抛出异常来执行failed方法等等)</p>
-<p>食用方法:在任务类的handle方法或者failed方法中,无参</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;attempts();</div></pre></td></tr></table></figure>
-<ul>
-<li><p>delete</p>
-<p>作用:在队列中删除该任务(jobs表里删除)</p>
-<p>食用方法:同上</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;delete();</div></pre></td></tr></table></figure>
-<ul>
-<li><p>release</p>
-<p>作用:将当前任务再次放进队列中，可传入参数，来控制同一个任务两次运行之间的等待时间</p>
-<p>食用方法:同上，不过有参，参数为int类型 表示多少秒</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;release(<span class="number">10</span>);   <span class="comment">// 同一个任务两次运行之间隔10秒执行</span></div></pre></td></tr></table></figure>
-<p>目前任务类里比较常用的就是这几个方法了。</p>
-<hr>
-<h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><h4 id="代码里要做的事"><a href="#代码里要做的事" class="headerlink" title="代码里要做的事"></a>代码里要做的事</h4><p>编写好任务类之后，你可以在你的控制器里面创建任务，并且将它调度执行(dispatch)</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName($value);            <span class="comment">// 按实际情况来传值</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<p>如果想设置延时</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;delay(<span class="number">10</span>);       <span class="comment">// 延迟10秒执行</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<p>如果想指定队列(分类)</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;onQueue(<span class="string">'test'</span>);  <span class="comment">//可以查看对应job表的queue字段</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<h4 id="shell里要做的事"><a href="#shell里要做的事" class="headerlink" title="shell里要做的事"></a>shell里要做的事</h4><p>当代码里做的事做好了之后，我们一个请求过去服务器的项目程序就能启动任务了吗？不能，因为之前我们说过，除了sync其他驱动都是异步的，<strong>而php是单线程的(意味着一个开启一个php脚本相当于开启一个进程，而这个进程里面只有一个线程)</strong>，所以我们一个请求只有一个线程，因此我们需要开多一个进程来进行队列监听了，当监听脚本监听到队列有动静时，就对队列进行处理。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen</div></pre></td></tr></table></figure>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><ol>
-<li>开始监听</li>
-<li>发送请求(可以用postman试试)到指定控制器来调度队列任务</li>
-<li>观察正在执行监听任务的shell(ctrl+c 退出监听)</li>
-</ol>
-<p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
-<hr>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>  通过实践，算是掌握了laravel的队列使用，下面就提一下我遇到的坑点以及改进吧~</p>
-<hr>
-<h3 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h3><ul>
-<li><p>当你使用了onQueue方法来给任务分类然后调度时，监听的命令该怎么写？</p>
-<p>一开始我天真的认为一句 php artisan queue:listen 就能监听所有分类的任务，结果之后发现我定义的一个分类的任务一直不执行，看了文档又找不到缘故</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;onQueue(<span class="string">'test'</span>);    <span class="comment">//将一个任务归为test分类</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen         # 你会发现,是监听不了上面的的任务的</div></pre></td></tr></table></figure>
-<p>翻了一下帮助命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan help queue:listen</div></pre></td></tr></table></figure>
-<p>可以看到</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/job3.png"></p>
-<p>所以正确的执行姿势应该是</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --queue test   # 以我上面的例子而言 此处队列分类是test</div><div class="line">php artisan queue:listen --QUEUE test   # help里面说到大写也可以</div></pre></td></tr></table></figure>
-<p>还有其他queue的命令就自己发掘或者看文档吧~</p>
-<hr>
-<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
-<li>为了保护监听进程(失败后重启等)，我们可以尝试用一下Supervisor(linux)</li>
-<li>因为现在很多缓存都用redis，所以这个队列任务如果用redis的话，就可以一举两得了~~</li>
-</ul>
-<p>以上两点列入到Todo list中，有空再捣鼓一蛤!!</p>
-<hr>
-<h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h3><p>感谢 <a href="http://laravelacademy.org/" target="_blank" rel="external">Laravel学院</a> 的中文文档 ！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。&lt;/p&gt;
-&lt;h2 id=&quot;使用情景&quot;&gt;&lt;a href=&quot;#使用情景&quot; class=&quot;headerlink&quot; title=&quot;使用情景&quot;&gt;&lt;/a&gt;使用情景&lt;/h2&gt;&lt;p
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
-    
-    
-      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
-    
-      <category term="异步消息队列" scheme="https://dawnki.github.io/tags/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
-    
-  </entry>
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/10/删除mysql/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Ubuntu完全卸载mysql</h4>
+      </a>
+    </div>
   
-  <entry>
-    <title>Sublime Text 安装Package Controller</title>
-    <link href="https://dawnki.github.io/2017/05/10/sublimetextPC/"/>
-    <id>https://dawnki.github.io/2017/05/10/sublimetextPC/</id>
-    <published>2017-05-10T00:38:46.000Z</published>
-    <updated>2017-05-10T02:04:05.824Z</updated>
+</nav>
+
+
+
     
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller.</p>
-<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>安装方法分为简单安装和手动安装,自行选择即可.</p>
-<h3 id="简单的安装方法"><a href="#简单的安装方法" class="headerlink" title="简单的安装方法"></a>简单的安装方法</h3><p>使用Ctrl+`快捷键或者通过View-&gt;Show Console菜单打开命令行，粘贴如下代码：</p>
-<p>Sublime Text 3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib.request,os; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), &apos;wb&apos;).write(urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;,&apos;%20&apos;)).read())</div></pre></td></tr></table></figure>
-<p>如果顺利的话，此时就可以在Preferences菜单下看到Package Settings和Package Control两个菜单了。</p>
-<p>Sublime Text 2 的如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib2,os; pf=&apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), &apos;wb&apos; ).write( urllib2.urlopen( &apos;http://sublime.wbond.net/&apos; +pf.replace( &apos; &apos;,&apos;%20&apos; )).read()); print( &apos;Please restart Sublime Text to finish installation&apos;)</div></pre></td></tr></table></figure>
-<h3 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h3><p>可能由于各种原因，无法使用代码安装，那可以通过以下步骤手动安装Package Control：</p>
-<ol>
-<li><p>点击Preferences &gt; Browse Packages菜单</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/06/03/php的魔术方法/&title=《PHP常用的几种魔术方法》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/06/03/php的魔术方法/&title=《PHP常用的几种魔术方法》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/06/03/php的魔术方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP常用的几种魔术方法》 — Dawnki's Blog&url=https://dawnki.github.io/2017/06/03/php的魔术方法/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/06/03/php的魔术方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJUlEQVR42u3aQW7DMAwEwP7/0+m1QGt3l3YCWBqdAsOxNDoQpMSvr3i8fo3knaP3fz75/fvo+zcMDAyMxzKS6Y+e5MjzhSbz/jMLBgbGBoyjKY/eyZEt+/w7h88xMDAwTkNk+6T9JgYGBkbLOA+R50nhecL30YCLgYHxQMbs00lRmm/Kh2pxDAyMBzLyU/fP/37L/QYGBsajGK9yJP+dLet1YWBgYKzNmE1zXky27CslMQYGxg6MNqjlU7btF+1mDaM1BgbGQozrDRMJqW0yOwRjYGBsw7iSxuULml0DFMdtGBgYWzJmC8pnzBPHqM0CAwNjOUYbdmetEvkSrySgGBgYqzLapG12KJY/Tw7v/ngfAwNjA8bswKs96L8rrTw8bsPAwFiUcdeHkgSuvZhsgy8GBsaqjPag7X1Xm23SiYGBsQ8jT7zqVq2Sd2WzMDAwdmDMAmhS3L7ikW/NP/exGBgYSzPacrRltDePeRDHwMDYgZF3LLQBtF1K24g2bLzAwMB4ICMpKa+3R7TXljkVAwMD4y2NEXG5W8yLgYGxGWM22gJ41nBWBFwMDIwlGLPSNAnQs2aLIRUDA2Npxl3BNCl624uH/DAOAwNjB0YbZNvLg+ICcpRiYmBg7MN4X/y+0lhWIDEwMDDi0Dkrd9sSt7gYwMDA2JiRTJmz2y27LeBiYGA8ijFrd2jD6wx5cy2OgYHxQEZeOl5K3eKwO0tDMTAwFmV8Aw4gapgWY6QiAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
 </li>
-<li><p>进入打开的目录的上层目录，然后再进入Installed Packages/目录</p>
-</li>
-<li><p>下载Package Control.sublime-package并复制到Installed Packages/目录</p>
-</li>
-<li><p>重启Sublime Text。</p>
-</li>
-</ol>
-<h2 id="如何使用Package-Controller-安装插件"><a href="#如何使用Package-Controller-安装插件" class="headerlink" title="如何使用Package Controller 安装插件"></a>如何使用Package Controller 安装插件</h2><ol>
-<li>快捷键ctrl+shift+P，或者直接在Preferences &gt; Package Controller 来打开</li>
-<li>在输入框中输入 install package 按回车</li>
-<li>在新弹出的框中输入你要安装的插件即可</li>
-</ol>
-<p>效果如下图:</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/sb1.png"></p>
-<p><img src="http://opobbao46.bkt.clouddn.com/sb2.png"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先
-    
-    </summary>
-    
-      <category term="文本编辑器" scheme="https://dawnki.github.io/categories/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/"/>
-    
-    
-      <category term="Sublime Text" scheme="https://dawnki.github.io/tags/Sublime-Text/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LNMP坑点系列:&quot;mysql.serviceJob for mysql.service failed because the control process exited with error code.&quot;</title>
-    <link href="https://dawnki.github.io/2017/05/09/mysql-question/"/>
-    <id>https://dawnki.github.io/2017/05/09/mysql-question/</id>
-    <published>2017-05-09T13:02:09.000Z</published>
-    <updated>2017-05-10T03:19:00.744Z</updated>
-    
-    <content type="html"><![CDATA[<p>一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。</p>
-<h2 id="寻找元凶"><a href="#寻找元凶" class="headerlink" title="寻找元凶"></a>寻找元凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
-<p>锁定/etc/my.cnf文件！！</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/my1.png"></p>
-<p>可以看到这个文件的初始权限是拥有者有读写功能，但同组或者其他人只有读的功能，由于舍友为了修改这个文件，帮这个文件加了所有身份都加了写的功能。</p>
-<p>即：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod go+w /etc/my.cnf</div></pre></td></tr></table></figure></p>
-<p>接着重启就炸了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lnmp restart</div></pre></td></tr></table></figure>
-<p><img src="http://opobbao46.bkt.clouddn.com/my2.png"></p>
-<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>要解决很简单，只将这个文件的权限还原即可(只保留拥有者有写功能)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod go-w /etc/my.cnf</div></pre></td></tr></table></figure>
-<p><img src="http://opobbao46.bkt.clouddn.com/my3.png"></p>
-<p>如图修改完之后，大功告成!lnmp能正常重启了!</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个坑告诉我们一定要有做事要有头有尾，文件由于一时特殊需要改了权限的，之后完事后记得改回权限!!</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的
-    
-    </summary>
-    
-      <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
-    
-    
-      <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
-    
-      <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="https://dawnki.github.io/2017/05/09/hello-world/"/>
-    <id>https://dawnki.github.io/2017/05/09/hello-world/</id>
-    <published>2017-05-09T10:51:21.767Z</published>
-    <updated>2017-05-09T06:01:31.370Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-    
-    </summary>
-    
-    
-  </entry>
-  
-</feed>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
