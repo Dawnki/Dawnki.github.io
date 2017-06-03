@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-06-03T14:49:08.963Z</updated>
+  <updated>2017-06-03T15:23:28.343Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="https://dawnki.github.io/2017/06/03/php%E7%9A%84%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/"/>
     <id>https://dawnki.github.io/2017/06/03/php的魔术方法/</id>
     <published>2017-06-03T08:05:11.000Z</published>
-    <updated>2017-06-03T14:49:08.963Z</updated>
+    <updated>2017-06-03T15:23:28.343Z</updated>
     
-    <content type="html"><![CDATA[<p>补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:<strong>PHP 将所有以 <strong>（两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以 </strong> 为前缀</strong>. 切记切记~~</p>
+    <content type="html"><![CDATA[<p>补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:<strong>PHP 将所有以两个下划线开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以两个下划线为前缀</strong>. 切记切记~~</p>
 <h2 id="常用魔术方法"><a href="#常用魔术方法" class="headerlink" title="常用魔术方法"></a>常用魔术方法</h2><h3 id="construct"><a href="#construct" class="headerlink" title="__construct()"></a>__construct()</h3><ul>
 <li>描述:类构造方法，在实例化类时自动调用</li>
 </ul>
@@ -85,7 +85,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:&lt;strong&gt;PHP 将所有以 &lt;strong&gt;（两个下划线）开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以 &lt;/stron
+      &lt;p&gt;补个档，重新复习下php的几种魔术方法,同时魔术方法也是必须掌握的，面试什么的也是必考的.附上php文档的相关警告:&lt;strong&gt;PHP 将所有以两个下划线开头的类方法保留为魔术方法。所以在定义类方法时，除了讲到的魔术方法，建议不要以两个下划线为前缀&lt;/strong&gt;. 
     
     </summary>
     
