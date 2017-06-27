@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>PHP系统调用(调用Bash&amp;Python脚本) | Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="PHP函数,系统调用,PHP调用Python脚本">
+    <meta name="description" content="有时候，我们在使用php进行开发时，需要调用服务器上的脚本或者调用python脚本来实现某些功能，这时候就需要使用PHP的系统调用函数。不过实际调用中会出现许许多多的问题，就拿最近有关机器学习的项目，后台是PHP实现的，不过机器学习部分用的是Python(需要用到caffe)，中间调用python就遇到了许许多多的坑。  实验环境 系统: Ubuntu 14.04 PHP:  5.6.22 Pyt">
+<meta name="keywords" content="PHP函数,系统调用,PHP调用Python脚本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP系统调用(调用Bash&amp;Python脚本)">
+<meta property="og:url" content="https://dawnki.github.io/2017/06/27/PHP系统调用/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="有时候，我们在使用php进行开发时，需要调用服务器上的脚本或者调用python脚本来实现某些功能，这时候就需要使用PHP的系统调用函数。不过实际调用中会出现许许多多的问题，就拿最近有关机器学习的项目，后台是PHP实现的，不过机器学习部分用的是Python(需要用到caffe)，中间调用python就遇到了许许多多的坑。  实验环境 系统: Ubuntu 14.04 PHP:  5.6.22 Pyt">
+<meta property="og:updated_time" content="2017-06-27T06:41:03.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP系统调用(调用Bash&amp;Python脚本)">
+<meta name="twitter:description" content="有时候，我们在使用php进行开发时，需要调用服务器上的脚本或者调用python脚本来实现某些功能，这时候就需要使用PHP的系统调用函数。不过实际调用中会出现许许多多的问题，就拿最近有关机器学习的项目，后台是PHP实现的，不过机器学习部分用的是Python(需要用到caffe)，中间调用python就遇到了许许多多的坑。  实验环境 系统: Ubuntu 14.04 PHP:  5.6.22 Pyt">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">PHP系统调用(调用Bash&amp;Python脚本)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">PHP系统调用(调用Bash&amp;Python脚本)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-27T04:05:23.000Z" itemprop="datePublished" class="page-time">
+  2017-06-27
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实验环境"><span class="post-toc-number">1.</span> <span class="post-toc-text">实验环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#起步"><span class="post-toc-number">2.</span> <span class="post-toc-text">起步</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#system"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">system()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#exec"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">exec()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#shell-exec"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">shell_exec()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#passthru"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">passthru()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#综上"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">综上</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#挖坑"><span class="post-toc-number">3.</span> <span class="post-toc-text">挖坑</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第一坑：-disable-functions-解除PHP禁用函数"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">第一坑： disable_functions 解除PHP禁用函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第二坑：-补充错误日志"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">第二坑： 补充错误日志</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第三坑：-权限"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">第三坑： 权限</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第四坑：-调用Python脚本时import问题"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">第四坑： 调用Python脚本时import问题</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第五坑：-PHP默认开始安全模式"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">第五坑： PHP默认开始安全模式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小结"><span class="post-toc-number">4.</span> <span class="post-toc-text">小结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-PHP系统调用"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">PHP系统调用(调用Bash&Python脚本)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-27 12:05:23" datetime="2017-06-27T04:05:23.000Z"  itemprop="datePublished">2017-06-27</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>有时候，我们在使用php进行开发时，需要调用服务器上的脚本或者调用python脚本来实现某些功能，这时候就需要使用PHP的系统调用函数。不过实际调用中会出现许许多多的问题，就拿最近有关机器学习的项目，后台是PHP实现的，不过机器学习部分用的是Python(需要用到caffe)，中间调用python就遇到了许许多多的坑。</p>
+<hr>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>系统: Ubuntu 14.04</li>
+<li>PHP:  5.6.22</li>
+<li>Python: 2.7.6 </li>
+</ul>
+<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>  在挖矿之前先介绍一下php的系统调用函数吧:</p>
+<h3 id="system"><a href="#system" class="headerlink" title="system()"></a>system()</h3><ul>
+<li>描述：执行外部程序，成功则返回命令输出的最后一行， 失败则返回 FALSE，特点<strong>直接输出</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'pwd'</span>;</div><div class="line">system($command);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/wwwroot/cifar/public</div></pre></td></tr></table></figure>
+<h3 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h3><ul>
+<li>描述：执行一个外部程序,返回命令执行结果的最后一行内容。不直接输出到屏幕.<strong>如果输出只有一行则按空格为分隔符获取内容,如果多行则按行来为分隔符来获取内容存入到数组中.</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'pwd'</span>;</div><div class="line">exec($command,$result);         <span class="comment">//命令输出内容存至result变量</span></div><div class="line">print_r($result);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Array</div><div class="line">(</div><div class="line">    [0] =&gt; /home/wwwroot/cifar/public</div><div class="line">)</div></pre></td></tr></table></figure>
+<h3 id="shell-exec"><a href="#shell-exec" class="headerlink" title="shell_exec()"></a>shell_exec()</h3><ul>
+<li>描述： 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。返回命令执行的输出。 如果执行过程中发生错误或者进程不产生输出，则返回 NULL。<strong>使用本函数无法通过返回值检测进程是否成功执行。 如果需要检查进程执行的退出码，请使用 exec() 函数。</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'who'</span>;</div><div class="line">$data=shell_exec($command);</div><div class="line">print_r($data);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root     tty1         Jun 25 14:46</div><div class="line">root     pts/0        Jun 27 12:44</div></pre></td></tr></table></figure>
+<h3 id="passthru"><a href="#passthru" class="headerlink" title="passthru()"></a>passthru()</h3><ul>
+<li>描述：执行外部程序并且显示原始输出 常用来执行诸如 pbmplus 之类的可以直接输出图像流的命令。 通过设置 Content-type 为 image/gif， 然后调用 pbmplus 程序输出 gif 文件， 就可以从 PHP 脚本中直接输出图像到浏览器。<strong>特点直接输出,原始输出</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'who'</span>;</div><div class="line">passthru($command);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root     tty1         Jun 25 14:46</div><div class="line">root     pts/0        Jun 27 12:44</div></pre></td></tr></table></figure>
+<h3 id="综上"><a href="#综上" class="headerlink" title="综上"></a>综上</h3><ul>
+<li>要获取原始输出就用passthru</li>
+<li>听说exec跟表单(grep查询的结果)更配哦</li>
+<li>其他函数看着需求用就好</li>
+</ul>
+<hr>
+<h2 id="挖坑"><a href="#挖坑" class="headerlink" title="挖坑"></a>挖坑</h2><p>  起步完之后就会开始进入实践，就会遇到各种坑，准备好了吗？</p>
+<h3 id="第一坑：-disable-functions-解除PHP禁用函数"><a href="#第一坑：-disable-functions-解除PHP禁用函数" class="headerlink" title="第一坑： disable_functions 解除PHP禁用函数"></a>第一坑： disable_functions 解除PHP禁用函数</h3><p>  虽说这个默认设置不是坑，但是99%的服务器在你部署完php之后，disable_funcitons设置上都会禁用掉上面所用到函数，所以先去php.ini里面解除系统调用函数设置</p>
+<ol>
+<li>vi /usr/local/php/etc/php.ini (我lnmp安装默认是这个路径的，php安装在其他地方的请自行调整)</li>
+<li>打开配置文件后找到disable_functions(可以用vi在命令模式下/disable_functions来查找)</li>
+<li>将你之后用到的系统调用函数删去(exec,system,passthru等等),如果不在此列则表示没有默认禁用该PHP函数</li>
+<li>保存(Esc退出到命令模式然后:wq!退出)，如果权限不够不能写则自行加权限解决</li>
+<li>重启PHP/LNMP (lnmp restart)</li>
+<li>然后就可以愉快地使用系统调用函数了</li>
+</ol>
+<h3 id="第二坑：-补充错误日志"><a href="#第二坑：-补充错误日志" class="headerlink" title="第二坑： 补充错误日志"></a>第二坑： 补充错误日志</h3><p>  在你调试命令的时候，<strong>最烦的不是出错，最烦的是出错了但没有错误提示</strong>，因此不能对症下药，所以，不妨在你调试命令时，顺便输出到文本文件，然后去文本文件里面找错误输出。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'ll / 2&gt;/xxxxxx/log.txt'</span>;  <span class="comment">//将错误重定向到log.txt</span></div><div class="line">exec($command,$result);         <span class="comment">//命令输出内容存至result变量</span></div><div class="line">print_r($result);</div></pre></td></tr></table></figure>
+<p>  建议命令里面涉及路径的全部都用上<strong>绝对路径</strong>，并且给日志文件给上权限(777简单粗暴)</p>
+<p>  <strong>bash命令中的0代表标准输入，1代表标准输出，2代表标准错误输出</strong></p>
+<h3 id="第三坑：-权限"><a href="#第三坑：-权限" class="headerlink" title="第三坑： 权限"></a>第三坑： 权限</h3><p>  在你补充完错误日志时，你会发现最多的错误就是有关于权限的，以及有关于sudoer的，因为当你浏览器发送一个请求给服务器的web应用时，web服务器(apache或者nginx)所用的用户(www)不具备root的一些权限，所以需要修改sudoer以及涉及到的文件权限(读写操作)</p>
+<ol>
+<li>visudo 直接编辑 (进入利用nano编辑器编辑sudoer)</li>
+<li>如果发现文本中存在 defaults requiretty 的，则用#号注释掉如 #defaults requiretty</li>
+<li>apache用户的话一般系统会建立apache用户，nginx用户的话一般是www用户(可用vi /usr/local/nginx/conf/nginx.conf查看，第一行就是显示nginx所用的用户)</li>
+<li>在visudo末尾中 添加 www ALL=NOPASSWD:ALL 或者 apache ALL=NOPASSWD:ALL(不同web服务器所用的用户不同)</li>
+<li>然后ctrl+x 按Y保存退出nano</li>
+<li>然后给你需要读写的文件加上对应权限，就可以用PHP系统调用进行文件读写等等需要权限的操作</li>
+</ol>
+<h3 id="第四坑：-调用Python脚本时import问题"><a href="#第四坑：-调用Python脚本时import问题" class="headerlink" title="第四坑： 调用Python脚本时import问题"></a>第四坑： 调用Python脚本时import问题</h3><p>  就举我上面提到的例子，PHP调用机器学习的Python脚本，这个Python脚本中用到了刚编译好的caffe（非Python标准库），然后import caffe的时候，或许在shell运行没问题，但是在PHP调用Python的时候可能就会炸了。</p>
+<p>  例如会报 <strong>ImportError: No module named caffe</strong> 的错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#修改前的 PHP调用时会报caffe模块缺失的错误</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> caffe</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> os</div><div class="line">sys.path.append(<span class="string">"/（caffe-master路径）/caffe/python"</span>)    <span class="comment">#根据自己实际的绝对路径修改</span></div><div class="line">sys.path.append(<span class="string">"/（caffe-master路径）/caffe/python/caffe"</span>)<span class="comment">#根据自己实际的绝对路径修改</span></div><div class="line"><span class="keyword">import</span> caffe</div></pre></td></tr></table></figure>
+<p>  对于其他需要自行编译的模块，同理举一反三吧~</p>
+<h3 id="第五坑：-PHP默认开始安全模式"><a href="#第五坑：-PHP默认开始安全模式" class="headerlink" title="第五坑： PHP默认开始安全模式"></a>第五坑： PHP默认开始安全模式</h3><p>   如果PHP默认开启了安全模式，只要去php.ini里面把safe_mode(如果存在)用#号注释掉即关闭</p>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>  对于其他错误的话，根据错误日志慢慢解决就好，还有更多的坑需要填呢~最后说一句，既然PHP调用Python这么麻烦，为什么不直接用Python开发呢？因为PHP是世界上最好的语言啊(误) ^_^</p>
+<p>  <a href="http://php.net/manual/zh/ref.exec.php" target="_blank" rel="external">PHP系统调用官方文档</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-06-27T06:41:03.712Z" itemprop="dateUpdated">2017-06-27 14:41:03</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP函数/">PHP函数</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP调用Python脚本/">PHP调用Python脚本</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统调用/">系统调用</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/06/27/PHP系统调用/&title=《PHP系统调用(调用Bash&Python脚本)》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/06/27/PHP系统调用/&title=《PHP系统调用(调用Bash&Python脚本)》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/06/27/PHP系统调用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP系统调用(调用Bash&Python脚本)》 — Dawnki's Blog&url=https://dawnki.github.io/2017/06/27/PHP系统调用/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/06/27/PHP系统调用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/06/03/php的魔术方法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">PHP常用的几种魔术方法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/06/27/PHP系统调用/&title=《PHP系统调用(调用Bash&Python脚本)》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/06/27/PHP系统调用/&title=《PHP系统调用(调用Bash&Python脚本)》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/06/27/PHP系统调用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《PHP系统调用(调用Bash&Python脚本)》 — Dawnki's Blog&url=https://dawnki.github.io/2017/06/27/PHP系统调用/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/06/27/PHP系统调用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aQW7EIAwF0Nz/0um20jT02yQjBR6raAYRXhYWtjmOeJwX4/e/VzOT1T5/P54YGBgYr2Wcw5G8IHlxvv7498udYGBgbMAYb+5zThJwE1L1vZe/Y2BgYFwwegfBq/njQycGBgZGzkiS2Co+XwEDA2NnRr50fshLZiYf6OZcHAMD44WMvOr+/edH+hsYGBivYpzFMZPoPrgrDAyMpRl3NSB7KXFyWCwcNDEwMBZlzBT0q8ln8kWbMAwMjC0ZebmtV1DLMVFzAgMDYzNG9UrEzIWM3tuPauTGwMBYgjHeRDMItjbaDP0YGBhLM/IwmjPyqDhfmMPAwNiB0SvuV6+LzbcE/vmIGBgYWzLGS+eJ7pdCNgYGxgaM3hEtL6LlSXIv6GNgYKzNmGlAVtsGM8lt4foFBgbGcozeJvKN5q2FvEkQnXAxMDAWYlRbBfmmZ65fHMHIZ2JgYLydUb2wVf4S8WrVUPtHYwADA2NRxsyme8lnYVvVlTEwMDZg9Apez5XVqs8YGBg7MHoNy2opLQcnx0cMDIzdGEdxJMe+maZCNRnGwMBYlXEWRx5G59sJhbYBBgbG0oxesKu2E3qfIHkuwzAwMF7LyLeYHNfuXbPwXgwMjA0YeaOxmtCWS/zF0I+BgYExTjV7pGZITTJyDAwMjAeKZcnMcRqMgYGxD6NXSsvLZNVrFg/m4hgYGC9kVK9WjINsL4gnm65e7MDAwFiC8QMlnyLg54YT+gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
