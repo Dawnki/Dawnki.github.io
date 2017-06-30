@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-06-30T19:59:40.666Z</updated>
+  <updated>2017-06-30T20:01:27.935Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,26 +20,24 @@
     <link href="https://dawnki.github.io/2017/07/01/Mysql%E5%BC%80%E5%90%AFInnodb%E5%BC%95%E6%93%8E/"/>
     <id>https://dawnki.github.io/2017/07/01/Mysql开启Innodb引擎/</id>
     <published>2017-06-30T19:41:26.000Z</published>
-    <updated>2017-06-30T19:59:40.666Z</updated>
+    <updated>2017-06-30T20:01:27.935Z</updated>
     
     <content type="html"><![CDATA[<p>Innodb引擎是我们经常用到的mysql存储引擎，在我们需要事务管理以及外键等功能的时候，单单的Myisam引擎并不满足我们的需求，此时就需要我们启用innodb引擎。不过在我们安装数据库或者用lnmp一键安装配置，没有选开启innodb引擎，那该怎么办呢？</p>
-<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><ol>
+<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><ul>
 <li>关闭mysql服务</li>
-</ol>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> service mysql stop</div></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo lnmp stop   # lnmp一键安装的用户</div></pre></td></tr></table></figure>
-<ol>
+<ul>
 <li><p>修改mysql配置文件(my.ini / my.cnf)</p>
 <p>linux用户需要修改的是my.cnf文件.</p>
 </li>
-</ol>
+</ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vi /etc/my.cnf</div></pre></td></tr></table></figure>
-<p>  在里面一行加入</p>
-<p>  innodb = ON</p>
-<p>  然后保存退出</p>
-<ol>
+<p>  在里面一行加入 innodb = ON ，然后保存退出</p>
+<ul>
 <li>重启mysql或lnmp即可开启innodb引擎</li>
-</ol>
+</ul>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
 <li>以上方法仅适用于<strong>已经安装</strong>了innodb引擎，但是没有开启的情况</li>
 <li>可以在mysql的shell里面输入 show engines; 来查看是否安装了innodb引擎</li>
