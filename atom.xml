@@ -72,7 +72,7 @@
     <link href="https://dawnki.github.io/2017/07/01/Mysql%E5%BC%80%E5%90%AFInnodb%E5%BC%95%E6%93%8E/"/>
     <id>https://dawnki.github.io/2017/07/01/Mysql开启Innodb引擎/</id>
     <published>2017-06-30T19:41:26.000Z</published>
-    <updated>2017-06-30T20:01:27.935Z</updated>
+    <updated>2017-07-02T02:58:12.580Z</updated>
     
     <content type="html"><![CDATA[<p>Innodb引擎是我们经常用到的mysql存储引擎，在我们需要事务管理以及外键等功能的时候，单单的Myisam引擎并不满足我们的需求，此时就需要我们启用innodb引擎。不过在我们安装数据库或者用lnmp一键安装配置，没有选开启innodb引擎，那该怎么办呢？</p>
 <h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><ul>
@@ -105,6 +105,8 @@
     </summary>
     
       <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
+    
+      <category term="数据库" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
       <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
@@ -547,7 +549,7 @@
     <link href="https://dawnki.github.io/2017/05/09/mysql-question/"/>
     <id>https://dawnki.github.io/2017/05/09/mysql-question/</id>
     <published>2017-05-09T13:02:09.000Z</published>
-    <updated>2017-05-10T03:19:00.744Z</updated>
+    <updated>2017-07-02T02:58:36.700Z</updated>
     
     <content type="html"><![CDATA[<p>一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。</p>
 <h2 id="寻找元凶"><a href="#寻找元凶" class="headerlink" title="寻找元凶"></a>寻找元凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
@@ -572,6 +574,8 @@
     </summary>
     
       <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
+    
+      <category term="数据库" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
       <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
