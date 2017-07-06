@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-06T16:41:16.639Z</updated>
+  <updated>2017-07-06T16:43:11.260Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://dawnki.github.io/2017/07/06/%E9%93%BE%E5%BC%8F%E6%93%8D%E4%BD%9C/"/>
     <id>https://dawnki.github.io/2017/07/06/链式操作/</id>
     <published>2017-07-06T13:11:32.000Z</published>
-    <updated>2017-07-06T16:41:16.639Z</updated>
+    <updated>2017-07-06T16:43:11.260Z</updated>
     
     <content type="html"><![CDATA[<p>玩耍过jQuery的朋友们应该对链式操作不陌生，链式操作在实际应用上不仅美观，并且代码容易阅读，下面用PHP简单实现下链式操作。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#Test"</span>).css(<span class="string">'color'</span>,<span class="string">'red'</span>).show(<span class="number">200</span>).removeClass(<span class="string">'style'</span>);  <span class="comment">//jquery中的链式操作</span></div></pre></td></tr></table></figure>
@@ -38,7 +38,7 @@
 <p>  可见,当 Model:where(xxxx) 时，会先生成一个Model的实例(执行__callStatic)，然后再用回调函数,让这个刚生成的实例去执行where，由于模型里面本来是没有涉及sql查询的方法，正在执行sql语句的是同目录下面的Builder.php,即SQL构造器，这个builder里面才负责处理SQL.因此Model的实例因为没有where方法而执行魔术方法__call来生成一个构造器(builder)去执行where方法。所以 <strong>真正执行where方法的是Builder.php</strong></p>
 <p>  下面是/vendor/laravel/illuminate/Database/Eloquent/Builder中的where方法</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Add a basic where clause to the query.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span>  string  $column</div><div class="line"> * <span class="doctag">@param</span>  string  $operator</div><div class="line"> * <span class="doctag">@param</span>  mixed   $value</div><div class="line"> * <span class="doctag">@param</span>  string  $boolean</div><div class="line"> * <span class="doctag">@return</span> $this</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">where</span><span class="params">($column, $operator = null, $value = null, $boolean = </span></span></div><div class="line">    <span class="string">'and'</span>)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> ($column <span class="keyword">instanceof</span> Closure) &#123;</div><div class="line">        $query = <span class="keyword">$this</span>-&gt;model-&gt;newQueryWithoutScopes();</div><div class="line"></div><div class="line">        call_user_func($column, $query);</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;query-&gt;addNestedWhereQuery($query-&gt;getQuery(), $boolean);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        call_user_func_array([<span class="keyword">$this</span>-&gt;query, <span class="string">'where'</span>], func_get_args());  </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>;    <span class="comment"># 链式操作关键</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="用链式操作改造CURL"><a href="#用链式操作改造CURL" class="headerlink" title="用链式操作改造CURL"></a>用链式操作改造CURL</h2><p>  <a href="https://github.com/Dawnki/mycurl" target="_blank" rel="external">附带一个自己用利用链式操作的封装curl类</a></p>
+<h2 id="用链式操作改造CURL"><a href="#用链式操作改造CURL" class="headerlink" title="用链式操作改造CURL"></a>用链式操作改造CURL</h2><p>  <a href="https://github.com/Dawnki/mycurl" target="_blank" rel="external">附带一个利用链式操作的封装curl类</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  所以不妨改良一下自己的代码吧！~</p>
 ]]></content>
     
