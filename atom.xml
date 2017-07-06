@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-01T09:49:55.100Z</updated>
+  <updated>2017-07-06T09:06:19.273Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -16,11 +16,61 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>PHP的打包工具--Phar实践</title>
+    <link href="https://dawnki.github.io/2017/07/04/Phar/"/>
+    <id>https://dawnki.github.io/2017/07/04/Phar/</id>
+    <published>2017-07-04T10:40:40.000Z</published>
+    <updated>2017-07-06T09:06:19.273Z</updated>
+    
+    <content type="html"><![CDATA[<p>Phar,是一种将PHP程序打包的工具，至PHP5.3以来开始支持，这个就类似于Java中的jar包，使用的时候也十分简便，只要include或者require即可，网上的许多PHP的SDK也支持这种打包方式。下面就简单说下怎么使用phar打包以及引入phar包。</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>PHP5.6</li>
+</ul>
+<h2 id="打包PHP程序"><a href="#打包PHP程序" class="headerlink" title="打包PHP程序"></a>打包PHP程序</h2><h3 id="修改PHP配置"><a href="#修改PHP配置" class="headerlink" title="修改PHP配置"></a>修改PHP配置</h3><p>  要想利用Phar将PHP应用程序打包，先修改php.ini的相关配置</p>
+<p>  打开php.ini，找到phar.readonly</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">phar.readonly = Off     # 去掉;的注释，并且将On改为Off</div></pre></td></tr></table></figure>
+<p>  此时就可以愉快的使用phar打包</p>
+<h3 id="开始打包"><a href="#开始打包" class="headerlink" title="开始打包"></a>开始打包</h3><p>  假定项目的目录结构如下图:</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/phar1.png"></p>
+<p>  <a href="">demo的github地址</a></p>
+<p>  build.php 为我们的打包程序. 内容如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">    <span class="comment">// 参数内容为生成文件路径 此例中则在当前目录生成example.phar打包程序</span></div><div class="line">    $phar = <span class="keyword">new</span> Phar(<span class="string">'example.phar'</span>);    </div><div class="line">    <span class="comment">// 开始打包</span></div><div class="line">    $phar-&gt;startBuffering();  </div><div class="line">    <span class="comment">// 要打包的目的目录 绝对路径</span></div><div class="line">    $phar-&gt;buildFromDirectory(<span class="keyword">__DIR__</span>);  </div><div class="line">    <span class="comment">// 压缩方式 GZ-&gt;gzip  BZ2-&gt;bz2</span></div><div class="line">    $phar-&gt;compressFiles(Phar::GZ);    </div><div class="line">    <span class="comment">// 设置启动加载脚本 即导入phar之后第一个自动执行的脚本</span></div><div class="line">    $phar-&gt;setStub($phar-&gt;createDefaultStub(<span class="string">'index.php'</span>));  </div><div class="line">    <span class="comment">// 结束打包</span></div><div class="line">    $phar-&gt;stopBuffering();</div></pre></td></tr></table></figure>
+<p>  其中buildFromDirectory方法还接收第二个参数可以用正则表达式来筛选不需打包的文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">    <span class="comment">// 只打包结尾为.php的文件</span></div><div class="line">    $phar-&gt;buildFromDirectory(<span class="keyword">__DIR__</span>,<span class="string">'/\.php$/'</span>);</div></pre></td></tr></table></figure>
+<h3 id="使用phar打包程序"><a href="#使用phar打包程序" class="headerlink" title="使用phar打包程序"></a>使用phar打包程序</h3><ul>
+<li>如果是直接使用整个项目的话可以直接，用include 或者 require </li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">  <span class="comment">// 直接导入phar包 并且会自动执行启动脚本</span></div><div class="line">  <span class="keyword">require_once</span> <span class="keyword">__DIR__</span>.<span class="string">'/example.phar'</span>;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果只是导入phar中的一个脚本，可以这样</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">  <span class="comment">// 只导入 your_script.php 这个脚本</span></div><div class="line">  <span class="keyword">include</span> <span class="string">'phar://example.phar/your_project_path/your_script.php'</span>;</div></pre></td></tr></table></figure>
+<h2 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h2><p>  假如你打包的项目中，入口文件index.php 要引入(include or require)项目中的其他脚本，务必使用绝对路径，<strong>否则你打包成phar包之后，其他项目要引入这个phar就会路径出错!!</strong>,即如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span>     <span class="comment">//这是index.php 入口文件</span></div><div class="line">  <span class="keyword">require</span> <span class="keyword">__DIR__</span>.<span class="string">"/src/controller.php"</span>;  <span class="comment">//要使用绝对路径</span></div><div class="line">  <span class="keyword">require</span> <span class="string">"./lib/tools.php"</span>;               <span class="comment">//不要使用相对路径</span></div></pre></td></tr></table></figure>
+<h2 id="感谢-amp-参考资料"><a href="#感谢-amp-参考资料" class="headerlink" title="感谢 &amp; 参考资料"></a>感谢 &amp; 参考资料</h2><p>  <a href="http://rango.swoole.com/archives/168" target="_blank" rel="external">韩天峰大大的博客</a></p>
+<p>  <a href="http://php.net/manual/en/book.phar.php" target="_blank" rel="external">官方文档</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Phar,是一种将PHP程序打包的工具，至PHP5.3以来开始支持，这个就类似于Java中的jar包，使用的时候也十分简便，只要include或者require即可，网上的许多PHP的SDK也支持这种打包方式。下面就简单说下怎么使用phar打包以及引入phar包。&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
+    
+    
+      <category term="Phar" scheme="https://dawnki.github.io/tags/Phar/"/>
+    
+  </entry>
+  
+  <entry>
     <title>(转) 2017年PHP程序员未来路在何方</title>
     <link href="https://dawnki.github.io/2017/07/01/2017PHP%E7%A8%8B%E5%BA%8F%E5%87%BA%E8%B7%AF/"/>
     <id>https://dawnki.github.io/2017/07/01/2017PHP程序出路/</id>
     <published>2017-07-01T09:19:41.000Z</published>
-    <updated>2017-07-01T09:49:55.100Z</updated>
+    <updated>2017-07-01T09:52:50.586Z</updated>
     
     <content type="html"><![CDATA[<p>作者: 韩天峰<br>转载连接: <a href="https://segmentfault.com/a/1190000008888700" target="_blank" rel="external">2017年PHP程序员未来路在何方</a></p>
 <p>PHP 从诞生到现在已经有20多年历史，从Web时代兴起到移动互联网退潮，互联网领域各种编程语言和技术层出不穷， Node.js 、 GO 、 Python 不断地在挑战 PHP 的地位。这些技术的推动者非常热衷于唱衰 PHP ， PHP 语言的未来在哪里？PHP 程序员当如何应对未来的变革？</p>
