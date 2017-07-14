@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-06T16:43:11.260Z</updated>
+  <updated>2017-07-14T17:20:32.721Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,48 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>那些年PHP-CLI踩过的坑</title>
+    <link href="https://dawnki.github.io/2017/07/14/cli%E7%9A%84%E5%9D%91/"/>
+    <id>https://dawnki.github.io/2017/07/14/cli的坑/</id>
+    <published>2017-07-14T11:32:54.000Z</published>
+    <updated>2017-07-14T17:20:32.721Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近在捣鼓swoole以及phpunit时，需要用到PHP-CLI（PHP的命令行模式），可是却中途却一直出现问题，就以phpunit为例，在用到调试数据库的断言时，出现could not find driver，以及在捣鼓swoole时，使用了swoole的定义类缺找不到，最终原来发现PHP-CLI模式的拓展与PHP-FPM那边的拓展配置不一致导致的。</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>  在填坑前先介绍下几个路径以及命令：</p>
+<p>  /usr/local/php   通常是通过网页调用PHP脚本(FastCGI,FPM)时，php配置以及拓展放置的目录</p>
+<p>  /usr/bin/  用户命令放置的地方，也是PHP-CLI调用php命令放置的地方</p>
+<p>  php -m 查看CLI模式下加载的拓展以及模块</p>
+<p>  在脚本中编写phpinfo();然后网页访问，可以查看网络调用脚本时加载的拓展和模块</p>
+<p>  /etc/php 在某些情况下，PHP-CLI调用PHP脚本时，php配置以及拓展放置的目录，也是本文的<strong>罪魁祸首</strong></p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>  在linux里安装多个PHP版本或者，安装过PHP7时有可能会出现CLI模式与普通模式(网页调用PHP脚本)配置以及模块不一致的情况，由于我是用LNMP安装的PHP7，之后有安装了PHPStorm，不知是不是乱搞的关系，导致CLI与普通模式加载配置不一致了，在折腾Swoole时就明显发现了这个问题。</p>
+<p>  要知道模块是否加载一致，普通模式用phpinfo() ，命令行模式直接用php -m就可以查到模块是否一致了。</p>
+<p>  若不一致时，绝大多是/usr/bin/php(大多是软连接)指向/etc/php/bin目录里的php</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -li 软链接文件  # 这样既可找到链接指向的源文件</div></pre></td></tr></table></figure>
+<p>  要解决也是十分简单，只需把/usr/local/php/bin里面的php的软连接放到/usr/bin/里即可，注意要把之前/usr/bin/里的php删掉</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rm -rf /usr/bin/php</div><div class="line">ln -s /usr/lcoal/php/bin/php /usr/bin/php  # 软连接的两个参数都需写绝对路径</div></pre></td></tr></table></figure>
+<p>  接着在命令行里</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php -m</div></pre></td></tr></table></figure>
+<p>  即可发现CLI模式加载的模块就与普通模式保持一致了</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在捣鼓swoole以及phpunit时，需要用到PHP-CLI（PHP的命令行模式），可是却中途却一直出现问题，就以phpunit为例，在用到调试数据库的断言时，出现could not find driver，以及在捣鼓swoole时，使用了swoole的定义类缺找不到
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
+    
+    
+      <category term="PHP CLI" scheme="https://dawnki.github.io/tags/PHP-CLI/"/>
+    
+      <category term="Swoole" scheme="https://dawnki.github.io/tags/Swoole/"/>
+    
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>PHP实现链式操作</title>
