@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Linux环境下Redis安装并配置PHP | Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="PHP,Linux,Redis,Laravel">
+    <meta name="description" content="Redis作为一种高效的nosql数据库，常常被用作为缓存，本篇就讲一下关于Redis的安装配置，以及怎么应用到PHP项目当中。 安装并配置Redis 下载官网最新且稳定的redis版本 1234wget http://download.redis.io/releases/redis-4.0.0.tar.gz  # 此处安装的是redis4.0tar xzf redis-4.0.0.tar.gz">
+<meta name="keywords" content="PHP,Linux,Redis,Laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux环境下Redis安装并配置PHP">
+<meta property="og:url" content="https://dawnki.github.io/2017/07/16/redis安装/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="Redis作为一种高效的nosql数据库，常常被用作为缓存，本篇就讲一下关于Redis的安装配置，以及怎么应用到PHP项目当中。 安装并配置Redis 下载官网最新且稳定的redis版本 1234wget http://download.redis.io/releases/redis-4.0.0.tar.gz  # 此处安装的是redis4.0tar xzf redis-4.0.0.tar.gz">
+<meta property="og:updated_time" content="2017-07-16T09:03:22.305Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux环境下Redis安装并配置PHP">
+<meta name="twitter:description" content="Redis作为一种高效的nosql数据库，常常被用作为缓存，本篇就讲一下关于Redis的安装配置，以及怎么应用到PHP项目当中。 安装并配置Redis 下载官网最新且稳定的redis版本 1234wget http://download.redis.io/releases/redis-4.0.0.tar.gz  # 此处安装的是redis4.0tar xzf redis-4.0.0.tar.gz">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Linux环境下Redis安装并配置PHP</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Linux环境下Redis安装并配置PHP</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-16T07:16:24.000Z" itemprop="datePublished" class="page-time">
+  2017-07-16
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装并配置Redis"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装并配置Redis</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#把Redis应用到PHP中"><span class="post-toc-number">2.</span> <span class="post-toc-text">把Redis应用到PHP中</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-redis安装"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Linux环境下Redis安装并配置PHP</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-16 15:16:24" datetime="2017-07-16T07:16:24.000Z"  itemprop="datePublished">2017-07-16</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Redis作为一种高效的nosql数据库，常常被用作为缓存，本篇就讲一下关于Redis的安装配置，以及怎么应用到PHP项目当中。</p>
+<h2 id="安装并配置Redis"><a href="#安装并配置Redis" class="headerlink" title="安装并配置Redis"></a>安装并配置Redis</h2><ul>
+<li><p>下载官网<strong>最新且稳定</strong>的redis版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://download.redis.io/releases/redis-4.0.0.tar.gz  # 此处安装的是redis4.0</div><div class="line">tar xzf redis-4.0.0.tar.gz # 解压下载完的压缩包</div><div class="line">cd redis-4.0.0 </div><div class="line">make  # 编译安装</div></pre></td></tr></table></figure>
+<p>编译安装完之后，redis目录里会生成/src目录</p>
+</li>
+<li><p>下面是几个重要的文件路径</p>
+<p>redis配置文件 /path/to/redis-xxx/redis.conf<br>redis服务端   /path/to/redis-xxx/src/redis-server<br>redis客户端   /path/to/redis-xxx/src/redis-cli</p>
+</li>
+<li><p>配置redis服务器守护进程</p>
+<p>有时我们通过shell开启了redis-server之后，如果不把他放进守护进程就会一直占用我们的shell，因此需要把redis的服务端进程放进守护进程</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /path/to/redis-xxx/redis.conf</div></pre></td></tr></table></figure>
+<p>  通过vi的/daemonize，找到守护进程的配置，把yes改为no保存退出即可.</p>
+<p>  下次开启redis-server时需要</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./redis-server ./../redis.conf # 即参数为配置文件的路径</div></pre></td></tr></table></figure>
+<ul>
+<li>也可以编写shell脚本redis-server,不用输入配置文件路径,随便找个地方放，不要放到src就行,具体如下</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></div><div class="line">`/path/to/redis-xxx/src/redis-server /path/to/redis-xxx/redis.conf`</div></pre></td></tr></table></figure>
+<p>  然后加上执行权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod +x redis-server  # 此处的redis-server为刚刚编写的脚本</div></pre></td></tr></table></figure>
+<p>  为了方便shell里直接启动，把软连接放到/usr/local/bin里</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ln -s /path/to/your-script/redis-server /usr/local/bin # 刚写的脚本路径</div><div class="line">ln -s /path/to/redis-xxx/src/redis-cli /usr/local/bin  # 实际客户端的路径</div></pre></td></tr></table></figure>
+<p> 这样即可在shell里开启带有守护的redis-server了，而不用输入配置文件路径参数，如下:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-server</div></pre></td></tr></table></figure>
+<h2 id="把Redis应用到PHP中"><a href="#把Redis应用到PHP中" class="headerlink" title="把Redis应用到PHP中"></a>把Redis应用到PHP中</h2><p>  PHP连接redis有两种途径，一种是用phpredis拓展，由c编写的php拓展，因此处理效率较高，不过不支持PHP5.2以下的版本。第二种是用predis，是一个php包，可以理解为PHP应用来连接redis，效率没有phpredis不过适应高，容易部署。由于我在踩phpredis的坑时中招了，下面就用predis吧，毕竟简单易用。</p>
+<p>  我采用composer安装方式，在composer.json里附上</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"require"</span>: &#123;</div><div class="line">      <span class="attr">"predis/predis"</span>: <span class="string">"~1.1@dev"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  然后就可以用predis连接redis进行各种操作了,具体函数跟redis原生指令相差不大，在这就不多赘述</p>
+<p>  可以安装<a href="https://github.com/ErikDubbelboer/phpRedisAdmin" target="_blank" rel="external">phpredisadmin</a>管理你的redis，开发环境可以用，生产的话还是算了吧</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-07-16T09:03:22.305Z" itemprop="dateUpdated">2017-07-16 17:03:22</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Laravel/">Laravel</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/16/redis安装/&title=《Linux环境下Redis安装并配置PHP》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/16/redis安装/&title=《Linux环境下Redis安装并配置PHP》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/16/redis安装/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux环境下Redis安装并配置PHP》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/16/redis安装/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/16/redis安装/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/14/cli的坑/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">那些年PHP-CLI踩过的坑</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/16/redis安装/&title=《Linux环境下Redis安装并配置PHP》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/16/redis安装/&title=《Linux环境下Redis安装并配置PHP》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/16/redis安装/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux环境下Redis安装并配置PHP》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/16/redis安装/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/16/redis安装/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJUlEQVR42u3aQW7DIBAF0N7/0q7UVaTWzv/gRA08VlaEDY/FZGD4+orb8dMenx9/+d1n7JezL9/WMDAwPpZxXLazPvm714B23FMqBgbGBow2yF5PN59cskzXc8PAwMC47jOTLGJgYGC8jpE/J9vRJBBjYGBg5Mlce96VTLdNGW/Yi2NgYHwgY6ww8J7nl9c3MDAw/j3jKFseOvNwnIfX01lhYGAszbjrqCt5t9iOxtG1XicMDIwlGMlrSWBtN6VtKH8ScDEwMBZijJUYx47126BcXFDDwMBYmjEWBJO32nDcbmWLQzcMDIyFGDOlyuvULU86k/k8CbgYGBjLMZJQO3bo/56kEwMDY09GktK1CWVbqqw3yRgYGNswxiaXX6rIN7ft8mFgYOzAmNkBtwdtbXCPUkwMDIylGW3p8a4i5fxlCwwMjD0ZeVo2H0DzkFqMi4GBsSgjSfWSYZIj/ja5LJYMAwNjaUaLaXuOMfLkEgMDY0/GTDEyGqwM0EXyioGBsSgjD3bJerQTaq9ZYGBgYMwXEceCbBuso+M2DAyMhRgzU88vZMxcC2vTTQwMjPUYR9mSIccO4/IraH98BwMDY2nGfEBsr1y0y3RvWMfAwPhcRv7p9mJEftWsLZdiYGDsybhrW/tksOl/gNOeGBgYGGUJ4a6eBR4DAwNjgpFPNE8rMTAw9mTkm9h8gLwwOV+RxMDAWJvRbh3zwDoWUmcWFAMDYznGN/5dMwiwXkPNAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
