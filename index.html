@@ -159,6 +159,56 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-Redis报错"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-07-16 17:06:53" datetime="2017-07-16T09:06:53.000Z"  itemprop="datePublished">2017-07-16</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/服务器部署/">服务器部署</a></li></ul>
+
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/07/16/Redis报错/">Redis报错:MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        在捣鼓redis时，一次不小心关闭了强制关闭了redis-cli，导致下次启动cli,进行数据插入操作时报错了，具体错误如下:
+(error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the...
+    
+
+        <a href="/2017/07/16/Redis报错/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-redis安装"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -632,64 +682,6 @@ PHP:  5.6.22
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP魔术方法/">PHP魔术方法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/重载/">重载</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-删除mysql"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-05-10 12:45:44" datetime="2017-05-10T04:45:44.000Z"  itemprop="datePublished">2017-05-10</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/服务器部署/">服务器部署</a></li></ul>
-
-
-
-        
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/05/10/删除mysql/">Ubuntu完全卸载mysql</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        我们安装了mysql之后想卸载mysql时，往往是卸载不完全，导致下次安装又有问题，下面就提供ubuntu完全卸载mysql的方法.
-实验环境
-Linux: Ubuntu 16:04
-Mysql 5.7
-
-步骤  温馨提示:执行之前务必确认是否备份了数据库的数据,数据无价!
-
-先在shell里执行以下指令
-
-12345sudo apt-get autoremove --purge mysql...
-    
-
-        <a href="/2017/05/10/删除mysql/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubunut/">ubunut</a></li></ul>
 
     </div>
     

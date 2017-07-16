@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-16T09:03:22.305Z</updated>
+  <updated>2017-07-16T09:11:54.554Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis报错:MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk</title>
+    <link href="https://dawnki.github.io/2017/07/16/Redis%E6%8A%A5%E9%94%99/"/>
+    <id>https://dawnki.github.io/2017/07/16/Redis报错/</id>
+    <published>2017-07-16T09:06:53.000Z</published>
+    <updated>2017-07-16T09:11:54.554Z</updated>
+    
+    <content type="html"><![CDATA[<p>在捣鼓redis时，一次不小心关闭了强制关闭了redis-cli，导致下次启动cli,进行数据插入操作时报错了，具体错误如下:</p>
+<pre><code>(error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.
+</code></pre><p>  在网上查了较多的资料最好的解决方式是启动redis-cli,然后</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> 127.0.0.1:6379&gt; config set stop-writes-on-bgsave-error no</div></pre></td></tr></table></figure>
+<p>  然后就OK了~老哥这方法贼稳，哈哈哈</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在捣鼓redis时，一次不小心关闭了强制关闭了redis-cli，导致下次启动cli,进行数据插入操作时报错了，具体错误如下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(error) MISCONF Redis is configured to save RDB snapshots,
+    
+    </summary>
+    
+      <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
+    
+    
+      <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
+    
+      <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux环境下Redis安装并配置PHP</title>
@@ -68,11 +98,11 @@
     
       <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
     
-      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
     
       <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
     
-      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
     
   </entry>
   
