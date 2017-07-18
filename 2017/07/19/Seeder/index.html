@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Laravel的数据填充Seeder食用方法 | Dawnki&#39;s Blog | 一只菜鸟程序猿的自我救赎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Laravel,Seeder,数据填充">
+    <meta name="description" content="在日常开发中，经常需要往数据库里填充数据，以便调试接口发现bug。Laravel自带的数据填充器seeder也十分好用，纯自动化填充，还支持一键回滚，只需在使用之前定义些方法即可，下面就介绍一下seeder普遍的用法。 版本  Laravel 5.2 流程介绍 生成Seeder填充类 按实际情况定义模型工程 执行artisan命令自动化填充数据到数据库 回滚，恢复到实际上传环境  起步首先利用ar">
+<meta name="keywords" content="Laravel,Seeder,数据填充">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel的数据填充Seeder食用方法">
+<meta property="og:url" content="https://dawnki.github.io/2017/07/19/Seeder/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="在日常开发中，经常需要往数据库里填充数据，以便调试接口发现bug。Laravel自带的数据填充器seeder也十分好用，纯自动化填充，还支持一键回滚，只需在使用之前定义些方法即可，下面就介绍一下seeder普遍的用法。 版本  Laravel 5.2 流程介绍 生成Seeder填充类 按实际情况定义模型工程 执行artisan命令自动化填充数据到数据库 回滚，恢复到实际上传环境  起步首先利用ar">
+<meta property="og:updated_time" content="2017-07-18T18:06:05.441Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel的数据填充Seeder食用方法">
+<meta name="twitter:description" content="在日常开发中，经常需要往数据库里填充数据，以便调试接口发现bug。Laravel自带的数据填充器seeder也十分好用，纯自动化填充，还支持一键回滚，只需在使用之前定义些方法即可，下面就介绍一下seeder普遍的用法。 版本  Laravel 5.2 流程介绍 生成Seeder填充类 按实际情况定义模型工程 执行artisan命令自动化填充数据到数据库 回滚，恢复到实际上传环境  起步首先利用ar">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Laravel的数据填充Seeder食用方法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Laravel的数据填充Seeder食用方法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-18T17:49:47.000Z" itemprop="datePublished" class="page-time">
+  2017-07-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#版本"><span class="post-toc-number">1.</span> <span class="post-toc-text">版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#流程介绍"><span class="post-toc-number">2.</span> <span class="post-toc-text">流程介绍</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#起步"><span class="post-toc-number">3.</span> <span class="post-toc-text">起步</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一个模型单角色定义"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">一个模型单角色定义</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一个模型多角色定义"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">一个模型多角色定义</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生产"><span class="post-toc-number">4.</span> <span class="post-toc-text">生产</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#处理关联"><span class="post-toc-number">5.</span> <span class="post-toc-text">处理关联</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#填充器模块化"><span class="post-toc-number">6.</span> <span class="post-toc-text">填充器模块化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最后一步"><span class="post-toc-number">7.</span> <span class="post-toc-text">最后一步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#坑点"><span class="post-toc-number">8.</span> <span class="post-toc-text">坑点</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Seeder"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Laravel的数据填充Seeder食用方法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-19 01:49:47" datetime="2017-07-18T17:49:47.000Z"  itemprop="datePublished">2017-07-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/PHP/">PHP</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在日常开发中，经常需要往数据库里填充数据，以便调试接口<del>发现bug</del>。Laravel自带的数据填充器seeder也十分好用，纯自动化填充，还支持一键回滚，只需在使用之前定义些方法即可，下面就介绍一下seeder普遍的用法。</p>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>  Laravel 5.2</p>
+<h2 id="流程介绍"><a href="#流程介绍" class="headerlink" title="流程介绍"></a>流程介绍</h2><ol>
+<li>生成Seeder填充类</li>
+<li>按实际情况定义模型工程</li>
+<li>执行artisan命令自动化填充数据到数据库</li>
+<li>回滚，恢复到实际上传环境</li>
+</ol>
+<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>首先利用artisan命令创建一个seeder类</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> php artisan make:seeder TestSeeder</div></pre></td></tr></table></figure>
+<p>在/database/seeds/中，编写run方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSeeder</span> <span class="keyword">extends</span> <span class="title">Seeder</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">run</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        DB::table(<span class="string">'YourTable'</span>)-&gt;insert([</div><div class="line">            <span class="string">'name'</span> =&gt; str_random(<span class="number">10</span>)</div><div class="line">        ]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如上，只需把插入语句写进seeder类的run方法即可。上面的例子是往YourTable表里插入一条记录，但是这是我们日常都是大批量填充数据的，此时就需要用到模型工厂。</p>
+<h3 id="一个模型单角色定义"><a href="#一个模型单角色定义" class="headerlink" title="一个模型单角色定义"></a>一个模型单角色定义</h3><p>模型工厂的定义脚本在/database/factories/ModelFactory.php，我们只需脚本里定义好模型，然后就可以在seeder类里使用了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;define(App\YourModel::class,<span class="function"><span class="keyword">function</span> <span class="params">(Faker\Generator $faker)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> [</div><div class="line">        <span class="string">'name'</span> =&gt; $faker-&gt;name,</div><div class="line">        <span class="string">'email'</span> =&gt; $faker-&gt;email,</div><div class="line">        <span class="string">'password'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">        <span class="string">'remember_token'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">        <span class="string">'admin'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">    ];</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>Faker是专门生成假数据的包(<a href="https://github.com/fzaninotto/Faker" target="_blank" rel="external">GITHUB地址</a>),这样至少生成的假数据也好看点而不是一堆乱码数字对吧。</p>
+<h3 id="一个模型多角色定义"><a href="#一个模型多角色定义" class="headerlink" title="一个模型多角色定义"></a>一个模型多角色定义</h3><p>除了用define字段定义模型外，我们常常还用到defineAs，因为通常一个模型(表)里面，存在这不同角色，比如User表里可以存在普通用户或者管理员两种角色，这时可以用defineAs</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;defineAs(App\YourModel::class,<span class="string">'admin'</span>,<span class="function"><span class="keyword">function</span> <span class="params">(Faker\Generator $faker)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> [</div><div class="line">        <span class="comment">// blabla 按实际情况编写</span></div><div class="line">        <span class="string">'name'</span> =&gt; $faker-&gt;name,</div><div class="line">        <span class="string">'email'</span> =&gt; $faker-&gt;email,</div><div class="line">        <span class="string">'password'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">        <span class="string">'remember_token'</span> =&gt; str_random(<span class="number">10</span>),</div><div class="line">        <span class="string">'is_admin'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">    ];</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="生产"><a href="#生产" class="headerlink" title="生产"></a>生产</h2><p>这样我们就定义好了一个模型工厂，要工厂生产产品就需要用到Laravel的全局函数factory.生产产品的工厂一定要是定义过的才能用factory函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 以下写在seeder类的run方法里</span></div><div class="line"><span class="comment">// 生产1个模型实例</span></div><div class="line">$obj=$factory-&gt;(App\YourModel::class)-&gt;make();</div><div class="line"><span class="comment">// 生产5个模型实例 返回类型为collection</span></div><div class="line">$collection=$factory-&gt;(App\YourModel::class,<span class="number">5</span>)-&gt;make();</div><div class="line"><span class="comment">// 生产5个admin身份的模型实例</span></div><div class="line">$collection=$factory-&gt;(App\YourModel::class,<span class="string">'admin'</span>,<span class="number">5</span>)-&gt;make();</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="处理关联"><a href="#处理关联" class="headerlink" title="处理关联"></a>处理关联</h2><p>数据库插入时也经常涉及关联，比如有两张表父表与子表，由于存在关联关系，设置了外键约束时，填充数据会很蛋疼，不过利用Laravel的eloquent使得填充数据十分方便，下面就讲一下如何操作</p>
+<p>首先假设有两张表father和son，其中son的主键参照father表中的一个字段id</p>
+<p>father的模型：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">father</span> <span class="keyword">extends</span> <span class="title">Model</span></span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span></span>&#123;</div><div class="line">      <span class="comment">// Laravel 的模型关联方法 不清楚的可以补一下文档</span></div><div class="line">      <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;hasMany(\App\son:<span class="class"><span class="keyword">class</span>,'<span class="title">id</span>'); </span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>son的模型细节我旧忽略了，因为不是重点。接下来就要定义两个表的模型工厂</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$factory-&gt;define(App\father::class,<span class="function"><span class="keyword">function</span> <span class="params">()</span></span>&#123;</div><div class="line">   <span class="keyword">return</span> [</div><div class="line">      <span class="comment">//blabla</span></div><div class="line">   ] ;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">$factory-&gt;define(App\father::class,<span class="function"><span class="keyword">function</span> <span class="params">()</span></span>&#123;</div><div class="line">   <span class="keyword">return</span> [</div><div class="line">      <span class="comment">//blabla</span></div><div class="line">   ] ;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>然后就可以在seeder类的run方法里使用了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">factory(App\father::class,<span class="number">3</span>)</div><div class="line">    -&gt;create()</div><div class="line">    -&gt;each(<span class="function"><span class="keyword">function</span> <span class="params">($obj)</span></span>&#123;</div><div class="line">       $obj-&gt;test()-&gt;save(factory(App\son::class,<span class="number">2</span>)-&gt;make());</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<p>就可以在你填充3个父亲的数据的同时，也为每个父亲填充2个与之关联的儿子</p>
+<hr>
+<h2 id="填充器模块化"><a href="#填充器模块化" class="headerlink" title="填充器模块化"></a>填充器模块化</h2><p>一个填充器写N多个factory来填充数据，难免会看晕，因此我们需要将负责不同模型的生产分模块，划分成N多个子填充器</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">run</span><span class="params">()</span></span>&#123;</div><div class="line">  Model::unguard();</div><div class="line">  <span class="keyword">$this</span>-&gt;call(Test1Seeder::class);</div><div class="line">  <span class="keyword">$this</span>-&gt;call(Test2Seeder::class);</div><div class="line">  <span class="comment">// .......</span></div><div class="line">  Model::reguard();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>unguard函数貌似是关闭自动填充的限制，reguard是恢复限制.还有一个函数<br>Model::truncate();用于放在成员函数里可以清空成员表数据，用来初始化填充还可以，不过有重要数据请备份。</p>
+<hr>
+<h2 id="最后一步"><a href="#最后一步" class="headerlink" title="最后一步"></a>最后一步</h2><p>在编写好seeder之后，运行artisan即可进行填充</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php artisan db:seed</div><div class="line">php artisan db:seed --class=xxxxxSeeder // 你的填充类</div></pre></td></tr></table></figure>
+<p>一键回滚，重建数据库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan migrate:refresh --seed</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>因为运行artisan命令时本质上是用CLI，因此请开启proc_open,proc_get_status等系统调用函数，留意你的CLI所用的拓展是否有对应数据库的拓展，如果遇到CLI的坑可以去翻一些我前几天些的关于CLI的坑，遇到什么permission denied的给对应文件加上权限就好。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-07-18T18:06:05.441Z" itemprop="dateUpdated">2017-07-19 02:06:05</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Laravel/">Laravel</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Seeder/">Seeder</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据填充/">数据填充</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/19/Seeder/&title=《Laravel的数据填充Seeder食用方法》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/19/Seeder/&title=《Laravel的数据填充Seeder食用方法》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/19/Seeder/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Laravel的数据填充Seeder食用方法》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/19/Seeder/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/19/Seeder/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/16/Redis报错/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Redis报错:MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/19/Seeder/&title=《Laravel的数据填充Seeder食用方法》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/19/Seeder/&title=《Laravel的数据填充Seeder食用方法》 — Dawnki's Blog&source=偶尔有干货" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/19/Seeder/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Laravel的数据填充Seeder食用方法》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/19/Seeder/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/19/Seeder/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMUlEQVR42u3aS24kIRAFwL7/pdubWViyinkPsKWGYNWyyhRRixT5eb3i9f62kmd+rp9PPv0ev2VpYWBgfCwjef27XONDJzu3nwYDA+MGxlMEGx9l/Mz46OPImZ8NAwMD4+mZp7/k4TXZGQMDA2OdkaedSYDOQzMGBsadjCSZzAtk7Q5J0rstF8fAwPhARl51//vfv9LfwMDA+CjGerm/DdB7z/NvZwwMjKMZ+WtWktU8ZV06DwYGxqGMNn2du621BbgahoGBcTRjJXFtqe31MW8kYGBg3MBIhkeTMYuVov/S98bAwDiaMT56Owo2Hoxov+7kmAUGBsY1jJWiWDtMtnIGDAyMGxjJBW69ELZ3vOzx7RgYGIcykvQ1D5HtPnMBOmphYmBgHMSYaxPOBd+2nZCkxMW/YWBgHMRoW5X5eGt+cWxbERgYGGczdpW92rGM/FoZgTEwMK5htBe4Nhz/XrMTAwPjBkY7NvGKVx6gl1qkGBgYRzPmyvrtgaIyWRw//9MSwMDAOJoxV/Bq09f1Ql40M4KBgXEoY314ay4Qz6XWdY8UAwPjCEaRLq4MQ0wNXkRpNgYGxqGMd7nyxHIO0zY1MTAwbmCslPjbgYm2kTl3ScXAwDiVkQfQ5Mq4q3lZtxkwMDAuYOxKYuscetduGBgYGOVQRdKYnBvO2FY1xMDAuICRB9P2WPmFckPAxcDA+CjGXKF/zEh2nhvRwMDAuI2Rp47t1bC9OLZPYmBgXMD4AvmgS6lXLv3wAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
