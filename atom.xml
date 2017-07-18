@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-18T18:11:38.817Z</updated>
+  <updated>2017-07-18T18:12:36.425Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://dawnki.github.io/2017/07/19/Seeder/"/>
     <id>https://dawnki.github.io/2017/07/19/Seeder/</id>
     <published>2017-07-18T17:49:47.000Z</published>
-    <updated>2017-07-18T18:11:38.817Z</updated>
+    <updated>2017-07-18T18:12:36.425Z</updated>
     
     <content type="html"><![CDATA[<p>在日常开发中，经常需要往数据库里填充数据，以便调试接口<del>发现bug</del>。Laravel自带的数据填充器seeder也十分好用，纯自动化填充，还支持一键回滚，只需在使用之前定义些方法即可，下面就介绍一下seeder普遍的用法。</p>
 <h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>  Laravel 5.2</p>
@@ -28,7 +28,7 @@
 <li>生成Seeder填充类</li>
 <li>按实际情况定义模型工厂</li>
 <li>执行artisan命令自动化填充数据到数据库</li>
-<li>回滚，恢复到实际上传环境</li>
+<li>回滚，恢复到实际生产环境</li>
 </ol>
 <h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>首先利用artisan命令创建一个seeder类</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> php artisan make:seeder TestSeeder</div></pre></td></tr></table></figure>
