@@ -191,7 +191,7 @@
             <p>在捣鼓redis时，一次不小心关闭了强制关闭了redis-cli，导致下次启动cli,进行数据插入操作时报错了，具体错误如下:</p>
 <pre><code>(error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.
 </code></pre><p>  在网上查了较多的资料最好的解决方式是启动redis-cli,然后</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> 127.0.0.1:6379&gt; config <span class="built_in">set</span> stop-writes-on-bgsave-error no</span></div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> 127.0.0.1:6379&gt; config set stop-writes-on-bgsave-error no</div></pre></td></tr></table></figure>
 <p>  然后就OK了~老哥这方法贼稳，哈哈哈</p>
 
         </div>
