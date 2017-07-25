@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-25T18:02:43.034Z</updated>
+  <updated>2017-07-18T18:12:36.425Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,26 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>test</title>
-    <link href="https://dawnki.github.io/2017/07/26/test/"/>
-    <id>https://dawnki.github.io/2017/07/26/test/</id>
-    <published>2017-07-25T18:02:26.000Z</published>
-    <updated>2017-07-25T18:02:43.034Z</updated>
-    
-    <content type="html"><![CDATA[<p>vdxvdsgf</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;vdxvdsgf&lt;/p&gt;
-
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>Laravel的数据填充Seeder食用方法</title>
