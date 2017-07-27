@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Dawnki&#39;s Blog</title>
-  <subtitle>一只菜鸟程序猿的自我救赎</subtitle>
+  <subtitle>From Apprentice To Artisan</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
