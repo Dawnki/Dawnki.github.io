@@ -27,7 +27,7 @@
 <meta property="og:url" content="https://dawnki.github.io/2017/07/27/JWT/index.html">
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="JWT-Json Web Token，一种基于json格式的开放标准，常常被用作替代cookie的认证方式，特别适合前后端分离的WEB应用，以及api接口。今天就讲讲如何在Laravel应用中使用JWT，虽然网上找到的Laravel集成JWT的方法，不过要么就坑点太多，要么就有诸多限制（比如要验证的模型有多个怎么配置）。 实验环境 Laravel 5.2+ PHP 5.5+ tymon/jwt-a">
-<meta property="og:updated_time" content="2017-07-28T16:53:56.755Z">
+<meta property="og:updated_time" content="2017-07-28T16:55:19.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel中应用JWT">
 <meta name="twitter:description" content="JWT-Json Web Token，一种基于json格式的开放标准，常常被用作替代cookie的认证方式，特别适合前后端分离的WEB应用，以及api接口。今天就讲讲如何在Laravel应用中使用JWT，虽然网上找到的Laravel集成JWT的方法，不过要么就坑点太多，要么就有诸多限制（比如要验证的模型有多个怎么配置）。 实验环境 Laravel 5.2+ PHP 5.5+ tymon/jwt-a">
@@ -234,7 +234,7 @@
 <p>  另外此处有一个坑点就是你自定义的密码字段， <strong>在attempt验证账号登陆时是要注意一些细节</strong></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">    <span class="comment">/**</span></div><div class="line">     *  登录</div><div class="line">     * <span class="doctag">@param</span> Request $request</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">(Request $request)</span></span></div><div class="line">    &#123;</div><div class="line">        $token = JWTAuth::attempt([<span class="string">'phone'</span>=&gt;<span class="string">'188xxxxxx'</span>,<span class="string">'password'</span>=&gt;<span class="number">123456</span>]);</div><div class="line">        <span class="keyword">return</span> response(json_encode([<span class="string">'token'</span>=&gt;$token]),<span class="number">200</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <blockquote>
-<p>上例，我自定义的密码字段为adminPass，在调用attempt时，不要顺理成章的在验证数组里使用adminPass，<strong>依然是使用’password’</strong>，这是由于attempt方法内部的限定，在下一篇博文将详细介绍为何要这样~~如果你表里的字段是password的那就没你的事啦，此处指针对自定义的密码字段名</p>
+<p>上例，我自定义的密码字段为adminPass，在调用attempt时，不要顺理成章的在验证数组里使用adminPass，<strong>依然是使用’password’</strong>，这是由于attempt方法内部的限定，在下一篇博文将详细介绍为何要这样~~如果你表里的字段是password的那就没你的事啦，此处只针对自定义的密码字段名</p>
 </blockquote>
 <hr>
 <h3 id="使用两个以上需要权限认证的表"><a href="#使用两个以上需要权限认证的表" class="headerlink" title="使用两个以上需要权限认证的表"></a>使用两个以上需要权限认证的表</h3><p>  比如一个系统中，有管理员和普通用户，他们分别存在两张不同的表(模型)</p>
@@ -249,7 +249,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-07-28T16:53:56.755Z" itemprop="dateUpdated">2017-07-29 00:53:56</time>
+    最后更新时间：<time datetime="2017-07-28T16:55:19.434Z" itemprop="dateUpdated">2017-07-29 00:55:19</time>
 </span><br>
 
 
