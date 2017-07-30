@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://dawnki.github.io/2017/07/31/test/</loc>
+    
+    <lastmod>2017-07-30T16:26:22.197Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://dawnki.github.io/2017/07/29/JWT-Auth&Laravel-Auth%E6%BA%90%E7%A0%81%E6%B5%85%E8%AF%BB/</loc>
     
     <lastmod>2017-07-29T19:33:57.405Z</lastmod>
@@ -142,7 +149,7 @@
   </url>
   
   <url>
-    <loc>https://dawnki.github.io/2017/05/09/hello-world/</loc>
+    <loc>https://dawnki.github.io/2017/07/31/hello-world/</loc>
     
     <lastmod>2017-05-09T06:01:31.370Z</lastmod>
     
