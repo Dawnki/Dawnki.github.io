@@ -19,19 +19,19 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="同步,异步,阻塞,非阻塞,并行技术">
+    <meta name="keywords" content="并行技术,同步阻塞,异步非阻塞">
     <meta name="description" content="相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333 首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而">
-<meta name="keywords" content="同步,异步,阻塞,非阻塞,并行技术">
+<meta name="keywords" content="并行技术,同步阻塞,异步非阻塞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异步同步阻塞非阻塞详解">
-<meta property="og:url" content="https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/index.html">
+<meta property="og:url" content="https://dawnki.github.io/2017/07/31/async/index.html">
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333 首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E.jpg">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg">
 <meta property="og:image" content="http://opobbao46.bkt.clouddn.com/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg">
-<meta property="og:updated_time" content="2017-07-31T16:57:09.566Z">
+<meta property="og:updated_time" content="2017-07-31T17:32:12.491Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="异步同步阻塞非阻塞详解">
 <meta name="twitter:description" content="相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333 首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而">
@@ -151,7 +151,7 @@
         <h1 class="title">异步同步阻塞非阻塞详解</h1>
         <h5 class="subtitle">
             
-                <time datetime="2017-07-31T15:09:30.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2017-07-31T14:39:10.000Z" itemprop="datePublished" class="page-time">
   2017-07-31
 </time>
 
@@ -177,13 +177,13 @@
         </nav>
     </aside>
     
-<article id="post-异步同步阻塞非阻塞"
+<article id="post-async"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
         <h1 class="post-card-title">异步同步阻塞非阻塞详解</h1>
         <div class="post-meta">
-            <time class="post-time" title="2017-07-31 23:09:30" datetime="2017-07-31T15:09:30.000Z"  itemprop="datePublished">2017-07-31</time>
+            <time class="post-time" title="2017-07-31 22:39:10" datetime="2017-07-31T14:39:10.000Z"  itemprop="datePublished">2017-07-31</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/操作系统/">操作系统</a></li></ul>
@@ -231,7 +231,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-07-31T16:57:09.566Z" itemprop="dateUpdated">2017-08-01 00:57:09</time>
+    最后更新时间：<time datetime="2017-07-31T17:32:12.491Z" itemprop="dateUpdated">2017-08-01 01:32:12</time>
 </span><br>
 
 
@@ -252,7 +252,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/同步/">同步</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并行技术/">并行技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步/">异步</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/阻塞/">阻塞</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/非阻塞/">非阻塞</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/同步阻塞/">同步阻塞</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并行技术/">并行技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步非阻塞/">异步非阻塞</a></li></ul>
 
 
             
@@ -262,7 +262,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/31/async/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -272,22 +272,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/31/async/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/31/async/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&via=https://dawnki.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/31/async/&via=https://dawnki.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/31/async/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -382,7 +382,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/31/async/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -392,22 +392,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/31/async/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/31/async/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&via=https://dawnki.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/31/async/&via=https://dawnki.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/31/async/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -418,7 +418,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACwUlEQVR42u3aQW4bMRAEQP//0w6Qq6119wypOEDtyZBkLosClqMefnzE1+ff69XrX69X7yYjJCMfvvDw8PBGU88n+oxPppK8+/UzCf6bkfHw8PCu8dpJPw+abAPPryTziRYODw8P75/yZhvJ82fazQAPDw/vf+ftt5Y2+MDDw8P7Pbz8IT4DzKKEzcaDh4eHd4/XNsB+w98X+3t4eHh4i656eyCgDRqSGGJz4eHh4d3g5dN9/sHftvnzZli+JRS/GPDw8PCO8tpCdh8xtM2wJHp4uTHg4eHhrXmzIjg5dHWqyN7MCg8PD+8Gb18uF0OXuev+FTw8PLwbvDai3RTNz4s1+zaibQAPDw/vKO9sxJAvX1umbxYUDw8P7ywvaVy1pfa+3ZW30IpvCQ8PD+8orw1VT7X8Z58v4hI8PDy8y7y8fbWJFdoGWHt04IczEXh4eHiHePljN48D9iV4Xqa//BsPDw/vMu/sVpGHGnmA20a9eHh4ePd47S3z1HQWW2waYHUYgYeHh1fyNgVxG7C2rbXZoauXXwYeHh7eIV7+CG5v0JbdySLmy/HR7jB4eHh4XcLQN5biIjjvQ802mOHRKzw8PLwFL49H25t9BtcsOC4WGg8PD++NvHbodtvI/3cTK+Ph4eHd4G3K69kxqRsl+JVgAg8PD+/FyG0IOzsIlUzrVDmOh4eH905e+/DNd5v22MEszP3hTBkeHh7eIV57yzxcmBXTUdUfRCpFJIGHh4dX8j7La/NAn006L9y/eRcPDw/vAq/tHM0K3Hw5kughP0+Fh4eHd4+3D0zzAPfUgao8YsbDw8O7x8t/5M/aVzdaZcM9DQ8PD++NvKQqTx7xedssudcPn8fDw8P7Zbwck0xoHw2vSmo8PDy8kjcLI2Y9+nzk2VEGPDw8vNu82cGm2fGCvLW2OaywCizw8PDwnsb/A02HsYbwnG7/AAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwElEQVR42u3aS3KDMBAEUN//0uQEkG79glNPKy9c4onFlKaHzyde1+O6+0+y52fHwsXFnea2lGSfO1Z+1Nsn4uLiHuQ+F5o7xPPj22NExQ4XF/f13LyoPR8AFxf3f3DzK0t7GFxc3Pdw8yvLqoNt79VwcXEnuHlKue/3lnwXFxd3iHuVq72mjJWt26fj4uIe4eYFZcG1Y2IQi4uL+1fcpGDl8cfMwepeDRcXdyk3D0HyADQPSdu+BhcX9zw3Gaa2Q9M2hP3lWbi4uAe57VAk/wgjCV6L8AUXF/cgd6x45SFp2whFzQ8uLu42bnJBGWuHigA0PjwuLu4Z7synUe1IdfBac9f84OLibuO2bczagDW/QuHi4r6B2xaaYhwyFJ3U+QouLu40Nx+W5EOUsReR7I+Li3uSmwxKxwpQUkeLV4CLi3uQ2w5X8rhkrMWq57S4uLiLuFe5kk3bHYrWCBcX9wh3bDjaFrU2Np0f5eLi4s5zk9KTNCdtqRp7Bbi4uCe5bcwx9qnW4l4NFxf3q7hJWRwcxOLi4n4td1nX9TxKwcXF3czNS8/zZxb5sDYPZHFxcc9z21LSXl/mg1RcXNyD3B/iMQsJgyFc/QAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 

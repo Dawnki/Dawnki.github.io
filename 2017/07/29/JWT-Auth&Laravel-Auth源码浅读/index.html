@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="故事发生月黑风高的…..啊呸，扯题了。简单来说前几天在配置JWT-Auth的时候，因为自己建的用户表没有用国际标准的’password’字段，而是自己随便起了个userPassword，导致不是在挖坑就是在挖坑的路上.不得不阅读其源码解决问题。 前置条件不过结构复杂的Laravel，里面运用了许多魔术方法及其核心的Ioc容器，阅读前拿到以下几种工具才好动手:  读一下Laravel作者的From">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-07-29T19:33:57.405Z">
+<meta property="og:updated_time" content="2017-07-31T17:32:08.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JWT-Auth&amp;Laravel-Auth源码浅读">
 <meta name="twitter:description" content="故事发生月黑风高的…..啊呸，扯题了。简单来说前几天在配置JWT-Auth的时候，因为自己建的用户表没有用国际标准的’password’字段，而是自己随便起了个userPassword，导致不是在挖坑就是在挖坑的路上.不得不阅读其源码解决问题。 前置条件不过结构复杂的Laravel，里面运用了许多魔术方法及其核心的Ioc容器，阅读前拿到以下几种工具才好动手:  读一下Laravel作者的From">
@@ -199,12 +199,12 @@
             <p>故事发生月黑风高的…..啊呸，扯题了。简单来说前几天在配置JWT-Auth的时候，因为自己建的用户表没有用国际标准的’password’字段，而是自己随便起了个userPassword，导致不是在挖坑就是在挖坑的路上.不得不阅读其源码解决问题。</p>
 <h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>不过结构复杂的Laravel，里面运用了许多魔术方法及其核心的Ioc容器，阅读前拿到以下几种工具才好动手:</p>
 <ul>
-<li>读一下Laravel作者的<a href="https://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">From Apprentice To Artisan(感谢中文翻译者)</a> ，宛如laravel中的<strong>行动纲领</strong> </li>
+<li>读一下Laravel作者的<a href="https://my.oschina.net/zgldh/blog/389246" target="_blank" rel="external">From Apprentice To Artisan(感谢中文翻译者)</a> ，宛如laravel中的<strong>行动纲领</strong></li>
 <li>Laravel自带helper函数dd(),用于单步调试，运行完立即退出脚本，方便知道某个方法究竟有没有执行或者取值是什么</li>
 <li>phpstorm ，虽然遇到Laravel一片黄，不过能查到追踪到多少代码算多少，O(∩_∩)O哈哈~</li>
 <li>遇到某个类中有依赖注入的，二话不说先找其服务提供者，看看服务提供者的注册方法中将注入的接口(Contract)绑定的是哪个类,为了方便解释，先来个例子~</li>
 </ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</div><div class="line">    <span class="keyword">protected</span> $test;</div><div class="line">    </div><div class="line">    <span class="comment">// 这个Test不是一个接口算我输</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Test $test)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;test=$test;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</div><div class="line">    <span class="keyword">protected</span> $test;</div><div class="line"></div><div class="line">    <span class="comment">// 这个Test不是一个接口算我输</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Test $test)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;test=$test;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>上文注入的Test，用phpstorm的ctrl+b追踪到的肯定是个接口.那么实际传给这个构造方法的实例是什么呢？在这个类附近找找provider字眼的类不会太远(看起来不太靠谱但是却有效,哈哈哈)，或者去/config/app.php里面找找</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//假装我找到了对应的provider</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//关键是找register的内容</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(<span class="string">'Test'</span>,<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</div><div class="line">                <span class="comment">// 假装有个叫做TestImplemet的类实现了上文的Test接口</span></div><div class="line">                <span class="keyword">return</span> <span class="keyword">new</span> TestImplement();</div><div class="line">            &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
@@ -259,7 +259,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-07-29T19:33:57.405Z" itemprop="dateUpdated">2017-07-30 03:33:57</time>
+    最后更新时间：<time datetime="2017-07-31T17:32:08.443Z" itemprop="dateUpdated">2017-08-01 01:32:08</time>
 </span><br>
 
 
@@ -338,7 +338,7 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/2017/07/31/异步同步阻塞非阻塞/" id="post-prev" class="post-nav-link">
+      <a href="/2017/07/31/async/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
         <h4 class="title">异步同步阻塞非阻塞详解</h4>
       </a>
