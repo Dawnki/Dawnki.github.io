@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-31T16:50:28.289Z</updated>
+  <updated>2017-07-31T16:57:09.566Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://dawnki.github.io/2017/07/31/%E5%BC%82%E6%AD%A5%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
     <id>https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/</id>
     <published>2017-07-31T15:09:30.000Z</published>
-    <updated>2017-07-31T16:50:28.289Z</updated>
+    <updated>2017-07-31T16:57:09.566Z</updated>
     
     <content type="html"><![CDATA[<p>相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333</p>
 <p>首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而IO处理很慢，所以就有了等待与不等待的问题，因此就有了以上各个词的出现。</p>
