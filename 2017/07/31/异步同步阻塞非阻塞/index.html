@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>异步同步阻塞非阻塞详解 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="同步,异步,阻塞,非阻塞,并行技术">
+    <meta name="description" content="相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333 首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而">
+<meta name="keywords" content="同步,异步,阻塞,非阻塞,并行技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步同步阻塞非阻塞详解">
+<meta property="og:url" content="https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333 首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E.jpg">
+<meta property="og:image" content="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg">
+<meta property="og:image" content="http://opobbao46.bkt.clouddn.com/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg">
+<meta property="og:updated_time" content="2017-07-31T16:50:28.289Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="异步同步阻塞非阻塞详解">
+<meta name="twitter:description" content="相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333 首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而">
+<meta name="twitter:image" content="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">异步同步阻塞非阻塞详解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">异步同步阻塞非阻塞详解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-31T15:09:30.000Z" itemprop="datePublished" class="page-time">
+  2017-07-31
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/操作系统/">操作系统</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单个解析"><span class="post-toc-number">1.</span> <span class="post-toc-text">单个解析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#组合解析"><span class="post-toc-number">2.</span> <span class="post-toc-text">组合解析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#撒花w-w"><span class="post-toc-number">3.</span> <span class="post-toc-text">撒花w_w</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#感谢"><span class="post-toc-number">4.</span> <span class="post-toc-text">感谢</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-异步同步阻塞非阻塞"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">异步同步阻塞非阻塞详解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-31 23:09:30" datetime="2017-07-31T15:09:30.000Z"  itemprop="datePublished">2017-07-31</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/操作系统/">操作系统</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333</p>
+<p>首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而IO处理很慢，所以就有了等待与不等待的问题，因此就有了以上各个词的出现。</p>
+<h2 id="单个解析"><a href="#单个解析" class="headerlink" title="单个解析"></a>单个解析</h2><p>  1.同步，在调用方层面（上文中的应用程序）上，当应用程序发起同步调用时，这个应用程序脑袋很倔，一心只想把眼前的事做完（获取处理结果才算做完）在做其它的，因此他需要被调方（IO）返回到了处理结果时才会结束</p>
+<p>  2.异步，在调用方层面上，当应用程序发起异步调用时，这个应用程序就很机灵了，当它发起调用后，不需被调方返回处理结果，直接去干别的事，如果被调方（IO）处理完了事情后，通过通知的方式通知它就好</p>
+<p>  3.阻塞，在被调用方层面上，当被调方（IO）接收到调用通知之后，会把调用方（应用程序）挂着，不会跟调用方说一句话，直到自己处理完数据后，把数据复制到内存，然后再把结果返回给应用程序。这就像不解风情的程序猿与测试妹子，妹子告诉程序猿:”你这里有bug！” 然后程序猿一句话也不理妹子，埋头去debug，直到修复了，才告诉妹子说bug修复了/(ㄒoㄒ)/ （注孤生啊！）</p>
+<p>  4.非阻塞，在被调用方层面上，当被调方接受到调用通知之后，会先返回信息告诉调用方:”我知道了，你先去忙别的吧”。注意这里返回的信息与完成处理任务返回的信息时两码事，事情还没做完（处理IO任务）！！所以说这个程序猿就很有情商了，可以可以O(∩_∩)O</p>
+<h2 id="组合解析"><a href="#组合解析" class="headerlink" title="组合解析"></a>组合解析</h2><h3 id="同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿"><a href="#同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿" class="headerlink" title="同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿"></a>同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿</h3><p>  过程：当调用方发起调用时，调用者一直等待处理的结果才结束，而被调者在发生调用后，也不会立即返回，而是处理完一系列流程（如磁盘寻道-&gt;读取数据-&gt;复制数据到内存）时，才返回处理结果给调用者，其间把调用方挂起。</p>
+<p>  例子：<strong>一个等着bug修复完做其他事的妹子去找（调用）注孤生的程序猿，程序猿知道后，一声不吭就debug，直到修复完bug，返回处理结果给妹子，妹子收到结果后，就去做其他事了</strong>。</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E.jpg"></p>
+<hr>
+<h3 id="同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿"><a href="#同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿" class="headerlink" title="同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿"></a>同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿</h3><p>  过程：当调用方发起调用时，调用者需要被调方得到处理结果才结束，而被调者在发生调用后，立即返回信息给调用者，不过还没得到处理内容，当调用者发现得到的不是处理结果，继续发起调用，而被调者依然立即返回，如此反复，直到被调者在过程中处理完信息，然后返回给处理结果给调用者，调用者得到处理结果后，结束调用。</p>
+<p>  例子：<strong>一个很倔的测试妹子去找一个机灵的程序猿，程序猿告诉她先去干别的事，妹子收到信息后，回到自己的座位上，想了想我还要等到那个bug修复完，因此继续找程序猿，程序猿又告诉她回去等，如此反复，程序猿在一边被骚扰一边修复bug直到修复完毕后，把结果告诉妹子，妹子得到结果开心的做其他事了</strong>。</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg"></p>
+<hr>
+<h3 id="异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿"><a href="#异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿" class="headerlink" title="异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿"></a>异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿</h3><p>  过程：当调用者发起调用时，被调者收到调用通知后，把调用者挂起，而自己就去处理数据，直到处理完毕后，把挂起的调用者拉回来，把结果返回给它，然后结束调用。</p>
+<p>  例子：<strong>一个很机灵的妹子，在发现了bug后，本来想先通知（调用）一下程序猿，然后自己就去干别的事，结果在她找到程序猿后，这个不识趣情商低的程序猿，直接不理妹子，让妹子在那儿干等（挂起），直到自己把bug修复完之后，就告诉一直站在那儿的妹子说，bug修复完了，你可以走了（妹子拿到了结果）</strong>。</p>
+<p>  由于太过奇葩，概念图片不予展示2333333</p>
+<hr>
+<h3 id="异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿"><a href="#异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿" class="headerlink" title="异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿"></a>异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿</h3><p>  过程：当调用方发起调用时，被调者收到调用通知后，立即返回给调用者，告诉它可以接到调用通知了，然后调用者去开始其他任务（<strong>注意：调用在这里已经结束了</strong>），而被调用者在完成调用任务得到处理结果后，通过通知的形式告诉调用方。</p>
+<p>  例子：<strong>一个很机灵的妹子，在发现了bug后，找到了机灵的程序猿，说：”帅哥，你这里有bug”，程序猿知道后说：“好的，这里交给我，你先去忙别的吧！”。然后妹子就去忙别的事了，程序猿就开始debug，在修复完bug后，发了封邮件通知测试妹子</strong>。（于是他们两个就在一起了O(∩_∩)O）</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg"></p>
+<h2 id="撒花w-w"><a href="#撒花w-w" class="headerlink" title="撒花w_w"></a>撒花w_w</h2><p>  通过我上面的举例，大家应该知道哪对会修成正果吧？没错就是异步非阻塞，还有同步阻塞。<strong>异步非阻塞合理的利用了cpu的空闲时间，不让干等，大大提高了工作效率，在处理并行中十分常用</strong>。而同步阻塞，虽然这两个都奇葩，但是这两个奇葩在一起也好过剩下更加两对搭配，算是中规中矩吧。所以目前大多的应用要么就采用异步非阻塞，要么就采用同步阻塞，剩下两对因为不太科学，所以少人用～</p>
+<p>  通过这样搞笑的解析，大家应该都明白了吧？不明白的话，多看几次例子以及概念图！！过几天我发一篇关于机智程序猿如何发邮件给测试妹子(被调用者通知调用者)的博客</p>
+<h2 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h2><p>  <a href="http://blog.csdn.net/xxxxxx91116/article/details/51233785" target="_blank" rel="external">概念图来源</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-07-31T16:50:28.289Z" itemprop="dateUpdated">2017-08-01 00:50:28</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/同步/">同步</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并行技术/">并行技术</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异步/">异步</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/阻塞/">阻塞</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/非阻塞/">非阻塞</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/29/JWT-Auth&Laravel-Auth源码浅读/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JWT-Auth&amp;Laravel-Auth源码浅读</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&title=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《异步同步阻塞非阻塞详解》 — Dawnki's Blog&url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACwUlEQVR42u3aQW4bMRAEQP//0w6Qq6119wypOEDtyZBkLosClqMefnzE1+ff69XrX69X7yYjJCMfvvDw8PBGU88n+oxPppK8+/UzCf6bkfHw8PCu8dpJPw+abAPPryTziRYODw8P75/yZhvJ82fazQAPDw/vf+ftt5Y2+MDDw8P7Pbz8IT4DzKKEzcaDh4eHd4/XNsB+w98X+3t4eHh4i656eyCgDRqSGGJz4eHh4d3g5dN9/sHftvnzZli+JRS/GPDw8PCO8tpCdh8xtM2wJHp4uTHg4eHhrXmzIjg5dHWqyN7MCg8PD+8Gb18uF0OXuev+FTw8PLwbvDai3RTNz4s1+zaibQAPDw/vKO9sxJAvX1umbxYUDw8P7ywvaVy1pfa+3ZW30IpvCQ8PD+8orw1VT7X8Z58v4hI8PDy8y7y8fbWJFdoGWHt04IczEXh4eHiHePljN48D9iV4Xqa//BsPDw/vMu/sVpGHGnmA20a9eHh4ePd47S3z1HQWW2waYHUYgYeHh1fyNgVxG7C2rbXZoauXXwYeHh7eIV7+CG5v0JbdySLmy/HR7jB4eHh4XcLQN5biIjjvQ802mOHRKzw8PLwFL49H25t9BtcsOC4WGg8PD++NvHbodtvI/3cTK+Ph4eHd4G3K69kxqRsl+JVgAg8PD+/FyG0IOzsIlUzrVDmOh4eH905e+/DNd5v22MEszP3hTBkeHh7eIV57yzxcmBXTUdUfRCpFJIGHh4dX8j7La/NAn006L9y/eRcPDw/vAq/tHM0K3Hw5kughP0+Fh4eHd4+3D0zzAPfUgao8YsbDw8O7x8t/5M/aVzdaZcM9DQ8PD++NvKQqTx7xedssudcPn8fDw8P7Zbwck0xoHw2vSmo8PDy8kjcLI2Y9+nzk2VEGPDw8vNu82cGm2fGCvLW2OaywCizw8PDwnsb/A02HsYbwnG7/AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

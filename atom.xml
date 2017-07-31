@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-29T19:33:57.405Z</updated>
+  <updated>2017-07-31T16:50:28.289Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>异步同步阻塞非阻塞详解</title>
+    <link href="https://dawnki.github.io/2017/07/31/%E5%BC%82%E6%AD%A5%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
+    <id>https://dawnki.github.io/2017/07/31/异步同步阻塞非阻塞/</id>
+    <published>2017-07-31T15:09:30.000Z</published>
+    <updated>2017-07-31T16:50:28.289Z</updated>
+    
+    <content type="html"><![CDATA[<p>相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333</p>
+<p>首先，这些概念出现的场景发生在应用程序调用系统内核之间。我们知道例如十分耗时的IO操作就是由内核完成的，由于应用程序（cpu）处理的速度十分快，而IO处理很慢，所以就有了等待与不等待的问题，因此就有了以上各个词的出现。</p>
+<h2 id="单个解析"><a href="#单个解析" class="headerlink" title="单个解析"></a>单个解析</h2><p>  1.同步，在调用方层面（上文中的应用程序）上，当应用程序发起同步调用时，这个应用程序脑袋很倔，一心只想把眼前的事做完（获取处理结果才算做完）在做其它的，因此他需要被调方（IO）返回到了处理结果时才会结束</p>
+<p>  2.异步，在调用方层面上，当应用程序发起异步调用时，这个应用程序就很机灵了，当它发起调用后，不需被调方返回处理结果，直接去干别的事，如果被调方（IO）处理完了事情后，通过通知的方式通知它就好</p>
+<p>  3.阻塞，在被调用方层面上，当被调方（IO）接收到调用通知之后，会把调用方（应用程序）挂着，不会跟调用方说一句话，直到自己处理完数据后，把数据复制到内存，然后再把结果返回给应用程序。这就像不解风情的程序猿与测试妹子，妹子告诉程序猿:”你这里有bug！” 然后程序猿一句话也不理妹子，埋头去debug，直到修复了，才告诉妹子说bug修复了/(ㄒoㄒ)/ （注孤生啊！）</p>
+<p>  4.非阻塞，在被调用方层面上，当被调方接受到调用通知之后，会先返回信息告诉调用方:”我知道了，你先去忙别的吧”。注意这里返回的信息与完成处理任务返回的信息时两码事，事情还没做完（处理IO任务）！！所以说这个程序猿就很有情商了，可以可以O(∩_∩)O</p>
+<h2 id="组合解析"><a href="#组合解析" class="headerlink" title="组合解析"></a>组合解析</h2><h3 id="同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿"><a href="#同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿" class="headerlink" title="同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿"></a>同步阻塞：一个很倔的测试妹子与一个注孤生的程序猿</h3><p>  过程：当调用方发起调用时，调用者一直等待处理的结果才结束，而被调者在发生调用后，也不会立即返回，而是处理完一系列流程（如磁盘寻道-&gt;读取数据-&gt;复制数据到内存）时，才返回处理结果给调用者，其间把调用方挂起。</p>
+<p>  例子：<strong>一个等着bug修复完做其他事的妹子去找（调用）注孤生的程序猿，程序猿知道后，一声不吭就debug，直到修复完bug，返回处理结果给妹子，妹子收到结果后，就去做其他事了</strong>。</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E.jpg"></p>
+<hr>
+<h3 id="同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿"><a href="#同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿" class="headerlink" title="同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿"></a>同步非阻塞：一个很倔的测试妹子与一个很机灵的程序猿</h3><p>  过程：当调用方发起调用时，调用者需要被调方得到处理结果才结束，而被调者在发生调用后，立即返回信息给调用者，不过还没得到处理内容，当调用者发现得到的不是处理结果，继续发起调用，而被调者依然立即返回，如此反复，直到被调者在过程中处理完信息，然后返回给处理结果给调用者，调用者得到处理结果后，结束调用。</p>
+<p>  例子：<strong>一个很倔的测试妹子去找一个机灵的程序猿，程序猿告诉她先去干别的事，妹子收到信息后，回到自己的座位上，想了想我还要等到那个bug修复完，因此继续找程序猿，程序猿又告诉她回去等，如此反复，程序猿在一边被骚扰一边修复bug直到修复完毕后，把结果告诉妹子，妹子得到结果开心的做其他事了</strong>。</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/%E5%90%8C%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg"></p>
+<hr>
+<h3 id="异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿"><a href="#异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿" class="headerlink" title="异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿"></a>异步阻塞：一个机灵的测试妹子与一个注孤生的程序猿</h3><p>  过程：当调用者发起调用时，被调者收到调用通知后，把调用者挂起，而自己就去处理数据，直到处理完毕后，把挂起的调用者拉回来，把结果返回给它，然后结束调用。</p>
+<p>  例子：<strong>一个很机灵的妹子，在发现了bug后，本来想先通知（调用）一下程序猿，然后自己就去干别的事，结果在她找到程序猿后，这个不识趣情商低的程序猿，直接不理妹子，让妹子在那儿干等（挂起），直到自己把bug修复完之后，就告诉一直站在那儿的妹子说，bug修复完了，你可以走了（妹子拿到了结果）</strong>。</p>
+<p>  由于太过奇葩，概念图片不予展示2333333</p>
+<hr>
+<h3 id="异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿"><a href="#异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿" class="headerlink" title="异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿"></a>异步非阻塞：一个很机灵的测试妹子与一个很机灵的程序猿</h3><p>  过程：当调用方发起调用时，被调者收到调用通知后，立即返回给调用者，告诉它可以接到调用通知了，然后调用者去开始其他任务（<strong>注意：调用在这里已经结束了</strong>），而被调用者在完成调用任务得到处理结果后，通过通知的形式告诉调用方。</p>
+<p>  例子：<strong>一个很机灵的妹子，在发现了bug后，找到了机灵的程序猿，说：”帅哥，你这里有bug”，程序猿知道后说：“好的，这里交给我，你先去忙别的吧！”。然后妹子就去忙别的事了，程序猿就开始debug，在修复完bug后，发了封邮件通知测试妹子</strong>。（于是他们两个就在一起了O(∩_∩)O）</p>
+<p>  <img src="http://opobbao46.bkt.clouddn.com/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E.jpg"></p>
+<h2 id="撒花w-w"><a href="#撒花w-w" class="headerlink" title="撒花w_w"></a>撒花w_w</h2><p>  通过我上面的举例，大家应该知道哪对会修成正果吧？没错就是异步非阻塞，还有同步阻塞。<strong>异步非阻塞合理的利用了cpu的空闲时间，不让干等，大大提高了工作效率，在处理并行中十分常用</strong>。而同步阻塞，虽然这两个都奇葩，但是这两个奇葩在一起也好过剩下更加两对搭配，算是中规中矩吧。所以目前大多的应用要么就采用异步非阻塞，要么就采用同步阻塞，剩下两对因为不太科学，所以少人用～</p>
+<p>  通过这样搞笑的解析，大家应该都明白了吧？不明白的话，多看几次例子以及概念图！！过几天我发一篇关于机智程序猿如何发邮件给测试妹子(被调用者通知调用者)的博客</p>
+<h2 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h2><p>  <a href="http://blog.csdn.net/xxxxxx91116/article/details/51233785" target="_blank" rel="external">概念图来源</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;相信刚入门计算机科学的小伙伴们来说，这四个词–异步，同步，阻塞，非阻塞，直接搞晕，因为单单理解四个词就算了，他们还能组合，同步阻塞，同步非阻塞，异步阻塞，异步非阻塞+_+。因此今天就主要谈谈这几个词，顺便备个份，怕是我哪一天忘记了回来看看2333333&lt;/p&gt;
+&lt;p&gt;首先，
+    
+    </summary>
+    
+      <category term="操作系统" scheme="https://dawnki.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="同步" scheme="https://dawnki.github.io/tags/%E5%90%8C%E6%AD%A5/"/>
+    
+      <category term="异步" scheme="https://dawnki.github.io/tags/%E5%BC%82%E6%AD%A5/"/>
+    
+      <category term="阻塞" scheme="https://dawnki.github.io/tags/%E9%98%BB%E5%A1%9E/"/>
+    
+      <category term="非阻塞" scheme="https://dawnki.github.io/tags/%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
+    
+      <category term="并行技术" scheme="https://dawnki.github.io/tags/%E5%B9%B6%E8%A1%8C%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>JWT-Auth&amp;Laravel-Auth源码浅读</title>
@@ -297,7 +352,7 @@
 <ul>
 <li>也可以编写shell脚本redis-server,不用输入配置文件路径,随便找个地方放，不要放到src就行,具体如下</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></div><div class="line">`/path/to/redis-xxx/src/redis-server /path/to/redis-xxx/redis.conf`</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/bash</div><div class="line">`/path/to/redis-xxx/src/redis-server /path/to/redis-xxx/redis.conf`</div></pre></td></tr></table></figure>
 <p>  然后加上执行权限</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod +x redis-server  # 此处的redis-server为刚刚编写的脚本</div></pre></td></tr></table></figure>
 <p>  为了方便shell里直接启动，把软连接放到/usr/local/bin里</p>

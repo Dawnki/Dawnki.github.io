@@ -216,7 +216,7 @@
 <ul>
 <li>也可以编写shell脚本redis-server,不用输入配置文件路径,随便找个地方放，不要放到src就行,具体如下</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></div><div class="line">`/path/to/redis-xxx/src/redis-server /path/to/redis-xxx/redis.conf`</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/bin/bash</div><div class="line">`/path/to/redis-xxx/src/redis-server /path/to/redis-xxx/redis.conf`</div></pre></td></tr></table></figure>
 <p>  然后加上执行权限</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod +x redis-server  # 此处的redis-server为刚刚编写的脚本</div></pre></td></tr></table></figure>
 <p>  为了方便shell里直接启动，把软连接放到/usr/local/bin里</p>
