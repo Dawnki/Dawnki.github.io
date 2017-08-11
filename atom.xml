@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-07-31T17:32:12.491Z</updated>
+  <updated>2017-08-11T16:08:15.145Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,155 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mysql锁机制知识整理</title>
+    <link href="https://dawnki.github.io/2017/08/08/%E6%B5%85%E8%B0%88mysql%E9%94%81%E6%9C%BA%E5%88%B6/"/>
+    <id>https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/</id>
+    <published>2017-08-08T08:56:20.000Z</published>
+    <updated>2017-08-11T16:08:15.145Z</updated>
+    
+    <content type="html"><![CDATA[<p>并发处理时我们经常谈到的问题。在数据库操作中，有时候需要考虑并发的问题，比如我们常见的库存管理系统以及银行转账等问题，这些场景都需要用到数据库的锁机制以及事务，不然很容易造成”脏数据”等常见的在并发中遇到的问题。今天浅谈一下mysql锁机制。</p>
+<h2 id="表级锁与行级锁"><a href="#表级锁与行级锁" class="headerlink" title="表级锁与行级锁"></a>表级锁与行级锁</h2><p>Mysql的锁机制大概分为两种，一种是表级锁，一种是行级锁。顾名思义，表级锁就是在进行读写操作时，把涉及到的目标表锁住，阻塞其他连接对相关表的操作。行级锁就是粒度更细了，精确到了表里的某条纪录。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">表级锁</th>
+<th style="text-align:center">行级锁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">开销</td>
+<td style="text-align:center">少</td>
+<td style="text-align:center">大</td>
+</tr>
+<tr>
+<td style="text-align:center">冲突</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">低</td>
+</tr>
+<tr>
+<td style="text-align:center">是否可能死锁</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center">并发度</td>
+<td style="text-align:center">低</td>
+<td style="text-align:center">高</td>
+</tr>
+</tbody>
+</table>
+<p>Mysql中的Innodb引擎支持行级锁以及表级锁，MyIsam只支持表级锁。表级锁中，当一个连接给一个加锁后，只能访问或者修改加锁的表，而不能再访问其他表了，除非解锁，这就破坏了死锁中的占有且等待条件，因而不用担心造成死锁的问题。</p>
+<h2 id="并发问题"><a href="#并发问题" class="headerlink" title="并发问题"></a>并发问题</h2><p>  更新丢失(Lost Update):简单来说就是两个连接(事务)同时对一行进行更新，最后导致了晚一点点更新的会覆盖掉之前更新的。解决办法就是在一个连接进行更改操作时，不允许其他连接访问就可以避免更新丢失的问题。</p>
+<p>  脏读(Dirty Reads):一个事务对一条记录进行修改时(未提交)，此时其他事务对这条记录进行读操作，导致读取的是旧数据，非最新的修改数据，因而数据脏读。</p>
+<p>  不可重复读(Non-Repeatable Reads):一个事务在读取某些数据后的某个时间，再次读取之前读过的数据，但是数据可能已经发生更改，之前读到的数据不一致。</p>
+<p>  幻读(Phantom Reads):一个事务按相同的查询条件重新读取以前检索过的数据，却发现其他事务插入了满足其查询条件的新数据，这种现象就称为“幻读”。</p>
+<h2 id="InnoDB的行锁模式及加锁方法"><a href="#InnoDB的行锁模式及加锁方法" class="headerlink" title="InnoDB的行锁模式及加锁方法"></a>InnoDB的行锁模式及加锁方法</h2><p>  共享锁（S）：允许一个事务去读一行，阻止其他事务获得相同数据集的排他锁。</p>
+<p>  排他锁（X)：允许获得排他锁的事务更新数据，阻止其他事务取得相同数据集的共享读锁和排他写锁。另外，为了允许行锁和表锁共存，实现多粒度锁机制，InnoDB还有两种内部使用的意向锁（Intention Locks），这两种意向锁都是表锁。</p>
+<p>  意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先取得该表的IS锁。</p>
+<p>  意向排他锁（IX）：事务打算给数据行加行排他锁，事务在给一个数据行加排他锁前必须先取得该表的IX锁。</p>
+<p>  InnoDB行锁是通过给索引上的索引项加锁来实现的，这一点MySQL与Oracle不同，后者是通过在数据块中对相应数据行加锁来实现的。InnoDB这种行锁实现特点意味着：只有通过 <strong>索引</strong> 条件检索数据，InnoDB才使用行级锁，否则，InnoDB将使用表锁.</p>
+<h2 id="避免死锁"><a href="#避免死锁" class="headerlink" title="避免死锁"></a>避免死锁</h2><ol>
+<li>如果不同程序会并发存取多个表，尽量约定以相同的顺序访问表，可以大大降低死锁机会。</li>
+<li>在同一个事务中，尽可能做到一次锁定所需要的所有资源，减少死锁产生概率。</li>
+<li>对于非常容易产生死锁的业务部分，可以尝试使用升级锁定颗粒度，通过表级锁定来减少死锁产生的概率。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>  <a href="http://www.2cto.com/database/201508/429967.html" target="_blank" rel="external">Mysql中那些锁机制之InnoDB</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;并发处理时我们经常谈到的问题。在数据库操作中，有时候需要考虑并发的问题，比如我们常见的库存管理系统以及银行转账等问题，这些场景都需要用到数据库的锁机制以及事务，不然很容易造成”脏数据”等常见的在并发中遇到的问题。今天浅谈一下mysql锁机制。&lt;/p&gt;
+&lt;h2 id=&quot;表级锁
+    
+    </summary>
+    
+      <category term="数据库" scheme="https://dawnki.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
+    
+      <category term="并发" scheme="https://dawnki.github.io/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="锁机制" scheme="https://dawnki.github.io/tags/%E9%94%81%E6%9C%BA%E5%88%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SOLID原则</title>
+    <link href="https://dawnki.github.io/2017/08/08/solid/"/>
+    <id>https://dawnki.github.io/2017/08/08/solid/</id>
+    <published>2017-08-08T06:44:49.000Z</published>
+    <updated>2017-08-08T08:49:32.690Z</updated>
+    
+    <content type="html"><![CDATA[<p>SOLID原则其实是由面向对象的五大设计原则组成，也是各种设计模式的基础理论。适当遵守SOLID原则，能写出高内聚，松耦合的代码，便于当需求变动能更快的拓展。废话不多说，下面立即正片。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">原则名称</th>
+<th style="text-align:center">英文原义</th>
+<th>中文含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Single Responsibility Principle</td>
+<td style="text-align:center">A class should have one, and only one, reason to change.</td>
+<td>单一责任原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Open Closed Principle</td>
+<td style="text-align:center">You should be able to extend a classes behavior, without modifying it.</td>
+<td>开放封闭原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Liskov Substitution Principle</td>
+<td style="text-align:center">Derived classes must be substitutable for their base classes.</td>
+<td>里氏替换原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Interface Segregation Principle</td>
+<td style="text-align:center">Make fine grained interfaces that are client specific.</td>
+<td>接口分离原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Dependency Inversion Principle</td>
+<td style="text-align:center">Depend on abstractions, not on concretions.</td>
+<td>依赖倒置原则</td>
+</tr>
+</tbody>
+</table>
+<p>  没错，S.O.L.I.D原则就是这五个原则的首字母简称，从气势来看就觉得很“结实”，下面就简单介绍各个原则的含义。</p>
+<h2 id="单一责任原则"><a href="#单一责任原则" class="headerlink" title="单一责任原则"></a>单一责任原则</h2><p>  当需要修改某个类的时候原因有且只有一个。原义就是这样，简单来说就是一个类只尽自己所责，不瞎掺和其他功能，因此只会因为 <strong>一个功能</strong> 的问题而修改一个类。这样做的好处是一个功能出问题了，调试或者更改时可以完全不会影响到另外有一个功能的执行。</p>
+<h2 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h2><p>  当系统需要增加新功能的时候，我们应该在原基础上进行拓展，而不是从零开始把之前的代码都修改了。其实这个原则在继承中得到体现，比如由抽象的鸟类，下面的蜂鸟，金丝雀等都继承鸟类这个类，当出现新的鸟物种时，应当在由鸟类的基础上进行继承然后在子类进行拓展的，而不是因为新物种的特性而修改父类。总而言之，<strong>对拓展是开放的，对修改是封闭的</strong> 。这样做的好处是完全不用担心影响之前运行良好的代码，放心拓展！</p>
+<h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><p>  用到父类实例的地方，把父类实例替换成子类实例应当时 <strong>无缝替换</strong> ，照样能跑通的。之后的依赖倒置原则会告诉我们具体的东西应该依赖抽象，具体的东西(如客户端，展现层)在使用具体服务时，应当时使用父类实例，然后根据多态来真实用到子类的功能，如果不按里氏替换原则来的话，当客户端用到服务时，还要根据子类的具体情况进行调整，这样子类需要修改时，就要改两处(子类和客户端)，不便修改。因此需要做到用到父类的地方，换成子类照样无缝替换，这样如果功能出问题了，我们第一反应是只要修改子类即可！</p>
+<h2 id="接口分离原则"><a href="#接口分离原则" class="headerlink" title="接口分离原则"></a>接口分离原则</h2><p>  接口分离原则就是当一个类实现了一个接口后，接口里面的方法都是对这个类有用的，不存在方法体为空来实现(强迫实现)。就是说，<strong>一个接口不要太过臃肿，应该粒度更细</strong> ，因为如果接口太过臃肿，可能导致实现类实现了不属于它自己责任的方法从而违反了单一责任原则。</p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>  具体类应该依赖抽象类，高级代码 <strong>应当也依赖抽象类</strong> ，而不是依赖低级代码。首先先来说下，高级代码和低级代码都是具体类，其中低级代码指提供基础实现的代码，比如读写文件类，图片上传类，但是他们是具体，比如这个图片上传类是将图片上传到七牛的。其中高级代码是涉及到业务逻辑的代码，如需要用到图片上传用作头像的业务代码。这样就有个问题了，明显高级代码依赖低级代码嘛，不依赖低级代码似不似傻？但是假如有一天七牛上传图片崩了，你需要换其他图片上传服务，但是由之前高级代码依赖低级代码，所以高级类里面全tm都是低级类的片段，想想改起来就觉得可啪！！因此假如一开就依赖抽象，那样就能利用多态灵活更改了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  遵守好的设计理念，不一定做出好的产品。但是用不好的设计，肯定做不出好东西！</p>
+<p>  <strong>设计模式以及理念这东西，应该是理解本质后灵活使用的，而不是死记硬背，不然死记硬背的东西，到时候实操起来也不会第一时间想到使用！！</strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;SOLID原则其实是由面向对象的五大设计原则组成，也是各种设计模式的基础理论。适当遵守SOLID原则，能写出高内聚，松耦合的代码，便于当需求变动能更快的拓展。废话不多说，下面立即正片。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-ali
+    
+    </summary>
+    
+      <category term="编程规范" scheme="https://dawnki.github.io/categories/%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/"/>
+    
+    
+      <category term="设计模式" scheme="https://dawnki.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+      <category term="SOLID原则" scheme="https://dawnki.github.io/tags/SOLID%E5%8E%9F%E5%88%99/"/>
+    
+  </entry>
   
   <entry>
     <title>异步同步阻塞非阻塞详解</title>
@@ -58,11 +207,11 @@
       <category term="操作系统" scheme="https://dawnki.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="并行技术" scheme="https://dawnki.github.io/tags/%E5%B9%B6%E8%A1%8C%E6%8A%80%E6%9C%AF/"/>
-    
       <category term="同步阻塞" scheme="https://dawnki.github.io/tags/%E5%90%8C%E6%AD%A5%E9%98%BB%E5%A1%9E/"/>
     
       <category term="异步非阻塞" scheme="https://dawnki.github.io/tags/%E5%BC%82%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
+    
+      <category term="并行技术" scheme="https://dawnki.github.io/tags/%E5%B9%B6%E8%A1%8C%E6%8A%80%E6%9C%AF/"/>
     
   </entry>
   

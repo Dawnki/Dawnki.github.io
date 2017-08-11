@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>mysql锁机制知识整理 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="mysql,并发,锁机制">
+    <meta name="description" content="并发处理时我们经常谈到的问题。在数据库操作中，有时候需要考虑并发的问题，比如我们常见的库存管理系统以及银行转账等问题，这些场景都需要用到数据库的锁机制以及事务，不然很容易造成”脏数据”等常见的在并发中遇到的问题。今天浅谈一下mysql锁机制。 表级锁与行级锁Mysql的锁机制大概分为两种，一种是表级锁，一种是行级锁。顾名思义，表级锁就是在进行读写操作时，把涉及到的目标表锁住，阻塞其他连接对相关表的">
+<meta name="keywords" content="mysql,并发,锁机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql锁机制知识整理">
+<meta property="og:url" content="https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="并发处理时我们经常谈到的问题。在数据库操作中，有时候需要考虑并发的问题，比如我们常见的库存管理系统以及银行转账等问题，这些场景都需要用到数据库的锁机制以及事务，不然很容易造成”脏数据”等常见的在并发中遇到的问题。今天浅谈一下mysql锁机制。 表级锁与行级锁Mysql的锁机制大概分为两种，一种是表级锁，一种是行级锁。顾名思义，表级锁就是在进行读写操作时，把涉及到的目标表锁住，阻塞其他连接对相关表的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-11T16:08:15.145Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql锁机制知识整理">
+<meta name="twitter:description" content="并发处理时我们经常谈到的问题。在数据库操作中，有时候需要考虑并发的问题，比如我们常见的库存管理系统以及银行转账等问题，这些场景都需要用到数据库的锁机制以及事务，不然很容易造成”脏数据”等常见的在并发中遇到的问题。今天浅谈一下mysql锁机制。 表级锁与行级锁Mysql的锁机制大概分为两种，一种是表级锁，一种是行级锁。顾名思义，表级锁就是在进行读写操作时，把涉及到的目标表锁住，阻塞其他连接对相关表的">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">mysql锁机制知识整理</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">mysql锁机制知识整理</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-08T08:56:20.000Z" itemprop="datePublished" class="page-time">
+  2017-08-08
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据库/">数据库</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#表级锁与行级锁"><span class="post-toc-number">1.</span> <span class="post-toc-text">表级锁与行级锁</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#并发问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">并发问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#InnoDB的行锁模式及加锁方法"><span class="post-toc-number">3.</span> <span class="post-toc-text">InnoDB的行锁模式及加锁方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#避免死锁"><span class="post-toc-number">4.</span> <span class="post-toc-text">避免死锁</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-浅谈mysql锁机制"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">mysql锁机制知识整理</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-08 16:56:20" datetime="2017-08-08T08:56:20.000Z"  itemprop="datePublished">2017-08-08</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据库/">数据库</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>并发处理时我们经常谈到的问题。在数据库操作中，有时候需要考虑并发的问题，比如我们常见的库存管理系统以及银行转账等问题，这些场景都需要用到数据库的锁机制以及事务，不然很容易造成”脏数据”等常见的在并发中遇到的问题。今天浅谈一下mysql锁机制。</p>
+<h2 id="表级锁与行级锁"><a href="#表级锁与行级锁" class="headerlink" title="表级锁与行级锁"></a>表级锁与行级锁</h2><p>Mysql的锁机制大概分为两种，一种是表级锁，一种是行级锁。顾名思义，表级锁就是在进行读写操作时，把涉及到的目标表锁住，阻塞其他连接对相关表的操作。行级锁就是粒度更细了，精确到了表里的某条纪录。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">表级锁</th>
+<th style="text-align:center">行级锁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">开销</td>
+<td style="text-align:center">少</td>
+<td style="text-align:center">大</td>
+</tr>
+<tr>
+<td style="text-align:center">冲突</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">低</td>
+</tr>
+<tr>
+<td style="text-align:center">是否可能死锁</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center">并发度</td>
+<td style="text-align:center">低</td>
+<td style="text-align:center">高</td>
+</tr>
+</tbody>
+</table>
+<p>Mysql中的Innodb引擎支持行级锁以及表级锁，MyIsam只支持表级锁。表级锁中，当一个连接给一个加锁后，只能访问或者修改加锁的表，而不能再访问其他表了，除非解锁，这就破坏了死锁中的占有且等待条件，因而不用担心造成死锁的问题。</p>
+<h2 id="并发问题"><a href="#并发问题" class="headerlink" title="并发问题"></a>并发问题</h2><p>  更新丢失(Lost Update):简单来说就是两个连接(事务)同时对一行进行更新，最后导致了晚一点点更新的会覆盖掉之前更新的。解决办法就是在一个连接进行更改操作时，不允许其他连接访问就可以避免更新丢失的问题。</p>
+<p>  脏读(Dirty Reads):一个事务对一条记录进行修改时(未提交)，此时其他事务对这条记录进行读操作，导致读取的是旧数据，非最新的修改数据，因而数据脏读。</p>
+<p>  不可重复读(Non-Repeatable Reads):一个事务在读取某些数据后的某个时间，再次读取之前读过的数据，但是数据可能已经发生更改，之前读到的数据不一致。</p>
+<p>  幻读(Phantom Reads):一个事务按相同的查询条件重新读取以前检索过的数据，却发现其他事务插入了满足其查询条件的新数据，这种现象就称为“幻读”。</p>
+<h2 id="InnoDB的行锁模式及加锁方法"><a href="#InnoDB的行锁模式及加锁方法" class="headerlink" title="InnoDB的行锁模式及加锁方法"></a>InnoDB的行锁模式及加锁方法</h2><p>  共享锁（S）：允许一个事务去读一行，阻止其他事务获得相同数据集的排他锁。</p>
+<p>  排他锁（X)：允许获得排他锁的事务更新数据，阻止其他事务取得相同数据集的共享读锁和排他写锁。另外，为了允许行锁和表锁共存，实现多粒度锁机制，InnoDB还有两种内部使用的意向锁（Intention Locks），这两种意向锁都是表锁。</p>
+<p>  意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先取得该表的IS锁。</p>
+<p>  意向排他锁（IX）：事务打算给数据行加行排他锁，事务在给一个数据行加排他锁前必须先取得该表的IX锁。</p>
+<p>  InnoDB行锁是通过给索引上的索引项加锁来实现的，这一点MySQL与Oracle不同，后者是通过在数据块中对相应数据行加锁来实现的。InnoDB这种行锁实现特点意味着：只有通过 <strong>索引</strong> 条件检索数据，InnoDB才使用行级锁，否则，InnoDB将使用表锁.</p>
+<h2 id="避免死锁"><a href="#避免死锁" class="headerlink" title="避免死锁"></a>避免死锁</h2><ol>
+<li>如果不同程序会并发存取多个表，尽量约定以相同的顺序访问表，可以大大降低死锁机会。</li>
+<li>在同一个事务中，尽可能做到一次锁定所需要的所有资源，减少死锁产生概率。</li>
+<li>对于非常容易产生死锁的业务部分，可以尝试使用升级锁定颗粒度，通过表级锁定来减少死锁产生的概率。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>  <a href="http://www.2cto.com/database/201508/429967.html" target="_blank" rel="external">Mysql中那些锁机制之InnoDB</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-11T16:08:15.145Z" itemprop="dateUpdated">2017-08-12 00:08:15</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁机制/">锁机制</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/&title=《mysql锁机制知识整理》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/&title=《mysql锁机制知识整理》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《mysql锁机制知识整理》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/08/solid/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SOLID原则</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/&title=《mysql锁机制知识整理》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/&title=《mysql锁机制知识整理》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《mysql锁机制知识整理》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/08/浅谈mysql锁机制/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMUlEQVR42u3awY6DMAxFUf7/pxlptiPgPifVFPuyqkobcrIwdpzjwNf5e5HPf690tKt/bbhkyJDxWsZ5e/Hp8t9fkWrPkiFDxhwGCYtpKKzhr5bjYc4yZMiQEaaG6V0ZMmTI+ETATYPmfbAmyyRDhgwZK0kbTxx50fvBWlyGDBkvZOxtDOz9/G/9DRkyZHwN4wwvUnDeJ3N8zGBWMmTIaM0gTcT7qaebZbURUDiWIUNGU8Z6yEuL1Vqj9CFZlCFDxhgG3ywjj6wliOmGnQwZMqYx0nC5Eo7ThXhYPhkyZLRmrPyZT503ANIRZMiQMYFBBqqlg7saDGQ+MmTImMDYtX1fSxx5KYs6sTJkyGjHqB0CIwncSjFM7sqQIWMOY73RmAbQNMSjcWTIkDGAwUMbLy/TI2XpcZBgjWXIkNGCwTfd0nyz9kveHkC1uAwZMl7OSI9q8UC83hjgrwQZMmRMYNTSuHRzn6eeJEEM8koZMmS0YOxqGdbukuZl8N6QIUNGOwZJB1eKz3RjjpfTB4/lMmTIaMGoZVwrhzP4cTH0ApAhQ0ZrRi288lAbZ6m4tEZhV4YMGS0Yuzb00wKVbNUFB8VkyJDRmrHreBZJB3njIQXLkCFjAqNWUtYORvAxCVWGDBnTGPw4RW1T7D4FTIN+3ImVIUPGGAZHpqlkbbFkyJAhgz94JVymkw5amDJkyGjH4Glc2rbkBWptG06GDBkTGLsaA+uba/ffrxTAMmTIeC3jB6kwGQasG5jAAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

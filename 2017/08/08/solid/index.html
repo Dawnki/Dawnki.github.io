@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>SOLID原则 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="设计模式,SOLID原则">
+    <meta name="description" content="SOLID原则其实是由面向对象的五大设计原则组成，也是各种设计模式的基础理论。适当遵守SOLID原则，能写出高内聚，松耦合的代码，便于当需求变动能更快的拓展。废话不多说，下面立即正片。    原则名称 英文原义 中文含义     Single Responsibility Principle A class should have one, and only one, reason to chan">
+<meta name="keywords" content="设计模式,SOLID原则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SOLID原则">
+<meta property="og:url" content="https://dawnki.github.io/2017/08/08/solid/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="SOLID原则其实是由面向对象的五大设计原则组成，也是各种设计模式的基础理论。适当遵守SOLID原则，能写出高内聚，松耦合的代码，便于当需求变动能更快的拓展。废话不多说，下面立即正片。    原则名称 英文原义 中文含义     Single Responsibility Principle A class should have one, and only one, reason to chan">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-08T08:49:32.690Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SOLID原则">
+<meta name="twitter:description" content="SOLID原则其实是由面向对象的五大设计原则组成，也是各种设计模式的基础理论。适当遵守SOLID原则，能写出高内聚，松耦合的代码，便于当需求变动能更快的拓展。废话不多说，下面立即正片。    原则名称 英文原义 中文含义     Single Responsibility Principle A class should have one, and only one, reason to chan">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SOLID原则</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SOLID原则</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-08T06:44:49.000Z" itemprop="datePublished" class="page-time">
+  2017-08-08
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程规范/">编程规范</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单一责任原则"><span class="post-toc-number">1.</span> <span class="post-toc-text">单一责任原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#开放封闭原则"><span class="post-toc-number">2.</span> <span class="post-toc-text">开放封闭原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#里氏替换原则"><span class="post-toc-number">3.</span> <span class="post-toc-text">里氏替换原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口分离原则"><span class="post-toc-number">4.</span> <span class="post-toc-text">接口分离原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#依赖倒置原则"><span class="post-toc-number">5.</span> <span class="post-toc-text">依赖倒置原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">6.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-solid"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">SOLID原则</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-08 14:44:49" datetime="2017-08-08T06:44:49.000Z"  itemprop="datePublished">2017-08-08</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程规范/">编程规范</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>SOLID原则其实是由面向对象的五大设计原则组成，也是各种设计模式的基础理论。适当遵守SOLID原则，能写出高内聚，松耦合的代码，便于当需求变动能更快的拓展。废话不多说，下面立即正片。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">原则名称</th>
+<th style="text-align:center">英文原义</th>
+<th>中文含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Single Responsibility Principle</td>
+<td style="text-align:center">A class should have one, and only one, reason to change.</td>
+<td>单一责任原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Open Closed Principle</td>
+<td style="text-align:center">You should be able to extend a classes behavior, without modifying it.</td>
+<td>开放封闭原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Liskov Substitution Principle</td>
+<td style="text-align:center">Derived classes must be substitutable for their base classes.</td>
+<td>里氏替换原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Interface Segregation Principle</td>
+<td style="text-align:center">Make fine grained interfaces that are client specific.</td>
+<td>接口分离原则</td>
+</tr>
+<tr>
+<td style="text-align:center">Dependency Inversion Principle</td>
+<td style="text-align:center">Depend on abstractions, not on concretions.</td>
+<td>依赖倒置原则</td>
+</tr>
+</tbody>
+</table>
+<p>  没错，S.O.L.I.D原则就是这五个原则的首字母简称，从气势来看就觉得很“结实”，下面就简单介绍各个原则的含义。</p>
+<h2 id="单一责任原则"><a href="#单一责任原则" class="headerlink" title="单一责任原则"></a>单一责任原则</h2><p>  当需要修改某个类的时候原因有且只有一个。原义就是这样，简单来说就是一个类只尽自己所责，不瞎掺和其他功能，因此只会因为 <strong>一个功能</strong> 的问题而修改一个类。这样做的好处是一个功能出问题了，调试或者更改时可以完全不会影响到另外有一个功能的执行。</p>
+<h2 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h2><p>  当系统需要增加新功能的时候，我们应该在原基础上进行拓展，而不是从零开始把之前的代码都修改了。其实这个原则在继承中得到体现，比如由抽象的鸟类，下面的蜂鸟，金丝雀等都继承鸟类这个类，当出现新的鸟物种时，应当在由鸟类的基础上进行继承然后在子类进行拓展的，而不是因为新物种的特性而修改父类。总而言之，<strong>对拓展是开放的，对修改是封闭的</strong> 。这样做的好处是完全不用担心影响之前运行良好的代码，放心拓展！</p>
+<h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><p>  用到父类实例的地方，把父类实例替换成子类实例应当时 <strong>无缝替换</strong> ，照样能跑通的。之后的依赖倒置原则会告诉我们具体的东西应该依赖抽象，具体的东西(如客户端，展现层)在使用具体服务时，应当时使用父类实例，然后根据多态来真实用到子类的功能，如果不按里氏替换原则来的话，当客户端用到服务时，还要根据子类的具体情况进行调整，这样子类需要修改时，就要改两处(子类和客户端)，不便修改。因此需要做到用到父类的地方，换成子类照样无缝替换，这样如果功能出问题了，我们第一反应是只要修改子类即可！</p>
+<h2 id="接口分离原则"><a href="#接口分离原则" class="headerlink" title="接口分离原则"></a>接口分离原则</h2><p>  接口分离原则就是当一个类实现了一个接口后，接口里面的方法都是对这个类有用的，不存在方法体为空来实现(强迫实现)。就是说，<strong>一个接口不要太过臃肿，应该粒度更细</strong> ，因为如果接口太过臃肿，可能导致实现类实现了不属于它自己责任的方法从而违反了单一责任原则。</p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>  具体类应该依赖抽象类，高级代码 <strong>应当也依赖抽象类</strong> ，而不是依赖低级代码。首先先来说下，高级代码和低级代码都是具体类，其中低级代码指提供基础实现的代码，比如读写文件类，图片上传类，但是他们是具体，比如这个图片上传类是将图片上传到七牛的。其中高级代码是涉及到业务逻辑的代码，如需要用到图片上传用作头像的业务代码。这样就有个问题了，明显高级代码依赖低级代码嘛，不依赖低级代码似不似傻？但是假如有一天七牛上传图片崩了，你需要换其他图片上传服务，但是由之前高级代码依赖低级代码，所以高级类里面全tm都是低级类的片段，想想改起来就觉得可啪！！因此假如一开就依赖抽象，那样就能利用多态灵活更改了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  遵守好的设计理念，不一定做出好的产品。但是用不好的设计，肯定做不出好东西！</p>
+<p>  <strong>设计模式以及理念这东西，应该是理解本质后灵活使用的，而不是死记硬背，不然死记硬背的东西，到时候实操起来也不会第一时间想到使用！！</strong></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-08T08:49:32.690Z" itemprop="dateUpdated">2017-08-08 16:49:32</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOLID原则/">SOLID原则</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/08/solid/&title=《SOLID原则》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/08/solid/&title=《SOLID原则》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/08/solid/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SOLID原则》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/08/solid/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/08/solid/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/08/浅谈mysql锁机制/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">mysql锁机制知识整理</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/31/async/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">异步同步阻塞非阻塞详解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/08/solid/&title=《SOLID原则》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/08/solid/&title=《SOLID原则》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/08/solid/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SOLID原则》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/08/solid/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/08/solid/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByElEQVR42u3aQYrDMAwF0N7/0hmY1UCp+yW5bgZeViUtznMXwvnS4xFf1+/1fOfv/Vef8zW3Xbi4uGPutbzWlOdfTra3NuDi4p7nrgvNeon1Cvm2o2KHi4t7M+66SPXKFi4u7n/nJoeb9eEp+TtwcXHvw01efpJvk8gjXx8XF/db3Gpg+onPH8x3cXFxi9yreFWDzuoB6M06uLi4R7h5zNHDVWORqMzh4uIe4VbPFb378yfi4uKe4VZDzOrhpreZl8/FxcU9wt314Ly9muOa+S4uLu4m7iRCrS6at2fyVi4uLu4Zbh5nlIcn4ibrtj4PLi5ui5vHnfmrS7UBk2wSFxf3PLda1CYjF9VjzZvYFBcXdyt33uaslr/89QkXF/cO3PmwRa/YJX8QLi7uSW4v1JgfVvINR0MYuLi4W7m9UYlq8LFre7i4uCe5SfxRBeVr5q1cXFzck9zeSFa1YG0YwMLFxT3CnQ9k5CFpHpdsKIK4uLhjbrV49UY3tjVacHFxD3LLOWvrsNJr3EZf4+LifombR59z3MuVcXFxb8zN45UoDM0HMnBxcQ9yqw3XvHFSbdZui0VwcXEH3F2B6aRZ0gtlcHFxP8D9AYO0TdQKynsUAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
