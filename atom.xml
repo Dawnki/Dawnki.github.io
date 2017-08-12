@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-11T16:08:15.145Z</updated>
+  <updated>2017-08-12T03:58:12.722Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux下go1.8安装方法</title>
+    <link href="https://dawnki.github.io/2017/08/12/Linux%E4%B8%8Bgo1-8%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/"/>
+    <id>https://dawnki.github.io/2017/08/12/Linux下go1-8安装方法/</id>
+    <published>2017-08-11T17:23:44.000Z</published>
+    <updated>2017-08-12T03:58:12.722Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前迷上了神奇的Go语言，就在windows上装上了Go1.8，挺顺风顺水的，不过最近换上了Linux时，编译安装就炸了，各种报错。今天就留个记录，备个份！</p>
+<p>编译安装Go1.8的主体思路:</p>
+<ol>
+<li>从<a href="https://github.com/golang/go" target="_blank" rel="external">github</a>中clone下来</li>
+<li>确保linux系统安装较新的libc,gcc(apt,yum随便搞上)</li>
+<li>切换库分支至1.4(刚clone下来的库)，去到src目录，执行all.bash</li>
+<li>把编译安装完的1.4目录cp到/root/，并更名为go1.4</li>
+<li>将刚刚的编译安装的仓库恢复原状(git clean -dfx),在切换到1.8，同样刚刚的操作，执行all.bash,安装1.8</li>
+<li>然后1.8安装完后，配置profile</li>
+</ol>
+<h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>  1.由于Go1.8的安装需要go1.4的二进制，所以，如果没安装go1.4的小伙伴，直接安装1.8估计会这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set $GOROOT_BOOTSTRAP to a working Go tree &gt;= Go 1.4.</div></pre></td></tr></table></figure>
+<p>  这个GOROOT_BOOTSTRAP地址默认在/root/go1.4(~/go1.4)</p>
+<p>  2.用all.bash安装1.4时炸了</p>
+<p>  报错如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># cmd/pprof</div><div class="line">.../go1.4/pkg/linux_amd64/runtime/cgo.a(_all.o): unknown relocation type 42; compiled without -fpic?</div><div class="line">.../go1.4/pkg/linux_amd64/runtime/cgo.a(_all.o): unknown relocation type 42; compiled without -fpic?</div><div class="line">runtime/cgo(.text): unexpected relocation type 298</div><div class="line">runtime/cgo(.text): unexpected relocation type 298</div></pre></td></tr></table></figure>
+<p> <a href="https://stackoverflow.com/questions/37192696/error-building-go-compiler-from-source" target="_blank" rel="external">拿去不用谢我.jpg</a></p>
+<p> 所以解决方案是</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/go1.4/src</div><div class="line"><span class="meta">$</span> CGO_ENABLED=0 ./make.bash</div></pre></td></tr></table></figure>
+<blockquote>
+<p>导致的原因是:CGO_ENABLED: Controls cgo usage during the build. Set it to 1 to include all cgo related files, .c and .go file with “cgo” build directive, in the build. Set it to 0 to ignore them.在构建过程中控制cgo的使用。当设置为1，在构建时，会包含所有cgo相关的文件，如带有”cgo”编译指令的.c和.go文件。当设置为0，则忽略它们（即禁用CGO）</p>
+</blockquote>
+<p>  3.在顺利的安装完1.4后再安装1.8，应该也没问题了，最后设置一下环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /ect/profile</div></pre></td></tr></table></figure>
+<p>在里面加上:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Golang Env</div><div class="line">export PATH=$PATH:/home/xx/go/bin  //xx根据实际情况填写</div><div class="line">export GOPATH=/home/xx/go-projects  //xx根据实际情况填写</div></pre></td></tr></table></figure>
+<p>然后重启电脑，执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go version</div></pre></td></tr></table></figure>
+<p>显示到版本号的话就可以愉快的玩耍了！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然安装的历程有点坎坷，不过看在go编程这么<del>奇葩</del>有趣的份上，忍了吧！O(∩_∩)O哈哈~</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前迷上了神奇的Go语言，就在windows上装上了Go1.8，挺顺风顺水的，不过最近换上了Linux时，编译安装就炸了，各种报错。今天就留个记录，备个份！&lt;/p&gt;
+&lt;p&gt;编译安装Go1.8的主体思路:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;从&lt;a href=&quot;https://gith
+    
+    </summary>
+    
+      <category term="系统部署" scheme="https://dawnki.github.io/categories/%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2/"/>
+    
+    
+      <category term="Go1.8" scheme="https://dawnki.github.io/tags/Go1-8/"/>
+    
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>mysql锁机制知识整理</title>
@@ -525,9 +582,9 @@
     
       <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
     
-      <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
-    
       <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+    
+      <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
     
   </entry>
   
@@ -565,11 +622,11 @@
       <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
     
     
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+    
       <category term="PHP CLI" scheme="https://dawnki.github.io/tags/PHP-CLI/"/>
     
       <category term="Swoole" scheme="https://dawnki.github.io/tags/Swoole/"/>
-    
-      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
     
   </entry>
   
@@ -1194,44 +1251,6 @@
     
     
       <category term="Sublime Text" scheme="https://dawnki.github.io/tags/Sublime-Text/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LNMP坑点系列:&quot;mysql.serviceJob for mysql.service failed because the control process exited with error code.&quot;</title>
-    <link href="https://dawnki.github.io/2017/05/09/mysql-question/"/>
-    <id>https://dawnki.github.io/2017/05/09/mysql-question/</id>
-    <published>2017-05-09T13:02:09.000Z</published>
-    <updated>2017-07-02T03:02:10.109Z</updated>
-    
-    <content type="html"><![CDATA[<p>一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的问题。</p>
-<h2 id="寻找元凶"><a href="#寻找元凶" class="headerlink" title="寻找元凶"></a>寻找元凶</h2><p>经过几番询问后，发现原来舍友为了更改mysql密码动了一下/etc/my.cnf文件.</p>
-<p>锁定/etc/my.cnf文件！！</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/my1.png"></p>
-<p>可以看到这个文件的初始权限是拥有者有读写功能，但同组或者其他人只有读的功能，由于舍友为了修改这个文件，帮这个文件加了所有身份都加了写的功能。</p>
-<p>即：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod go+w /etc/my.cnf</div></pre></td></tr></table></figure></p>
-<p>接着重启就炸了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lnmp restart</div></pre></td></tr></table></figure>
-<p><img src="http://opobbao46.bkt.clouddn.com/my2.png"></p>
-<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>要解决很简单，只将这个文件的权限还原即可(只保留拥有者有写功能)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chmod go-w /etc/my.cnf</div></pre></td></tr></table></figure>
-<p><img src="http://opobbao46.bkt.clouddn.com/my3.png"></p>
-<p>如图修改完之后，大功告成!lnmp能正常重启了!</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个坑告诉我们一定要有做事要有头有尾，文件由于一时特殊需要改了权限的，之后完事后记得改回权限!!</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;一天舍友在lnmp下，动了一下/etc/my.cnf文件之后,重启lnmp是出现了”mysql.serviceJob for mysql.service failed because the control process exited with error code.”的
-    
-    </summary>
-    
-      <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
-    
-    
-      <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
-    
-      <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
     
   </entry>
   
