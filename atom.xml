@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-12T03:58:12.722Z</updated>
+  <updated>2017-08-12T05:59:52.564Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -16,11 +16,75 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>玩转SSH</title>
+    <link href="https://dawnki.github.io/2017/08/12/%E7%8E%A9%E8%BD%ACSSH/"/>
+    <id>https://dawnki.github.io/2017/08/12/玩转SSH/</id>
+    <published>2017-08-12T04:30:03.000Z</published>
+    <updated>2017-08-12T05:59:52.564Z</updated>
+    
+    <content type="html"><![CDATA[<p>我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？</p>
+<p>  <strong>答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置</strong></p>
+<h2 id="主体思路"><a href="#主体思路" class="headerlink" title="主体思路"></a>主体思路</h2><ol>
+<li>登录方先生成SSH密钥和公钥</li>
+<li>将公钥内容添加到被被登录方的authorized_keys中</li>
+<li>先登录一波，记录下。此时以后登录就能免密码了</li>
+<li>修改bashrc，自定义自己的 <del>骚操作</del> 命令，简化命令</li>
+</ol>
+<h2 id="开工"><a href="#开工" class="headerlink" title="开工"></a>开工</h2><h3 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h3><p>老套路</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+<p>三个回车，ssh公钥私钥就搞到手了。</p>
+<p>此时，公私钥存放的位置时用户目录的.ssh文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div></pre></td></tr></table></figure>
+<p>私钥存着不管，把公钥内容拿了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cat id_rsa.pub</div></pre></td></tr></table></figure>
+<h3 id="设置被登录服务器的授权key"><a href="#设置被登录服务器的授权key" class="headerlink" title="设置被登录服务器的授权key"></a>设置被登录服务器的授权key</h3><p>登录服务器，并且找到</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div><div class="line"><span class="meta">$</span> vim authorized_keys</div></pre></td></tr></table></figure>
+<p>此时将你的ssh公钥添加到授权key文件中</p>
+<p>然后回到本机，先ssh登录一波机器，然后之后就能免密码登录了。</p>
+<blockquote>
+<p>也可以用scp直接传公钥到服务器,具体命令 scp ~/.ssh/id_rsa.pub server_user_name@server_ip:server_targer_path ,具体内容根据自己实际情况填写</p>
+</blockquote>
+<h3 id="设置命令别名，简化命令"><a href="#设置命令别名，简化命令" class="headerlink" title="设置命令别名，简化命令"></a>设置命令别名，简化命令</h3><p>设置命令别名(alias)，能够有效减少命令的长度，提高工作效率</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vim ~/.bashrc</div></pre></td></tr></table></figure>
+<p>在里面找个空白位置添加上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> My aliases</div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span> eg  alias dawnki='ssh root@123.123.123.123'</div></pre></td></tr></table></figure>
+<p>然后保存并退出，执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source .bashrc</div></pre></td></tr></table></figure>
+<p>接下来你就可以用到别名命令了</p>
+<p>就上面那个例子，免登陆+别名，我直接打短命令就能直接ssh登录到服务器了，大大提高工作效率</p>
+<p>如果你想要原始命令只需在命令前加反斜杠</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\ls</div></pre></td></tr></table></figure>
+<blockquote>
+<p>若要每次登入就自动生效别名，则把别名加在/etc/profile或~/.bashrc中。然后# source ~/.bashrc。若要让每一位用户都生效别名，则把别名加在/etc/bashrc最后面，然后# source /etc/bashrc。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  还有其他短命令就自己自定义吧！！不过 <strong>刚入门linux</strong> 的小伙伴还是先熟悉命令在偷懒，不然连原始命令都忘了( ⊙ o ⊙ )啊！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshe
+    
+    </summary>
+    
+      <category term="系统部署" scheme="https://dawnki.github.io/categories/%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2/"/>
+    
+    
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+    
+      <category term="SSH" scheme="https://dawnki.github.io/tags/SSH/"/>
+    
+      <category term="Bash" scheme="https://dawnki.github.io/tags/Bash/"/>
+    
+      <category term="alias" scheme="https://dawnki.github.io/tags/alias/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Linux下go1.8安装方法</title>
     <link href="https://dawnki.github.io/2017/08/12/Linux%E4%B8%8Bgo1-8%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/"/>
     <id>https://dawnki.github.io/2017/08/12/Linux下go1-8安装方法/</id>
     <published>2017-08-11T17:23:44.000Z</published>
-    <updated>2017-08-12T03:58:12.722Z</updated>
+    <updated>2017-08-12T04:28:53.503Z</updated>
     
     <content type="html"><![CDATA[<p>之前迷上了神奇的Go语言，就在windows上装上了Go1.8，挺顺风顺水的，不过最近换上了Linux时，编译安装就炸了，各种报错。今天就留个记录，备个份！</p>
 <p>编译安装Go1.8的主体思路:</p>
@@ -52,6 +116,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go version</div></pre></td></tr></table></figure>
 <p>显示到版本号的话就可以愉快的玩耍了！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然安装的历程有点坎坷，不过看在go编程这么<del>奇葩</del>有趣的份上，忍了吧！O(∩_∩)O哈哈~</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/northbright/Notes/blob/master/Golang/china/install-go1.6-from-source-on-centos7-in-china.md" target="_blank" rel="external">中国网络环境下源码编译安装Go1.6</a></p>
 ]]></content>
     
     <summary type="html">
@@ -1202,55 +1267,6 @@
       <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
     
       <category term="异步消息队列" scheme="https://dawnki.github.io/tags/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Sublime Text 安装Package Controller</title>
-    <link href="https://dawnki.github.io/2017/05/10/sublimetextPC/"/>
-    <id>https://dawnki.github.io/2017/05/10/sublimetextPC/</id>
-    <published>2017-05-10T00:38:46.000Z</published>
-    <updated>2017-05-10T02:04:05.824Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先安装Package Controller 才能通过Package Controller来安装插件，下面就介绍如何安装Package Controller.</p>
-<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>安装方法分为简单安装和手动安装,自行选择即可.</p>
-<h3 id="简单的安装方法"><a href="#简单的安装方法" class="headerlink" title="简单的安装方法"></a>简单的安装方法</h3><p>使用Ctrl+`快捷键或者通过View-&gt;Show Console菜单打开命令行，粘贴如下代码：</p>
-<p>Sublime Text 3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib.request,os; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), &apos;wb&apos;).write(urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;,&apos;%20&apos;)).read())</div></pre></td></tr></table></figure>
-<p>如果顺利的话，此时就可以在Preferences菜单下看到Package Settings和Package Control两个菜单了。</p>
-<p>Sublime Text 2 的如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib2,os; pf=&apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), &apos;wb&apos; ).write( urllib2.urlopen( &apos;http://sublime.wbond.net/&apos; +pf.replace( &apos; &apos;,&apos;%20&apos; )).read()); print( &apos;Please restart Sublime Text to finish installation&apos;)</div></pre></td></tr></table></figure>
-<h3 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h3><p>可能由于各种原因，无法使用代码安装，那可以通过以下步骤手动安装Package Control：</p>
-<ol>
-<li><p>点击Preferences &gt; Browse Packages菜单</p>
-</li>
-<li><p>进入打开的目录的上层目录，然后再进入Installed Packages/目录</p>
-</li>
-<li><p>下载Package Control.sublime-package并复制到Installed Packages/目录</p>
-</li>
-<li><p>重启Sublime Text。</p>
-</li>
-</ol>
-<h2 id="如何使用Package-Controller-安装插件"><a href="#如何使用Package-Controller-安装插件" class="headerlink" title="如何使用Package Controller 安装插件"></a>如何使用Package Controller 安装插件</h2><ol>
-<li>快捷键ctrl+shift+P，或者直接在Preferences &gt; Package Controller 来打开</li>
-<li>在输入框中输入 install package 按回车</li>
-<li>在新弹出的框中输入你要安装的插件即可</li>
-</ol>
-<p>效果如下图:</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/sb1.png"></p>
-<p><img src="http://opobbao46.bkt.clouddn.com/sb2.png"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;众所周知，sublime是一款很好用的文本编辑器，其好用之处在于其背后强大的插件功能，但是刚安装的sublime是不能直接安装插件的，需要先
-    
-    </summary>
-    
-      <category term="文本编辑器" scheme="https://dawnki.github.io/categories/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/"/>
-    
-    
-      <category term="Sublime Text" scheme="https://dawnki.github.io/tags/Sublime-Text/"/>
     
   </entry>
   

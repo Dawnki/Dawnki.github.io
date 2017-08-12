@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>玩转SSH | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Linux,SSH,Bash,alias">
+    <meta name="description" content="我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？   答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置">
+<meta name="keywords" content="Linux,SSH,Bash,alias">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玩转SSH">
+<meta property="og:url" content="https://dawnki.github.io/2017/08/12/玩转SSH/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？   答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-12T05:59:52.564Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="玩转SSH">
+<meta name="twitter:description" content="我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？   答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">玩转SSH</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">玩转SSH</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-12T04:30:03.000Z" itemprop="datePublished" class="page-time">
+  2017-08-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/系统部署/">系统部署</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#主体思路"><span class="post-toc-number">1.</span> <span class="post-toc-text">主体思路</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#开工"><span class="post-toc-number">2.</span> <span class="post-toc-text">开工</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成密钥"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">生成密钥</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#设置被登录服务器的授权key"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">设置被登录服务器的授权key</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#设置命令别名，简化命令"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">设置命令别名，简化命令</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-玩转SSH"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">玩转SSH</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-12 12:30:03" datetime="2017-08-12T04:30:03.000Z"  itemprop="datePublished">2017-08-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/系统部署/">系统部署</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？</p>
+<p>  <strong>答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置</strong></p>
+<h2 id="主体思路"><a href="#主体思路" class="headerlink" title="主体思路"></a>主体思路</h2><ol>
+<li>登录方先生成SSH密钥和公钥</li>
+<li>将公钥内容添加到被被登录方的authorized_keys中</li>
+<li>先登录一波，记录下。此时以后登录就能免密码了</li>
+<li>修改bashrc，自定义自己的 <del>骚操作</del> 命令，简化命令</li>
+</ol>
+<h2 id="开工"><a href="#开工" class="headerlink" title="开工"></a>开工</h2><h3 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h3><p>老套路</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+<p>三个回车，ssh公钥私钥就搞到手了。</p>
+<p>此时，公私钥存放的位置时用户目录的.ssh文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div></pre></td></tr></table></figure>
+<p>私钥存着不管，把公钥内容拿了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cat id_rsa.pub</div></pre></td></tr></table></figure>
+<h3 id="设置被登录服务器的授权key"><a href="#设置被登录服务器的授权key" class="headerlink" title="设置被登录服务器的授权key"></a>设置被登录服务器的授权key</h3><p>登录服务器，并且找到</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div><div class="line"><span class="meta">$</span> vim authorized_keys</div></pre></td></tr></table></figure>
+<p>此时将你的ssh公钥添加到授权key文件中</p>
+<p>然后回到本机，先ssh登录一波机器，然后之后就能免密码登录了。</p>
+<blockquote>
+<p>也可以用scp直接传公钥到服务器,具体命令 scp ~/.ssh/id_rsa.pub server_user_name@server_ip:server_targer_path ,具体内容根据自己实际情况填写</p>
+</blockquote>
+<h3 id="设置命令别名，简化命令"><a href="#设置命令别名，简化命令" class="headerlink" title="设置命令别名，简化命令"></a>设置命令别名，简化命令</h3><p>设置命令别名(alias)，能够有效减少命令的长度，提高工作效率</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vim ~/.bashrc</div></pre></td></tr></table></figure>
+<p>在里面找个空白位置添加上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> My aliases</div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span> eg  alias dawnki='ssh root@123.123.123.123'</div></pre></td></tr></table></figure>
+<p>然后保存并退出，执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source .bashrc</div></pre></td></tr></table></figure>
+<p>接下来你就可以用到别名命令了</p>
+<p>就上面那个例子，免登陆+别名，我直接打短命令就能直接ssh登录到服务器了，大大提高工作效率</p>
+<p>如果你想要原始命令只需在命令前加反斜杠</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\ls</div></pre></td></tr></table></figure>
+<blockquote>
+<p>若要每次登入就自动生效别名，则把别名加在/etc/profile或~/.bashrc中。然后# source ~/.bashrc。若要让每一位用户都生效别名，则把别名加在/etc/bashrc最后面，然后# source /etc/bashrc。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  还有其他短命令就自己自定义吧！！不过 <strong>刚入门linux</strong> 的小伙伴还是先熟悉命令在偷懒，不然连原始命令都忘了( ⊙ o ⊙ )啊！</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-12T05:59:52.564Z" itemprop="dateUpdated">2017-08-12 13:59:52</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bash/">Bash</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSH/">SSH</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/alias/">alias</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/12/玩转SSH/&title=《玩转SSH》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/12/玩转SSH/&title=《玩转SSH》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/12/玩转SSH/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《玩转SSH》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/12/玩转SSH/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/12/玩转SSH/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/12/Linux下go1-8安装方法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Linux下go1.8安装方法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/12/玩转SSH/&title=《玩转SSH》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/12/玩转SSH/&title=《玩转SSH》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/12/玩转SSH/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《玩转SSH》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/12/玩转SSH/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/12/玩转SSH/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3a0ZLCIAwF0P7/T3dfd2et3hB0LByeOnUEjg+RkBxHPM5f4/+b5P3VbFffPd4xMDAwbss4n45kc8nC+czJpw9WxMDA2IBxtXD+nAfNZIZ8bxgYGBj9rVcPghgYGBh9RmcTZzwwMDAwxpLYzqXYc/ZHc3EMDIwbMvJNfP75LfUNDAyMWzHO4ugnt/llXGFXGBgYSzPGCpDVdDffXGs/GBgYSzM+0ySRbKXTzIGBgbEqo7pwfxNzn/+ccDEwMBZlVC/XOmXOsXax1j8GBgbGEoz8SDdWXMzfVNNXDAyMfRhj+eCsZotqI0X5cg0DA2NRRp58jrV5dUqb04IvBgbGrRj5knnKWk1Hx5LkqGcEAwNjUcbY8S5pg8jZedPGMbemgYGB8cWM6tarJYG5RdAHbzAwMDZjVEuSeTie1UZ2eTTEwMBYlJEv8DxcVhPdDgYDA2NPRhLOquG1c0xM/gYuZ8PAwFiUcRZHnoJWi5djRQIMDIzdGK1rr0ZRYawh4/KEi4GBsShjVkNYHsrHgv6LgIuBgbE0o9PuMBZ2828VsnAMDIzlGO9IX5PwWg3TL34sDAyMpRmdYNdJO5N58kMqBgbGDoxq0phfzFWDb7VFDAMDYzdGXjKsHvuqIXgQiYGBgTFU4Oxc0iWh/MhvBzEwMDZjVK/Mqj9KktZOCLgYGBg3ZOTFgDzJzA9/nQYODAyMHRh56tg5OFapSZDFwMDYgPEDiwVqmC3L3fYAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

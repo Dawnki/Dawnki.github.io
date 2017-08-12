@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="之前迷上了神奇的Go语言，就在windows上装上了Go1.8，挺顺风顺水的，不过最近换上了Linux时，编译安装就炸了，各种报错。今天就留个记录，备个份！ 编译安装Go1.8的主体思路:  从github中clone下来 确保linux系统安装较新的libc,gcc(apt,yum随便搞上) 切换库分支至1.4(刚clone下来的库)，去到src目录，执行all.bash 把编译安装完的1.4目">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-12T03:58:12.722Z">
+<meta property="og:updated_time" content="2017-08-12T04:28:53.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下go1.8安装方法">
 <meta name="twitter:description" content="之前迷上了神奇的Go语言，就在windows上装上了Go1.8，挺顺风顺水的，不过最近换上了Linux时，编译安装就炸了，各种报错。今天就留个记录，备个份！ 编译安装Go1.8的主体思路:  从github中clone下来 确保linux系统安装较新的libc,gcc(apt,yum随便搞上) 切换库分支至1.4(刚clone下来的库)，去到src目录，执行all.bash 把编译安装完的1.4目">
@@ -169,7 +169,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#坑点"><span class="post-toc-number">1.</span> <span class="post-toc-text">坑点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">2.</span> <span class="post-toc-text">总结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#坑点"><span class="post-toc-number">1.</span> <span class="post-toc-text">坑点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">2.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">3.</span> <span class="post-toc-text">参考</span></a></li></ol>
         </nav>
     </aside>
     
@@ -226,6 +226,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go version</div></pre></td></tr></table></figure>
 <p>显示到版本号的话就可以愉快的玩耍了！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然安装的历程有点坎坷，不过看在go编程这么<del>奇葩</del>有趣的份上，忍了吧！O(∩_∩)O哈哈~</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/northbright/Notes/blob/master/Golang/china/install-go1.6-from-source-on-centos7-in-china.md" target="_blank" rel="external">中国网络环境下源码编译安装Go1.6</a></p>
 
         </div>
 
@@ -233,7 +234,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-08-12T03:58:12.722Z" itemprop="dateUpdated">2017-08-12 11:58:12</time>
+    最后更新时间：<time datetime="2017-08-12T04:28:53.503Z" itemprop="dateUpdated">2017-08-12 12:28:53</time>
 </span><br>
 
 
@@ -309,7 +310,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/12/玩转SSH/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">玩转SSH</h4>
+      </a>
+    </div>
   
 
   
