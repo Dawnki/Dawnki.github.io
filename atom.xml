@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-12T05:59:52.564Z</updated>
+  <updated>2017-08-24T08:54:58.518Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,57 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>浅析IO模型</title>
+    <link href="https://dawnki.github.io/2017/08/12/%E6%B5%85%E6%9E%90IO%E6%A8%A1%E5%9E%8B/"/>
+    <id>https://dawnki.github.io/2017/08/12/浅析IO模型/</id>
+    <published>2017-08-12T06:13:15.000Z</published>
+    <updated>2017-08-24T08:54:58.518Z</updated>
+    
+    <content type="html"><![CDATA[<p>在之前的同步异步文章中埋了个坑，今天就来填一下吧。当CPU发起IO调用，需要读取文件里的东西时，由于IO处理的速度没有CPU那么快，因此，通常都是CPU在等待IO处理完毕返回数据。当IO处理中到CPU拿到文件数据，这里存在几种IO模型，分别是read，select，poll，epoll，kqueue。在此先说一下fd，系统在读写文件的时候，需要文件描述符(file descriptor简称fd)，当调用系统内核来进行文件操作时，内核会返回一个文件描述符，若要知道IO是否处理完毕，只需查看fd中的事件状态即可，即程序调用内核时就是查看这个状态，来判断是否完成操作的。下面就简单介绍下这几种IO模型。</p>
+<h2 id="read"><a href="#read" class="headerlink" title="read"></a>read</h2><p>这是原始的轮询模式，当CPU发起IO调用时，处于等待状态，然后IO就去处理，然后就重复的检查fd的事件状态，当事件状态为处理完毕后，读出完整数据。这种做法比较原始以及性能较差。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>select是在read上的改进，有一个数组负责存着一堆文件描述符，然后遍历数组中的文件描述符来检查当中的事件状态，当某个文件已经处理完毕之后，就进行一次read操作来读取完整数据，然后交给应用。</p>
+<p>select的缺点有两个。①是存放文件描述符的数组大小有限，一个进程处理的文件描述符(fd)数有限(cat /proc/sys/fs/file-max).32位机默认是1024个。64位机默认是2048.②随着fd的增多，会造成性能线性下降的问题(主因线性遍历)。</p>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p>poll则是在select的基础上进行改良，采用链表的数据结构来存储文件描述符，以解决select的数组大小限制问题。但是还是需要线性遍历，因此select的第二个缺点还是无法避免。</p>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>epoll只能在Linux使用。epoll是目前性能强劲的io复用模型，epoll的原理是每当操作文件时，都有一个回调函数与fd相对应，当io操作完毕后，就会调用这个回调函数来通知应用获取数据。</p>
+<p>epoll中由三个函数，分别是epoll_create,epoll_ctl,epoll_wait。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/epoll.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event * events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</div></pre></td></tr></table></figure>
+<p>epoll_create用于创建epoll句柄，然后epoll来监听管理一定量的文件描述符。当然这个句柄本身就占一个fd。</p>
+<p>epoll_ctl用于控制管理一个epoll句柄下面N个的fd，比如可以对一个epoll句柄下的某个fd进行增删该事件监听，这里监听的事件指的是epoll观察指定fd的状态，比如某个fd需要读写数据等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">struct epoll_event</div><div class="line">&#123;  </div><div class="line">    __uint32_t events;   </div><div class="line">    epoll_data_t data;  </div><div class="line">&#125;;</div><div class="line"></div><div class="line">typedef union epoll_data</div><div class="line">&#123;  </div><div class="line">    void *ptr;  </div><div class="line">    int fd;  </div><div class="line">    __uint32_t u32;  </div><div class="line">    __uint64_t u64;  </div><div class="line">&#125; epoll_data_t;</div></pre></td></tr></table></figure>
+<p>epoll_wait,根据触发方式(水平触发或者边缘触发)，来收集刚刚epoll_ctl中已注册并且触发的事件(就绪链表)，比如收集了fd为2,3的已经触发的事件，然后把这些事件赋值给一个数组(参数二中的events数组)，如果没有超时(timeout)，epoll_wait就会返回 <strong>触发事件的数目</strong> ,然后去指定事件数组里拿相应数目的文件描述符(epoll_event储存了许多信息，里面的data就包含文件描述符)即可，这样就可以达到不复制文件描述符省去巨大的开销。<strong>同时也epoll只需拿到触发事件的文件描述符及其结果，而不像select和poll一样把不活跃的fd都一同获取了。</strong></p>
+<p>虽然说epoll_wait也是像select和poll一样需要轮询，不过它是设备就绪时，调用回调函数，把就绪fd放入就绪链表中，并唤醒在epoll_wait中进入睡眠的进程。虽然都要睡眠和交替，但是select和poll在“醒着”的时候要遍历整个fd集合，而epoll在“醒着”的时候只要判断一下就绪链表是否为空。<strong>另外epoll使用了mmap(内存映射技术)，加速与内核与用户空间的消息传递，避免不必要的内存拷贝。</strong></p>
+<h2 id="kqueue"><a href="#kqueue" class="headerlink" title="kqueue"></a>kqueue</h2><p>kqueue与epoll一样都是基于事件的方式来处理IO复用的问题，只是kqueue是应用在BSD系统上，在此就不在赘述。</p>
+<h2 id="水平触发-amp-边缘触发"><a href="#水平触发-amp-边缘触发" class="headerlink" title="水平触发 &amp; 边缘触发"></a>水平触发 &amp; 边缘触发</h2><p>LT：水平触发，支持阻塞和非阻塞io，效率会低于ET触发，尤其在大并发，大流量的情况下。但是LT对代码编写要求比较低，不容易出现问题。LT模式服务编写上的表现是：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，<strong>会再次响应应用程序并通知此事件</strong>。select和poll只支持水平触发。</p>
+<p>ET：边缘触发，仅支持非阻塞io，<strong>效率非常高</strong>，在并发，大流量的情况下，<strong>会比LT少很多epoll的系统调用</strong>，当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。epoll支持边缘触发。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>read属于原始的IO模型，而select，poll，epoll，kqueue都是属于IO复用模型，可以管理一定量的文件描述符。epoll基于事件的处理方式在处理大量的连接时仍保持这不错的性能，有效的提高了IO效率。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/yusiguyuan/article/details/15027821" target="_blank" rel="external">http://blog.csdn.net/yusiguyuan/article/details/15027821</a></p>
+<p><a href="http://blog.csdn.net/xiajun07061225/article/details/9250579" target="_blank" rel="external">http://blog.csdn.net/xiajun07061225/article/details/9250579</a></p>
+<p><a href="http://www.hulkdev.com/posts/epoll-io" target="_blank" rel="external">http://www.hulkdev.com/posts/epoll-io</a></p>
+<p><a href="http://blog.csdn.net/jay900323/article/details/18141217/" target="_blank" rel="external">http://blog.csdn.net/jay900323/article/details/18141217/</a></p>
+<p><a href="http://blog.csdn.net/tianmohust/article/details/6677985/" target="_blank" rel="external">http://blog.csdn.net/tianmohust/article/details/6677985/</a></p>
+<p><a href="http://www.cnblogs.com/Anker/p/3263780.html" target="_blank" rel="external">http://www.cnblogs.com/Anker/p/3263780.html</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在之前的同步异步文章中埋了个坑，今天就来填一下吧。当CPU发起IO调用，需要读取文件里的东西时，由于IO处理的速度没有CPU那么快，因此，通常都是CPU在等待IO处理完毕返回数据。当IO处理中到CPU拿到文件数据，这里存在几种IO模型，分别是read，select，poll
+    
+    </summary>
+    
+      <category term="操作系统" scheme="https://dawnki.github.io/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="IO复用" scheme="https://dawnki.github.io/tags/IO%E5%A4%8D%E7%94%A8/"/>
+    
+      <category term="轮询" scheme="https://dawnki.github.io/tags/%E8%BD%AE%E8%AF%A2/"/>
+    
+      <category term="非阻塞" scheme="https://dawnki.github.io/tags/%E9%9D%9E%E9%98%BB%E5%A1%9E/"/>
+    
+      <category term="epoll" scheme="https://dawnki.github.io/tags/epoll/"/>
+    
+  </entry>
   
   <entry>
     <title>玩转SSH</title>
@@ -31,23 +82,23 @@
 <li>修改bashrc，自定义自己的 <del>骚操作</del> 命令，简化命令</li>
 </ol>
 <h2 id="开工"><a href="#开工" class="headerlink" title="开工"></a>开工</h2><h3 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h3><p>老套路</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa</span></div></pre></td></tr></table></figure>
 <p>三个回车，ssh公钥私钥就搞到手了。</p>
 <p>此时，公私钥存放的位置时用户目录的.ssh文件夹</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></div></pre></td></tr></table></figure>
 <p>私钥存着不管，把公钥内容拿了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cat id_rsa.pub</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> cat id_rsa.pub</span></div></pre></td></tr></table></figure>
 <h3 id="设置被登录服务器的授权key"><a href="#设置被登录服务器的授权key" class="headerlink" title="设置被登录服务器的授权key"></a>设置被登录服务器的授权key</h3><p>登录服务器，并且找到</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div><div class="line"><span class="meta">$</span> vim authorized_keys</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></div><div class="line"><span class="meta">$</span><span class="bash"> vim authorized_keys</span></div></pre></td></tr></table></figure>
 <p>此时将你的ssh公钥添加到授权key文件中</p>
 <p>然后回到本机，先ssh登录一波机器，然后之后就能免密码登录了。</p>
 <blockquote>
 <p>也可以用scp直接传公钥到服务器,具体命令 scp ~/.ssh/id_rsa.pub server_user_name@server_ip:server_targer_path ,具体内容根据自己实际情况填写</p>
 </blockquote>
 <h3 id="设置命令别名，简化命令"><a href="#设置命令别名，简化命令" class="headerlink" title="设置命令别名，简化命令"></a>设置命令别名，简化命令</h3><p>设置命令别名(alias)，能够有效减少命令的长度，提高工作效率</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vim ~/.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> vim ~/.bashrc</span></div></pre></td></tr></table></figure>
 <p>在里面找个空白位置添加上</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> My aliases</div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span> eg  alias dawnki='ssh root@123.123.123.123'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> My aliases</span></div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span><span class="bash"> eg  <span class="built_in">alias</span> dawnki=<span class="string">'ssh root@123.123.123.123'</span></span></div></pre></td></tr></table></figure>
 <p>然后保存并退出，执行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source .bashrc</div></pre></td></tr></table></figure>
 <p>接下来你就可以用到别名命令了</p>
@@ -1149,124 +1200,6 @@
       <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
     
       <category term="ubunut" scheme="https://dawnki.github.io/tags/ubunut/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Laravel5.2消息队列实践</title>
-    <link href="https://dawnki.github.io/2017/05/10/laravel-job/"/>
-    <id>https://dawnki.github.io/2017/05/10/laravel-job/</id>
-    <published>2017-05-10T03:21:41.000Z</published>
-    <updated>2017-05-13T07:04:37.958Z</updated>
-    
-    <content type="html"><![CDATA[<p>在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。</p>
-<h2 id="使用情景"><a href="#使用情景" class="headerlink" title="使用情景"></a>使用情景</h2><p>举几个使用到消息队列的栗子</p>
-<ul>
-<li>在处理商城的库存问题，简单的实现是当用户的某件商品下单了，库存就相对应减少，但是当并发量一大时，比如A,B两个顾客同时下单，如果不使用队列可能会造成库存错误，使用队列了保证不同时执行两个减库存操作(一个阻塞掉了另外一个)。</li>
-<li>当一个服务器要处理一个请求端发来的多组大量数据，而且每组数据处理起来的时间会很慢时，可以采取异步队列，就相当于请求端发过来的数据先存着，放进队列里，然后再异步处理数据(即处理数据的过程不在请求的生命周期里)</li>
-<li>由于比如用户登陆了某网站之后，后台就过xx分钟给用户发延迟邮件来推送广告(怎么有点流氓(°Д°))，这里也可以用到异步队列，虽然可以用设计定时任务来轮询检查的笨方法，不过感觉用轮询来实现异步不是真正的异步</li>
-</ul>
-<p>扯了这么多，刚回到正题了—实践</p>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
-<li>Laravel 5.2</li>
-<li>系统: Windows(wamp) or Linux(lnmp)</li>
-</ul>
-<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><hr>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>laravel提供了多种消息队列驱动: sync(同步) database beanstalkd sqs redis<br>默认是sync，不过实际上其他几种异步队列多点，本章先用<strong>database</strong>练练手，前几天刚服务器刚配好redis，迟点再补上redis的吧~</p>
-<p>so,先到 /.env (默认根目录为你的项目目录) 中 填上 QUEUE_DRIVER=database ,当然你也可以到/config/queue.php的default中将sync修改，但是建议修改.env</p>
-<hr>
-<h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><p>修改完队列驱动后，就用Laravel的migration自动生成队列需要的表，到根目录执行artisan</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">php artisan queue:table</div><div class="line">php artisan queue:failed-table    #处理出错队列用的表</div><div class="line">php artisan migrate</div></pre></td></tr></table></figure>
-<p>此时，数据库中就会出现jobs表和failed_jobs表</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/job1.png"></p>
-<hr>
-<h3 id="创建任务类并编写任务类"><a href="#创建任务类并编写任务类" class="headerlink" title="创建任务类并编写任务类"></a>创建任务类并编写任务类</h3><p>执行artisan命令快速生成任务类并在/app/jobs/ 目录下面找到刚创建的任务</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan make:job yourJobName</div></pre></td></tr></table></figure>
-<p>刚自动生成的任务类包含了两个初始方法</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Create a new job instance.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> void</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Execute the job.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@return</span> void</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>构造方法__construct用于你给任务类传值or对象用，至于handle方法则是队列任务的处理(即给排在队列里的任务如何执行业务逻辑)</p>
-<p>这时就有个问题了，排在队列里的任务如果处理时失败了，或者因不符合某些业务逻辑需要进行统一的失败操作，那该怎么办呢？</p>
-<p>此时可以在这个任务类中添加一个failed方法</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">failed</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样laravel就可以识别得到，当一个任务在执行handle方法时，遇到异常了(Throw Exception)，laravel就会自动捕获异常并执行failed方法，并在failed_job表中记录信息。这个用来管控你看不见摸不着的异步队列任务比较有用，你可以根据业务逻辑在failed方法里将错误信息输出到自己的日志或者其他操作。</p>
-<h4 id="任务类里自带的几个有用方法"><a href="#任务类里自带的几个有用方法" class="headerlink" title="任务类里自带的几个有用方法"></a>任务类里自带的几个有用方法</h4><p>通过artisan生成的任务类里，由于使用(use)了InteractsWithQueue这个trait，所以可以使用到里面有几个自带的方法</p>
-<ul>
-<li><p>attempts</p>
-<p>作用:返回任务的已经执行次数(eg.可以用于在handle方法中判断任务执行超过n次时就抛出异常来执行failed方法等等)</p>
-<p>食用方法:在任务类的handle方法或者failed方法中,无参</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;attempts();</div></pre></td></tr></table></figure>
-<ul>
-<li><p>delete</p>
-<p>作用:在队列中删除该任务(jobs表里删除)</p>
-<p>食用方法:同上</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;delete();</div></pre></td></tr></table></figure>
-<ul>
-<li><p>release</p>
-<p>作用:将当前任务再次放进队列中，可传入参数，来控制同一个任务两次运行之间的等待时间</p>
-<p>食用方法:同上，不过有参，参数为int类型 表示多少秒</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">$this</span>-&gt;release(<span class="number">10</span>);   <span class="comment">// 同一个任务两次运行之间隔10秒执行</span></div></pre></td></tr></table></figure>
-<p>目前任务类里比较常用的就是这几个方法了。</p>
-<hr>
-<h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><h4 id="代码里要做的事"><a href="#代码里要做的事" class="headerlink" title="代码里要做的事"></a>代码里要做的事</h4><p>编写好任务类之后，你可以在你的控制器里面创建任务，并且将它调度执行(dispatch)</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName($value);            <span class="comment">// 按实际情况来传值</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<p>如果想设置延时</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;delay(<span class="number">10</span>);       <span class="comment">// 延迟10秒执行</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<p>如果想指定队列(分类)</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;onQueue(<span class="string">'test'</span>);  <span class="comment">//可以查看对应job表的queue字段</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<h4 id="shell里要做的事"><a href="#shell里要做的事" class="headerlink" title="shell里要做的事"></a>shell里要做的事</h4><p>当代码里做的事做好了之后，我们一个请求过去服务器的项目程序就能启动任务了吗？不能，因为之前我们说过，除了sync其他驱动都是异步的，<strong>而php是单线程的(意味着一个开启一个php脚本相当于开启一个进程，而这个进程里面只有一个线程)</strong>，所以我们一个请求只有一个线程，因此我们需要开多一个进程来进行队列监听了，当监听脚本监听到队列有动静时，就对队列进行处理。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen</div></pre></td></tr></table></figure>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><ol>
-<li>开始监听</li>
-<li>发送请求(可以用postman试试)到指定控制器来调度队列任务</li>
-<li>观察正在执行监听任务的shell(ctrl+c 退出监听)</li>
-</ol>
-<p><img src="http://opobbao46.bkt.clouddn.com/job2.png"></p>
-<hr>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>  通过实践，算是掌握了laravel的队列使用，下面就提一下我遇到的坑点以及改进吧~</p>
-<hr>
-<h3 id="注意事-坑-项-点"><a href="#注意事-坑-项-点" class="headerlink" title="注意事(坑)项(点)"></a>注意事(坑)项(点)</h3><ul>
-<li><p>当你使用了onQueue方法来给任务分类然后调度时，监听的命令该怎么写？</p>
-<p>一开始我天真的认为一句 php artisan queue:listen 就能监听所有分类的任务，结果之后发现我定义的一个分类的任务一直不执行，看了文档又找不到缘故</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$job=<span class="keyword">new</span> yourJobName()-&gt;onQueue(<span class="string">'test'</span>);    <span class="comment">//将一个任务归为test分类</span></div><div class="line">dispatch($job);</div></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen         # 你会发现,是监听不了上面的的任务的</div></pre></td></tr></table></figure>
-<p>翻了一下帮助命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan help queue:listen</div></pre></td></tr></table></figure>
-<p>可以看到</p>
-<p><img src="http://opobbao46.bkt.clouddn.com/job3.png"></p>
-<p>所以正确的执行姿势应该是</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php artisan queue:listen --queue test   # 以我上面的例子而言 此处队列分类是test</div><div class="line">php artisan queue:listen --QUEUE test   # help里面说到大写也可以</div></pre></td></tr></table></figure>
-<p>还有其他queue的命令就自己发掘或者看文档吧~</p>
-<hr>
-<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
-<li>为了保护监听进程(失败后重启等)，我们可以尝试用一下Supervisor(linux)</li>
-<li>因为现在很多缓存都用redis，所以这个队列任务如果用redis的话，就可以一举两得了~~</li>
-</ul>
-<p>以上两点列入到Todo list中，有空再捣鼓一蛤!!</p>
-<hr>
-<h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h3><p>感谢 <a href="http://laravelacademy.org/" target="_blank" rel="external">Laravel学院</a> 的中文文档 ！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在后台开发中，很多情况需要用到队列来处理业务逻辑，前几天亲自实践了一下Laravel的队列功能，在此分享一蛤。&lt;/p&gt;
-&lt;h2 id=&quot;使用情景&quot;&gt;&lt;a href=&quot;#使用情景&quot; class=&quot;headerlink&quot; title=&quot;使用情景&quot;&gt;&lt;/a&gt;使用情景&lt;/h2&gt;&lt;p
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
-    
-    
-      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
-    
-      <category term="异步消息队列" scheme="https://dawnki.github.io/tags/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   

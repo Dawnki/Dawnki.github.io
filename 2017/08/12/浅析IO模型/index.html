@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>浅析IO模型 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="IO复用,轮询,非阻塞,epoll">
+    <meta name="description" content="在之前的同步异步文章中埋了个坑，今天就来填一下吧。当CPU发起IO调用，需要读取文件里的东西时，由于IO处理的速度没有CPU那么快，因此，通常都是CPU在等待IO处理完毕返回数据。当IO处理中到CPU拿到文件数据，这里存在几种IO模型，分别是read，select，poll，epoll，kqueue。在此先说一下fd，系统在读写文件的时候，需要文件描述符(file descriptor简称fd)，">
+<meta name="keywords" content="IO复用,轮询,非阻塞,epoll">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析IO模型">
+<meta property="og:url" content="https://dawnki.github.io/2017/08/12/浅析IO模型/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="在之前的同步异步文章中埋了个坑，今天就来填一下吧。当CPU发起IO调用，需要读取文件里的东西时，由于IO处理的速度没有CPU那么快，因此，通常都是CPU在等待IO处理完毕返回数据。当IO处理中到CPU拿到文件数据，这里存在几种IO模型，分别是read，select，poll，epoll，kqueue。在此先说一下fd，系统在读写文件的时候，需要文件描述符(file descriptor简称fd)，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-24T08:54:58.518Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅析IO模型">
+<meta name="twitter:description" content="在之前的同步异步文章中埋了个坑，今天就来填一下吧。当CPU发起IO调用，需要读取文件里的东西时，由于IO处理的速度没有CPU那么快，因此，通常都是CPU在等待IO处理完毕返回数据。当IO处理中到CPU拿到文件数据，这里存在几种IO模型，分别是read，select，poll，epoll，kqueue。在此先说一下fd，系统在读写文件的时候，需要文件描述符(file descriptor简称fd)，">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">浅析IO模型</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">浅析IO模型</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-12T06:13:15.000Z" itemprop="datePublished" class="page-time">
+  2017-08-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/操作系统/">操作系统</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#read"><span class="post-toc-number">1.</span> <span class="post-toc-text">read</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#select"><span class="post-toc-number">2.</span> <span class="post-toc-text">select</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#poll"><span class="post-toc-number">3.</span> <span class="post-toc-text">poll</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#epoll"><span class="post-toc-number">4.</span> <span class="post-toc-text">epoll</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#kqueue"><span class="post-toc-number">5.</span> <span class="post-toc-text">kqueue</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#水平触发-amp-边缘触发"><span class="post-toc-number">6.</span> <span class="post-toc-text">水平触发 & 边缘触发</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">7.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">8.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-浅析IO模型"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">浅析IO模型</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-12 14:13:15" datetime="2017-08-12T06:13:15.000Z"  itemprop="datePublished">2017-08-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/操作系统/">操作系统</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在之前的同步异步文章中埋了个坑，今天就来填一下吧。当CPU发起IO调用，需要读取文件里的东西时，由于IO处理的速度没有CPU那么快，因此，通常都是CPU在等待IO处理完毕返回数据。当IO处理中到CPU拿到文件数据，这里存在几种IO模型，分别是read，select，poll，epoll，kqueue。在此先说一下fd，系统在读写文件的时候，需要文件描述符(file descriptor简称fd)，当调用系统内核来进行文件操作时，内核会返回一个文件描述符，若要知道IO是否处理完毕，只需查看fd中的事件状态即可，即程序调用内核时就是查看这个状态，来判断是否完成操作的。下面就简单介绍下这几种IO模型。</p>
+<h2 id="read"><a href="#read" class="headerlink" title="read"></a>read</h2><p>这是原始的轮询模式，当CPU发起IO调用时，处于等待状态，然后IO就去处理，然后就重复的检查fd的事件状态，当事件状态为处理完毕后，读出完整数据。这种做法比较原始以及性能较差。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>select是在read上的改进，有一个数组负责存着一堆文件描述符，然后遍历数组中的文件描述符来检查当中的事件状态，当某个文件已经处理完毕之后，就进行一次read操作来读取完整数据，然后交给应用。</p>
+<p>select的缺点有两个。①是存放文件描述符的数组大小有限，一个进程处理的文件描述符(fd)数有限(cat /proc/sys/fs/file-max).32位机默认是1024个。64位机默认是2048.②随着fd的增多，会造成性能线性下降的问题(主因线性遍历)。</p>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p>poll则是在select的基础上进行改良，采用链表的数据结构来存储文件描述符，以解决select的数组大小限制问题。但是还是需要线性遍历，因此select的第二个缺点还是无法避免。</p>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>epoll只能在Linux使用。epoll是目前性能强劲的io复用模型，epoll的原理是每当操作文件时，都有一个回调函数与fd相对应，当io操作完毕后，就会调用这个回调函数来通知应用获取数据。</p>
+<p>epoll中由三个函数，分别是epoll_create,epoll_ctl,epoll_wait。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/epoll.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event * events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</div></pre></td></tr></table></figure>
+<p>epoll_create用于创建epoll句柄，然后epoll来监听管理一定量的文件描述符。当然这个句柄本身就占一个fd。</p>
+<p>epoll_ctl用于控制管理一个epoll句柄下面N个的fd，比如可以对一个epoll句柄下的某个fd进行增删该事件监听，这里监听的事件指的是epoll观察指定fd的状态，比如某个fd需要读写数据等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">struct epoll_event</div><div class="line">&#123;  </div><div class="line">    __uint32_t events;   </div><div class="line">    epoll_data_t data;  </div><div class="line">&#125;;</div><div class="line"></div><div class="line">typedef union epoll_data</div><div class="line">&#123;  </div><div class="line">    void *ptr;  </div><div class="line">    int fd;  </div><div class="line">    __uint32_t u32;  </div><div class="line">    __uint64_t u64;  </div><div class="line">&#125; epoll_data_t;</div></pre></td></tr></table></figure>
+<p>epoll_wait,根据触发方式(水平触发或者边缘触发)，来收集刚刚epoll_ctl中已注册并且触发的事件(就绪链表)，比如收集了fd为2,3的已经触发的事件，然后把这些事件赋值给一个数组(参数二中的events数组)，如果没有超时(timeout)，epoll_wait就会返回 <strong>触发事件的数目</strong> ,然后去指定事件数组里拿相应数目的文件描述符(epoll_event储存了许多信息，里面的data就包含文件描述符)即可，这样就可以达到不复制文件描述符省去巨大的开销。<strong>同时也epoll只需拿到触发事件的文件描述符及其结果，而不像select和poll一样把不活跃的fd都一同获取了。</strong></p>
+<p>虽然说epoll_wait也是像select和poll一样需要轮询，不过它是设备就绪时，调用回调函数，把就绪fd放入就绪链表中，并唤醒在epoll_wait中进入睡眠的进程。虽然都要睡眠和交替，但是select和poll在“醒着”的时候要遍历整个fd集合，而epoll在“醒着”的时候只要判断一下就绪链表是否为空。<strong>另外epoll使用了mmap(内存映射技术)，加速与内核与用户空间的消息传递，避免不必要的内存拷贝。</strong></p>
+<h2 id="kqueue"><a href="#kqueue" class="headerlink" title="kqueue"></a>kqueue</h2><p>kqueue与epoll一样都是基于事件的方式来处理IO复用的问题，只是kqueue是应用在BSD系统上，在此就不在赘述。</p>
+<h2 id="水平触发-amp-边缘触发"><a href="#水平触发-amp-边缘触发" class="headerlink" title="水平触发 &amp; 边缘触发"></a>水平触发 &amp; 边缘触发</h2><p>LT：水平触发，支持阻塞和非阻塞io，效率会低于ET触发，尤其在大并发，大流量的情况下。但是LT对代码编写要求比较低，不容易出现问题。LT模式服务编写上的表现是：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，<strong>会再次响应应用程序并通知此事件</strong>。select和poll只支持水平触发。</p>
+<p>ET：边缘触发，仅支持非阻塞io，<strong>效率非常高</strong>，在并发，大流量的情况下，<strong>会比LT少很多epoll的系统调用</strong>，当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。epoll支持边缘触发。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>read属于原始的IO模型，而select，poll，epoll，kqueue都是属于IO复用模型，可以管理一定量的文件描述符。epoll基于事件的处理方式在处理大量的连接时仍保持这不错的性能，有效的提高了IO效率。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/yusiguyuan/article/details/15027821" target="_blank" rel="external">http://blog.csdn.net/yusiguyuan/article/details/15027821</a></p>
+<p><a href="http://blog.csdn.net/xiajun07061225/article/details/9250579" target="_blank" rel="external">http://blog.csdn.net/xiajun07061225/article/details/9250579</a></p>
+<p><a href="http://www.hulkdev.com/posts/epoll-io" target="_blank" rel="external">http://www.hulkdev.com/posts/epoll-io</a></p>
+<p><a href="http://blog.csdn.net/jay900323/article/details/18141217/" target="_blank" rel="external">http://blog.csdn.net/jay900323/article/details/18141217/</a></p>
+<p><a href="http://blog.csdn.net/tianmohust/article/details/6677985/" target="_blank" rel="external">http://blog.csdn.net/tianmohust/article/details/6677985/</a></p>
+<p><a href="http://www.cnblogs.com/Anker/p/3263780.html" target="_blank" rel="external">http://www.cnblogs.com/Anker/p/3263780.html</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-24T08:54:58.518Z" itemprop="dateUpdated">2017-08-24 16:54:58</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO复用/">IO复用</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/epoll/">epoll</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/轮询/">轮询</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/非阻塞/">非阻塞</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/12/浅析IO模型/&title=《浅析IO模型》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/12/浅析IO模型/&title=《浅析IO模型》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/12/浅析IO模型/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浅析IO模型》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/12/浅析IO模型/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/12/浅析IO模型/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/12/玩转SSH/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">玩转SSH</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/12/浅析IO模型/&title=《浅析IO模型》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/12/浅析IO模型/&title=《浅析IO模型》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/12/浅析IO模型/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浅析IO模型》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/12/浅析IO模型/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/12/浅析IO模型/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNElEQVR42u3aS46DMBBFUfa/aTJtqWO4rwyRXL4eRSQNPgyqXZ/jwOv8s66/Ha3/vx99Hj3lgSVDhoxlGeTx/DrZ9Pz9v1BlyJCxAWMUwUa/uQ6U5Ns0HN/sWYYMGTLCQyEHyJAhQ8ZvAm4tDeZXZMiQIYMnsddbJJtOy22v5OIyZMhYkMHD5e8/v9LfkCFDxlKMM1xvb+ssLRkyZPRm8MekyFojs7YfGTJk9GakiWU6+EVS3/QVTJ1bZciQsSAjLcejAj2P9OH1G7AMGTJaM/g4xUzRn7cBeMgO3qsMGTJaMOZPWenoGN9osW0gQ4aMFoynBsLSgFuDDcEyZMhozUi3XmtS1gbCyAHxJvjKkCGjEaNW9K8NT/Ay3PUdbqqGMmTIaMogf5YeDfmBcqb8J0OGjN6M9HDGD3a8oFYbtpAhQ8ZujHTMix8cefuTtCKG95EhQ8Y2DN68TIPps2OvMmTI2I2RpqDXW0FFsbDNEFBlyJDRmpEW9OdHJZ46GsqQIWMfRu2AmLYYZ5oNaFcyZMjYjMEDKw+vtVIaT5hlyJCxA4MPafH78BeXltiKIxcyZMhYkHGGq5biks2l4x1H7T+DDBkyFmTwVRuS4HhemIvbAzJkyGjB4EGWlN5IYlwr4aFhCxkyZLRm1JLSdLSCD2TE7VUZMmTIKI1BzKS4JGSjWqAMGTK2ZNQew9PRtMEpQ4aMfRi1A1zxkWGZLzgaypAhoykjvd18IpqCH2tqypAhYz3GB7swslA1WXZkAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
