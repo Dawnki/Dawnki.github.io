@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>C++:内存篇 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="cpp,内存泄露,内存分配">
+    <meta name="description" content="C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。 五种内存分配类型栈内存栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 由系统分配并且进行回收，效率较高但最大栈内存受到编译器限">
+<meta name="keywords" content="cpp,内存泄露,内存分配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++:内存篇">
+<meta property="og:url" content="https://dawnki.github.io/2017/08/26/c++:内存篇/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。 五种内存分配类型栈内存栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 由系统分配并且进行回收，效率较高但最大栈内存受到编译器限">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-26T18:29:07.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++:内存篇">
+<meta name="twitter:description" content="C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。 五种内存分配类型栈内存栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 由系统分配并且进行回收，效率较高但最大栈内存受到编译器限">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">C++:内存篇</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">C++:内存篇</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-26T02:14:18.000Z" itemprop="datePublished" class="page-time">
+  2017-08-26
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/C/">C++</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五种内存分配类型"><span class="post-toc-number">1.</span> <span class="post-toc-text">五种内存分配类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#栈内存"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">栈内存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#堆内存"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">堆内存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#全局-amp-静态区"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">全局&静态区</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文字常量区"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">文字常量区</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#程序代码区"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">程序代码区</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存管理"><span class="post-toc-number">2.</span> <span class="post-toc-text">内存管理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#delete-与-delete"><span class="post-toc-number">3.</span> <span class="post-toc-text">delete 与 delete []</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-c++:内存篇"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">C++:内存篇</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-26 10:14:18" datetime="2017-08-26T02:14:18.000Z"  itemprop="datePublished">2017-08-26</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/C/">C++</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。</p>
+<h2 id="五种内存分配类型"><a href="#五种内存分配类型" class="headerlink" title="五种内存分配类型"></a>五种内存分配类型</h2><h3 id="栈内存"><a href="#栈内存" class="headerlink" title="栈内存"></a>栈内存</h3><p>栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 <strong>由系统分配并且进行回收</strong>，效率较高但最大栈内存受到编译器限制，程序猿不用担心其内存泄露，即使出错，编译器也能发现错误。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">3</span>;</div><div class="line"><span class="keyword">char</span> b[] = <span class="string">"abc"</span>;</div><div class="line"><span class="keyword">char</span> c = <span class="string">'k'</span>;</div></pre></td></tr></table></figure>
+<p>这些内存在退出调用时系统就会自动回收。只要栈的剩余空间大于所申请空间，系统将为程序提供内存，否则将报异常提示 <strong>栈溢出</strong>。因此如果递归函数，但是边界设置不正确时，会因超出栈所能申请的内存空间发生栈溢出。</p>
+<h3 id="堆内存"><a href="#堆内存" class="headerlink" title="堆内存"></a>堆内存</h3><p>堆(heap)内存,通常由程序猿来申请分配，C/C++中的malloc以及new，就是分配这种堆内存。堆内存分配的效率没有栈内存的高，不过可分配的空间一般只受限于系统的有效的内存。通常这种堆内存用来存储对象或者结构体等。这种内存只有在程序猿 <strong>主动释放</strong> 或者 <strong>程序结束时</strong> 系统自动释放。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">10</span>);</div><div class="line"><span class="keyword">int</span> b = (<span class="keyword">int</span>) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<p>这种内存需要程序猿手动释放，不然会造成许多内存碎片(无法再度使用的)，即内存泄露，<strong>而且编译器很难检查得到</strong>。</p>
+<h3 id="全局-amp-静态区"><a href="#全局-amp-静态区" class="headerlink" title="全局&amp;静态区"></a>全局&amp;静态区</h3><p>这部分的内存通常用来存放全局变量以及静态变量(static),这一大部分叫做全局区，全局区也分两个小部分，一部分存放已初始化的全局变量和静态变量，另一部分存放未初始化的全局变量和静态变量，并且向这部分申请内存时 <strong>只申请一次</strong> ,内存在结束时由系统自动释放。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a;           <span class="comment">//全局变量</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> b;    <span class="comment">//全局静态变量</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> c;    <span class="comment">//局部静态变量</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种变量只会申请一次，比如在函数A里申请了局部静态变量b，当下次再次调用A时，b仍是那个内存块。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">A</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a=<span class="number">0</span>;  <span class="comment">// 仅第一次申请内存并初始化时有效</span></div><div class="line">    a++;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 1</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="文字常量区"><a href="#文字常量区" class="headerlink" title="文字常量区"></a>文字常量区</h3><p>常量字符串存放的地方，由系统自行释放。有点像java中的字符串常量，因为同一段文字分配的是同一个内存区。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> *p = <span class="string">"hello,world!"</span>;  <span class="comment">//字符指针p在栈区 “hello,world!\0”在文字常量区</span></div></pre></td></tr></table></figure>
+<h3 id="程序代码区"><a href="#程序代码区" class="headerlink" title="程序代码区"></a>程序代码区</h3><p>用于存放函数体的而二进制代码。</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>C++的内存管理完全交给程序猿来处理，这是一把双刃剑。好处是GC部分由程序猿自己实现或者有些地方不需垃圾回收，以提高性能效率。坏处是若程序猿不自行管理的话，容易造成内存泄露，造成内存碎片化，严重的会不停的申请内存，直至系统内存无法申请为止。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> \*a = <span class="keyword">new</span> <span class="keyword">int</span>();   <span class="comment">//因为没有进行堆内存回收造成泄露(反斜杠由于md的问题自行忽略掉吧)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</div><div class="line">    &#123;</div><div class="line">        call();    <span class="comment">//会循环申请堆内存</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>以上代码慎重运行，严重点会卡死系统(别问我怎么知道的/(ㄒoㄒ)/)</strong></p>
+<p>为了不造成内存泄露，<strong>每次new/malloc了内存之后使用完毕务必delete/free掉刚申请的内存</strong> ,另外还可以使用c++11的智能指针，省去手动delete。智能指针自动释放内存的原理是：<strong>智能指针就是一个类，当超出了类的作用域是，类会自动调用析构函数，析构函数会自动释放资源。</strong> 常用的智能指针有 shared_ptr,unique_ptr,weak_ptr具体更细致的解释(<del>挖坑</del>)将放到面向对象篇进行说明。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    A()&#123;&#125;;</div><div class="line">    ~A()&#123;&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">shared_ptr</span>&lt;A&gt; ptr(<span class="keyword">new</span> A());    <span class="comment">//使用了智能指针后 指针超出作用域就会自动销毁所申请的内存</span></div><div class="line">    <span class="built_in">unique_ptr</span>&lt;A&gt; ptr1(<span class="keyword">new</span> A());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>安利：另外Linux下的Valgrind是检测C++内存泄露好工具哦！</strong></p>
+<h2 id="delete-与-delete"><a href="#delete-与-delete" class="headerlink" title="delete 与 delete []"></a>delete 与 delete []</h2><p>delete 与 delete [] 经常用作回收堆内存，两者有差别，delete用来回收单个对象，delete []用来回收对象数组，下面分两种情形讨论：</p>
+<p>(1) 当对象为基础数据类型,如int,char,double时，回收数组可以用delete []和delete</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *p =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];</div><div class="line"><span class="keyword">delete</span> p;  <span class="comment">// or delete [] p;</span></div></pre></td></tr></table></figure>
+<p>(2) 当对象为自定义的类对象时，回收数组必须使用delete [] ,因为使用delete [] 时 <strong>会主动调用每个对象数组元素(即单个对象)的析构函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function">class <span class="title">A</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    ~A()&#123;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    A* p = <span class="keyword">new</span> A[<span class="number">5</span>];</div><div class="line">    <span class="keyword">delete</span> [] p; <span class="comment">//使用delete会发生内存泄露</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以delete的实质其实是调用对象的析构函数，只是当对象为基础数据类型就简便了而已。不过为了方便记忆，建议凡是回收数组都用delete[],回收单体就用delete。<strong>即new 对应 delete , new [] 对应 delete []</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>With great power comes great responsibility is big</p>
+</blockquote>
+<p>性能与易用两者不可兼得也，只能苦学而取性能也！</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-26T18:29:07.556Z" itemprop="dateUpdated">2017-08-27 02:29:07</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内存分配/">内存分配</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内存泄露/">内存泄露</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/26/c++:内存篇/&title=《C++:内存篇》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/26/c++:内存篇/&title=《C++:内存篇》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/26/c++:内存篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《C++:内存篇》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/26/c++:内存篇/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/26/c++:内存篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/25/goodCMake/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">CMakeList批量导入源文件和头文件</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/26/c++:内存篇/&title=《C++:内存篇》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/26/c++:内存篇/&title=《C++:内存篇》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/26/c++:内存篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《C++:内存篇》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/26/c++:内存篇/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/26/c++:内存篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3aS27DMAxFUe9/0+40RSvhPsoOIPF6FLhOrKMBK36uC1/3x/X3Drk/+rXRd683LhkyZGzLuKfX/AX8xXMe35ThG2XIkNGAMXrx6JnRXwmMhGO+NhkyZMiYL5S/ch5qZciQIeNtxvxJTpIhQ4aMOSNdXFoUIwH3S7m4DBkyNmTwRXz/8yv9DRkyZGzFuMOLHPh443NlJb9+R4YMGUczeIB7Ku2sbRNajwwZMo5mpOMR6R0C44lu8VQrQ4aMbRkrQ13pAZEfK/nnf064MmTIOJSRppekJMebnXz4LKgFypAh4yBG+ihZ0BtHRrRaGTJkHMpIhyrSgJumrDWYDBkyOjDScvxK0T8tqyG2DBky2jDWy2FperySJA/LbTJkyDiaUTv21UInbxjE0yIyZMhoxiDFslpBrdacGN6RIUPG0QxeGkt58yWuNAxQAU6GDBkHMXjA5UW0dPwiaACMnpQhQ8bRjFpzsVZ648G3eN6TIUNGA0aaZK4HXD5ygZJYGTJktGGkaWS6HWkrIgDLkCGjJSNtDKQpKx+8QFsgQ4aMNgx+QKwttBZ8UeorQ4aMQxl3eNVCZG2kLKDKkCHjaAa/ng2stVQ5nhmRIUPGQQwSZNOdSH8z3TIZMmT0ZNQC31MNy1oQlyFDhgzSsEzT3adS3IvsogwZMhozSLjkgTUdC3vl/4YMGTI2YdTGLHjLkz9PviVDhoxuDJ46EtJK0T8d6ZAhQ0YDxg9RJtsZoSxDiwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

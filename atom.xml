@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-25T10:08:25.559Z</updated>
+  <updated>2017-08-26T18:29:07.556Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -14,6 +14,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++:内存篇</title>
+    <link href="https://dawnki.github.io/2017/08/26/c++:%E5%86%85%E5%AD%98%E7%AF%87/"/>
+    <id>https://dawnki.github.io/2017/08/26/c++:内存篇/</id>
+    <published>2017-08-26T02:14:18.000Z</published>
+    <updated>2017-08-26T18:29:07.556Z</updated>
+    
+    <content type="html"><![CDATA[<p>C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。</p>
+<h2 id="五种内存分配类型"><a href="#五种内存分配类型" class="headerlink" title="五种内存分配类型"></a>五种内存分配类型</h2><h3 id="栈内存"><a href="#栈内存" class="headerlink" title="栈内存"></a>栈内存</h3><p>栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 <strong>由系统分配并且进行回收</strong>，效率较高但最大栈内存受到编译器限制，程序猿不用担心其内存泄露，即使出错，编译器也能发现错误。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">3</span>;</div><div class="line"><span class="keyword">char</span> b[] = <span class="string">"abc"</span>;</div><div class="line"><span class="keyword">char</span> c = <span class="string">'k'</span>;</div></pre></td></tr></table></figure>
+<p>这些内存在退出调用时系统就会自动回收。只要栈的剩余空间大于所申请空间，系统将为程序提供内存，否则将报异常提示 <strong>栈溢出</strong>。因此如果递归函数，但是边界设置不正确时，会因超出栈所能申请的内存空间发生栈溢出。</p>
+<h3 id="堆内存"><a href="#堆内存" class="headerlink" title="堆内存"></a>堆内存</h3><p>堆(heap)内存,通常由程序猿来申请分配，C/C++中的malloc以及new，就是分配这种堆内存。堆内存分配的效率没有栈内存的高，不过可分配的空间一般只受限于系统的有效的内存。通常这种堆内存用来存储对象或者结构体等。这种内存只有在程序猿 <strong>主动释放</strong> 或者 <strong>程序结束时</strong> 系统自动释放。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">10</span>);</div><div class="line"><span class="keyword">int</span> b = (<span class="keyword">int</span>) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<p>这种内存需要程序猿手动释放，不然会造成许多内存碎片(无法再度使用的)，即内存泄露，<strong>而且编译器很难检查得到</strong>。</p>
+<h3 id="全局-amp-静态区"><a href="#全局-amp-静态区" class="headerlink" title="全局&amp;静态区"></a>全局&amp;静态区</h3><p>这部分的内存通常用来存放全局变量以及静态变量(static),这一大部分叫做全局区，全局区也分两个小部分，一部分存放已初始化的全局变量和静态变量，另一部分存放未初始化的全局变量和静态变量，并且向这部分申请内存时 <strong>只申请一次</strong> ,内存在结束时由系统自动释放。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a;           <span class="comment">//全局变量</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> b;    <span class="comment">//全局静态变量</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> c;    <span class="comment">//局部静态变量</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种变量只会申请一次，比如在函数A里申请了局部静态变量b，当下次再次调用A时，b仍是那个内存块。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">A</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a=<span class="number">0</span>;  <span class="comment">// 仅第一次申请内存并初始化时有效</span></div><div class="line">    a++;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 1</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="文字常量区"><a href="#文字常量区" class="headerlink" title="文字常量区"></a>文字常量区</h3><p>常量字符串存放的地方，由系统自行释放。有点像java中的字符串常量，因为同一段文字分配的是同一个内存区。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> *p = <span class="string">"hello,world!"</span>;  <span class="comment">//字符指针p在栈区 “hello,world!\0”在文字常量区</span></div></pre></td></tr></table></figure>
+<h3 id="程序代码区"><a href="#程序代码区" class="headerlink" title="程序代码区"></a>程序代码区</h3><p>用于存放函数体的而二进制代码。</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>C++的内存管理完全交给程序猿来处理，这是一把双刃剑。好处是GC部分由程序猿自己实现或者有些地方不需垃圾回收，以提高性能效率。坏处是若程序猿不自行管理的话，容易造成内存泄露，造成内存碎片化，严重的会不停的申请内存，直至系统内存无法申请为止。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> \*a = <span class="keyword">new</span> <span class="keyword">int</span>();   <span class="comment">//因为没有进行堆内存回收造成泄露(反斜杠由于md的问题自行忽略掉吧)</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</div><div class="line">    &#123;</div><div class="line">        call();    <span class="comment">//会循环申请堆内存</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>以上代码慎重运行，严重点会卡死系统(别问我怎么知道的/(ㄒoㄒ)/)</strong></p>
+<p>为了不造成内存泄露，<strong>每次new/malloc了内存之后使用完毕务必delete/free掉刚申请的内存</strong> ,另外还可以使用c++11的智能指针，省去手动delete。智能指针自动释放内存的原理是：<strong>智能指针就是一个类，当超出了类的作用域是，类会自动调用析构函数，析构函数会自动释放资源。</strong> 常用的智能指针有 shared_ptr,unique_ptr,weak_ptr具体更细致的解释(<del>挖坑</del>)将放到面向对象篇进行说明。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    A()&#123;&#125;;</div><div class="line">    ~A()&#123;&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">shared_ptr</span>&lt;A&gt; ptr(<span class="keyword">new</span> A());    <span class="comment">//使用了智能指针后 指针超出作用域就会自动销毁所申请的内存</span></div><div class="line">    <span class="built_in">unique_ptr</span>&lt;A&gt; ptr1(<span class="keyword">new</span> A());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>安利：另外Linux下的Valgrind是检测C++内存泄露好工具哦！</strong></p>
+<h2 id="delete-与-delete"><a href="#delete-与-delete" class="headerlink" title="delete 与 delete []"></a>delete 与 delete []</h2><p>delete 与 delete [] 经常用作回收堆内存，两者有差别，delete用来回收单个对象，delete []用来回收对象数组，下面分两种情形讨论：</p>
+<p>(1) 当对象为基础数据类型,如int,char,double时，回收数组可以用delete []和delete</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *p =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];</div><div class="line"><span class="keyword">delete</span> p;  <span class="comment">// or delete [] p;</span></div></pre></td></tr></table></figure>
+<p>(2) 当对象为自定义的类对象时，回收数组必须使用delete [] ,因为使用delete [] 时 <strong>会主动调用每个对象数组元素(即单个对象)的析构函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function">class <span class="title">A</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    ~A()&#123;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    A* p = <span class="keyword">new</span> A[<span class="number">5</span>];</div><div class="line">    <span class="keyword">delete</span> [] p; <span class="comment">//使用delete会发生内存泄露</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以delete的实质其实是调用对象的析构函数，只是当对象为基础数据类型就简便了而已。不过为了方便记忆，建议凡是回收数组都用delete[],回收单体就用delete。<strong>即new 对应 delete , new [] 对应 delete []</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>With great power comes great responsibility is big</p>
+</blockquote>
+<p>性能与易用两者不可兼得也，只能苦学而取性能也！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。&lt;/p&gt;
+&lt;h2 id=&quot;五种内存分配类型&quot;&gt;&lt;a href=&quot;#五种内存分配类型&quot; 
+    
+    </summary>
+    
+      <category term="C++" scheme="https://dawnki.github.io/categories/C/"/>
+    
+    
+      <category term="cpp" scheme="https://dawnki.github.io/tags/cpp/"/>
+    
+      <category term="内存泄露" scheme="https://dawnki.github.io/tags/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/"/>
+    
+      <category term="内存分配" scheme="https://dawnki.github.io/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>CMakeList批量导入源文件和头文件</title>
@@ -46,11 +106,11 @@
   </entry>
   
   <entry>
-    <title>c++头文件</title>
+    <title>C++:头文件篇</title>
     <link href="https://dawnki.github.io/2017/08/25/cpp%E5%A4%B4%E6%96%87%E4%BB%B6/"/>
     <id>https://dawnki.github.io/2017/08/25/cpp头文件/</id>
     <published>2017-08-25T06:03:52.000Z</published>
-    <updated>2017-08-25T17:46:48.919Z</updated>
+    <updated>2017-08-26T09:45:15.491Z</updated>
     
     <content type="html"><![CDATA[<p>在学习c++，被头文件搞得一头包，时常出现重定义的错误，今天就理一下c++的头文件，彻底把它搞懂。C++与C一样，所有变量都需要先声明才能使用，这种”啥都别说，先报名字”的做法，不仅应用在了变量身上，一个函数也需要先声明后使用，并且这个函数只能定义一次。</p>
 <h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>比如：</p>
@@ -233,7 +293,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># cmd/pprof</div><div class="line">.../go1.4/pkg/linux_amd64/runtime/cgo.a(_all.o): unknown relocation type 42; compiled without -fpic?</div><div class="line">.../go1.4/pkg/linux_amd64/runtime/cgo.a(_all.o): unknown relocation type 42; compiled without -fpic?</div><div class="line">runtime/cgo(.text): unexpected relocation type 298</div><div class="line">runtime/cgo(.text): unexpected relocation type 298</div></pre></td></tr></table></figure>
 <p> <a href="https://stackoverflow.com/questions/37192696/error-building-go-compiler-from-source" target="_blank" rel="external">拿去不用谢我.jpg</a></p>
 <p> 所以解决方案是</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/go1.4/src</div><div class="line"><span class="meta">$</span> CGO_ENABLED=0 ./make.bash</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/go1.4/src</span></div><div class="line"><span class="meta">$</span><span class="bash"> CGO_ENABLED=0 ./make.bash</span></div></pre></td></tr></table></figure>
 <blockquote>
 <p>导致的原因是:CGO_ENABLED: Controls cgo usage during the build. Set it to 1 to include all cgo related files, .c and .go file with “cgo” build directive, in the build. Set it to 0 to ignore them.在构建过程中控制cgo的使用。当设置为1，在构建时，会包含所有cgo相关的文件，如带有”cgo”编译指令的.c和.go文件。当设置为0，则忽略它们（即禁用CGO）</p>
 </blockquote>
@@ -260,9 +320,9 @@
       <category term="系统部署" scheme="https://dawnki.github.io/categories/%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2/"/>
     
     
-      <category term="Go1.8" scheme="https://dawnki.github.io/tags/Go1-8/"/>
-    
       <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+    
+      <category term="Go1.8" scheme="https://dawnki.github.io/tags/Go1-8/"/>
     
   </entry>
   
@@ -816,11 +876,11 @@
       <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
     
     
-      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
-    
       <category term="PHP CLI" scheme="https://dawnki.github.io/tags/PHP-CLI/"/>
     
       <category term="Swoole" scheme="https://dawnki.github.io/tags/Swoole/"/>
+    
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
     
   </entry>
   
@@ -1057,98 +1117,6 @@
       <category term="机器学习" scheme="https://dawnki.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="中国软件杯" scheme="https://dawnki.github.io/tags/%E4%B8%AD%E5%9B%BD%E8%BD%AF%E4%BB%B6%E6%9D%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PHP系统调用(调用Bash&amp;Python脚本)</title>
-    <link href="https://dawnki.github.io/2017/06/27/PHP%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/"/>
-    <id>https://dawnki.github.io/2017/06/27/PHP系统调用/</id>
-    <published>2017-06-27T04:05:23.000Z</published>
-    <updated>2017-06-27T06:41:03.712Z</updated>
-    
-    <content type="html"><![CDATA[<p>有时候，我们在使用php进行开发时，需要调用服务器上的脚本或者调用python脚本来实现某些功能，这时候就需要使用PHP的系统调用函数。不过实际调用中会出现许许多多的问题，就拿最近有关机器学习的项目，后台是PHP实现的，不过机器学习部分用的是Python(需要用到caffe)，中间调用python就遇到了许许多多的坑。</p>
-<hr>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
-<li>系统: Ubuntu 14.04</li>
-<li>PHP:  5.6.22</li>
-<li>Python: 2.7.6 </li>
-</ul>
-<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>  在挖矿之前先介绍一下php的系统调用函数吧:</p>
-<h3 id="system"><a href="#system" class="headerlink" title="system()"></a>system()</h3><ul>
-<li>描述：执行外部程序，成功则返回命令输出的最后一行， 失败则返回 FALSE，特点<strong>直接输出</strong></li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'pwd'</span>;</div><div class="line">system($command);</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/wwwroot/cifar/public</div></pre></td></tr></table></figure>
-<h3 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h3><ul>
-<li>描述：执行一个外部程序,返回命令执行结果的最后一行内容。不直接输出到屏幕.<strong>如果输出只有一行则按空格为分隔符获取内容,如果多行则按行来为分隔符来获取内容存入到数组中.</strong></li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'pwd'</span>;</div><div class="line">exec($command,$result);         <span class="comment">//命令输出内容存至result变量</span></div><div class="line">print_r($result);</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Array</div><div class="line">(</div><div class="line">    [0] =&gt; /home/wwwroot/cifar/public</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="shell-exec"><a href="#shell-exec" class="headerlink" title="shell_exec()"></a>shell_exec()</h3><ul>
-<li>描述： 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。返回命令执行的输出。 如果执行过程中发生错误或者进程不产生输出，则返回 NULL。<strong>使用本函数无法通过返回值检测进程是否成功执行。 如果需要检查进程执行的退出码，请使用 exec() 函数。</strong></li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'who'</span>;</div><div class="line">$data=shell_exec($command);</div><div class="line">print_r($data);</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root     tty1         Jun 25 14:46</div><div class="line">root     pts/0        Jun 27 12:44</div></pre></td></tr></table></figure>
-<h3 id="passthru"><a href="#passthru" class="headerlink" title="passthru()"></a>passthru()</h3><ul>
-<li>描述：执行外部程序并且显示原始输出 常用来执行诸如 pbmplus 之类的可以直接输出图像流的命令。 通过设置 Content-type 为 image/gif， 然后调用 pbmplus 程序输出 gif 文件， 就可以从 PHP 脚本中直接输出图像到浏览器。<strong>特点直接输出,原始输出</strong></li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'who'</span>;</div><div class="line">passthru($command);</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root     tty1         Jun 25 14:46</div><div class="line">root     pts/0        Jun 27 12:44</div></pre></td></tr></table></figure>
-<h3 id="综上"><a href="#综上" class="headerlink" title="综上"></a>综上</h3><ul>
-<li>要获取原始输出就用passthru</li>
-<li>听说exec跟表单(grep查询的结果)更配哦</li>
-<li>其他函数看着需求用就好</li>
-</ul>
-<hr>
-<h2 id="挖坑"><a href="#挖坑" class="headerlink" title="挖坑"></a>挖坑</h2><p>  起步完之后就会开始进入实践，就会遇到各种坑，准备好了吗？</p>
-<h3 id="第一坑：-disable-functions-解除PHP禁用函数"><a href="#第一坑：-disable-functions-解除PHP禁用函数" class="headerlink" title="第一坑： disable_functions 解除PHP禁用函数"></a>第一坑： disable_functions 解除PHP禁用函数</h3><p>  虽说这个默认设置不是坑，但是99%的服务器在你部署完php之后，disable_funcitons设置上都会禁用掉上面所用到函数，所以先去php.ini里面解除系统调用函数设置</p>
-<ol>
-<li>vi /usr/local/php/etc/php.ini (我lnmp安装默认是这个路径的，php安装在其他地方的请自行调整)</li>
-<li>打开配置文件后找到disable_functions(可以用vi在命令模式下/disable_functions来查找)</li>
-<li>将你之后用到的系统调用函数删去(exec,system,passthru等等),如果不在此列则表示没有默认禁用该PHP函数</li>
-<li>保存(Esc退出到命令模式然后:wq!退出)，如果权限不够不能写则自行加权限解决</li>
-<li>重启PHP/LNMP (lnmp restart)</li>
-<li>然后就可以愉快地使用系统调用函数了</li>
-</ol>
-<h3 id="第二坑：-补充错误日志"><a href="#第二坑：-补充错误日志" class="headerlink" title="第二坑： 补充错误日志"></a>第二坑： 补充错误日志</h3><p>  在你调试命令的时候，<strong>最烦的不是出错，最烦的是出错了但没有错误提示</strong>，因此不能对症下药，所以，不妨在你调试命令时，顺便输出到文本文件，然后去文本文件里面找错误输出。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$command=<span class="string">'ll / 2&gt;/xxxxxx/log.txt'</span>;  <span class="comment">//将错误重定向到log.txt</span></div><div class="line">exec($command,$result);         <span class="comment">//命令输出内容存至result变量</span></div><div class="line">print_r($result);</div></pre></td></tr></table></figure>
-<p>  建议命令里面涉及路径的全部都用上<strong>绝对路径</strong>，并且给日志文件给上权限(777简单粗暴)</p>
-<p>  <strong>bash命令中的0代表标准输入，1代表标准输出，2代表标准错误输出</strong></p>
-<h3 id="第三坑：-权限"><a href="#第三坑：-权限" class="headerlink" title="第三坑： 权限"></a>第三坑： 权限</h3><p>  在你补充完错误日志时，你会发现最多的错误就是有关于权限的，以及有关于sudoer的，因为当你浏览器发送一个请求给服务器的web应用时，web服务器(apache或者nginx)所用的用户(www)不具备root的一些权限，所以需要修改sudoer以及涉及到的文件权限(读写操作)</p>
-<ol>
-<li>visudo 直接编辑 (进入利用nano编辑器编辑sudoer)</li>
-<li>如果发现文本中存在 defaults requiretty 的，则用#号注释掉如 #defaults requiretty</li>
-<li>apache用户的话一般系统会建立apache用户，nginx用户的话一般是www用户(可用vi /usr/local/nginx/conf/nginx.conf查看，第一行就是显示nginx所用的用户)</li>
-<li>在visudo末尾中 添加 www ALL=NOPASSWD:ALL 或者 apache ALL=NOPASSWD:ALL(不同web服务器所用的用户不同)</li>
-<li>然后ctrl+x 按Y保存退出nano</li>
-<li>然后给你需要读写的文件加上对应权限，就可以用PHP系统调用进行文件读写等等需要权限的操作</li>
-</ol>
-<h3 id="第四坑：-调用Python脚本时import问题"><a href="#第四坑：-调用Python脚本时import问题" class="headerlink" title="第四坑： 调用Python脚本时import问题"></a>第四坑： 调用Python脚本时import问题</h3><p>  就举我上面提到的例子，PHP调用机器学习的Python脚本，这个Python脚本中用到了刚编译好的caffe（非Python标准库），然后import caffe的时候，或许在shell运行没问题，但是在PHP调用Python的时候可能就会炸了。</p>
-<p>  例如会报 <strong>ImportError: No module named caffe</strong> 的错误</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#修改前的 PHP调用时会报caffe模块缺失的错误</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> caffe</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> os</div><div class="line">sys.path.append(<span class="string">"/（caffe-master路径）/caffe/python"</span>)    <span class="comment">#根据自己实际的绝对路径修改</span></div><div class="line">sys.path.append(<span class="string">"/（caffe-master路径）/caffe/python/caffe"</span>)<span class="comment">#根据自己实际的绝对路径修改</span></div><div class="line"><span class="keyword">import</span> caffe</div></pre></td></tr></table></figure>
-<p>  对于其他需要自行编译的模块，同理举一反三吧~</p>
-<h3 id="第五坑：-PHP默认开始安全模式"><a href="#第五坑：-PHP默认开始安全模式" class="headerlink" title="第五坑： PHP默认开始安全模式"></a>第五坑： PHP默认开始安全模式</h3><p>   如果PHP默认开启了安全模式，只要去php.ini里面把safe_mode(如果存在)用#号注释掉即关闭</p>
-<hr>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>  对于其他错误的话，根据错误日志慢慢解决就好，还有更多的坑需要填呢~最后说一句，既然PHP调用Python这么麻烦，为什么不直接用Python开发呢？因为PHP是世界上最好的语言啊(误) ^_^</p>
-<p>  <a href="http://php.net/manual/zh/ref.exec.php" target="_blank" rel="external">PHP系统调用官方文档</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;有时候，我们在使用php进行开发时，需要调用服务器上的脚本或者调用python脚本来实现某些功能，这时候就需要使用PHP的系统调用函数。不过实际调用中会出现许许多多的问题，就拿最近有关机器学习的项目，后台是PHP实现的，不过机器学习部分用的是Python(需要用到caffe
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
-    
-    
-      <category term="PHP函数" scheme="https://dawnki.github.io/tags/PHP%E5%87%BD%E6%95%B0/"/>
-    
-      <category term="系统调用" scheme="https://dawnki.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/"/>
-    
-      <category term="PHP调用Python脚本" scheme="https://dawnki.github.io/tags/PHP%E8%B0%83%E7%94%A8Python%E8%84%9A%E6%9C%AC/"/>
     
   </entry>
   
