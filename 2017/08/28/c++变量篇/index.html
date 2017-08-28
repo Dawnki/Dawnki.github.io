@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-28T06:12:18.414Z">
+<meta property="og:updated_time" content="2017-08-28T06:16:00.074Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++:变量篇">
 <meta name="twitter:description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
@@ -262,13 +262,13 @@
 <p>因为const可以放在类型的前面或者后面，所以上面两个意思等价。同为 p is a pointer to const char，即变量p是一个 指向const的char 指针。等号右边的内容为const不能改变。</p>
 <h4 id="常量指针"><a href="#常量指针" class="headerlink" title="常量指针"></a>常量指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * <span class="keyword">const</span> p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char * p const = "123";</span></div><div class="line"></div><div class="line">p = <span class="string">"234"</span> ;  <span class="comment">//编译错误 p不能再指向别的</span></div><div class="line">*p = <span class="string">"111"</span> ;  <span class="comment">//无编译错误 可以改变指向的内容</span></div></pre></td></tr></table></figure>
 <p>上面两种等价，const修饰的是p变量而不是char，所以p is a const pointer to char，即为p是指向char的const指针。等号左边的变量p一旦指向了，就不能更改。</p>
-<p><strong>简单来理解就是const 修饰的对象不同，一个是修饰左值，一个修饰右值，<em> 就如一座大山，若const在 </em> 的左边，则修饰等号右边的值，若在 * 的右边，则修饰变量p，一旦初始化了就不能更改的指针。</strong></p>
+<p><strong>简单来理解就是const 修饰的对象不同，一个是修饰左值，一个修饰右值，* 就如一座大山，若const在 * 的左边，则修饰等号右边的值，若在 * 的右边，则修饰变量p，一旦初始化了就不能更改的指针。</strong></p>
 <h4 id="指向常量的常量指针"><a href="#指向常量的常量指针" class="headerlink" title="指向常量的常量指针"></a>指向常量的常量指针</h4><p>看了我上面的解释，应该知道这个怎么写了吧？没错就是下面那样:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> p =<span class="string">"123"</span>;</div><div class="line"><span class="comment">//char const * const p ="123";  //同上 等价</span></div></pre></td></tr></table></figure>
 <p>港真，这种变量真的没什么用….p因为常量指针，所以自身不能改变指向。p指向的内容是常量，所以p不能改变内容，所以感觉实用性不大，仅供学习参考。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上知识不是光看就能明白，还需要动手打一下验证一下！编程是一门实践性极强的技术。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/lz20120808/article/details/46662569" target="_blank" rel="external">const 修饰函数参数，返回值，函数体</a></p>
-<p><a href="http://blog.csdn.net/yingxunren/article/details/3968800" target="_blank" rel="external">const char<em>, char const</em>, char*const的区别</a></p>
+<p><a href="http://blog.csdn.net/yingxunren/article/details/3968800" target="_blank" rel="external">const char *, char const *, char * const的区别</a></p>
 <p><a href="http://www.cnblogs.com/yc_sunniwell/archive/2010/07/14/1777441.html" target="_blank" rel="external">C/C++中static关键字详解</a></p>
 <p><a href="http://blog.csdn.net/melody_fhm/article/details/6683504" target="_blank" rel="external">指针常量与常量指针</a></p>
 
@@ -278,7 +278,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-08-28T06:12:18.414Z" itemprop="dateUpdated">2017-08-28 14:12:18</time>
+    最后更新时间：<time datetime="2017-08-28T06:16:00.074Z" itemprop="dateUpdated">2017-08-28 14:16:00</time>
 </span><br>
 
 
