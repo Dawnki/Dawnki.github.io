@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-28T06:26:07.490Z</updated>
+  <updated>2017-08-28T06:29:20.823Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://dawnki.github.io/2017/08/28/c++%E5%8F%98%E9%87%8F%E7%AF%87/"/>
     <id>https://dawnki.github.io/2017/08/28/c++变量篇/</id>
     <published>2017-08-28T01:36:38.000Z</published>
-    <updated>2017-08-28T06:26:07.490Z</updated>
+    <updated>2017-08-28T06:29:20.823Z</updated>
     
     <content type="html"><![CDATA[<p>今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。</p>
 <table>
@@ -84,9 +84,9 @@
 <p>在此之前，先介绍一个声明指针变量的读法，有助于大家记忆。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * p;</div></pre></td></tr></table></figure>
 <p>从右往做读，* 读作pointer to意为指向。即变量p为指向char类型的指针(p is a pointer to char)</p>
-<h4 id="指向常量的指针"><a href="#指向常量的指针" class="headerlink" title="指向常量的指针"></a>指向常量的指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> * p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char const * p = "123";</span></div><div class="line"></div><div class="line">p = &amp;test ; <span class="comment">//p仍能指向别的 假设test为字符指针</span></div><div class="line">*p = <span class="string">"111"</span> ; <span class="comment">//编译错误 不能改变指向的内容</span></div></pre></td></tr></table></figure>
+<h4 id="指向常量的指针"><a href="#指向常量的指针" class="headerlink" title="指向常量的指针"></a>指向常量的指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> * p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char const * p = "123";</span></div><div class="line"></div><div class="line">p = &amp;test ; <span class="comment">//p仍能指向别的 假设&amp;test为字符串的首地址</span></div><div class="line">*p = <span class="string">"111"</span> ; <span class="comment">//编译错误 不能改变指向的内容</span></div></pre></td></tr></table></figure>
 <p>因为const可以放在类型的前面或者后面，所以上面两个意思等价。同为 p is a pointer to const char，即变量p是一个 指向const的char 指针。等号右边的内容为const不能改变。</p>
-<h4 id="常量指针"><a href="#常量指针" class="headerlink" title="常量指针"></a>常量指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * <span class="keyword">const</span> p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char * p const = "123";</span></div><div class="line"></div><div class="line">p = &amp;test ;  <span class="comment">//编译错误 p不能再指向别的 假设test为字符指针</span></div><div class="line">*p = <span class="string">"111"</span> ;  <span class="comment">//无编译错误 可以改变指向的内容</span></div></pre></td></tr></table></figure>
+<h4 id="常量指针"><a href="#常量指针" class="headerlink" title="常量指针"></a>常量指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * <span class="keyword">const</span> p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char * p const = "123";</span></div><div class="line"></div><div class="line">p = &amp;test ;  <span class="comment">//编译错误 p不能再指向别的 假设&amp;test为字符串的首地址</span></div><div class="line">*p = <span class="string">"111"</span> ;  <span class="comment">//无编译错误 可以改变指向的内容</span></div></pre></td></tr></table></figure>
 <p>上面两种等价，const修饰的是p变量而不是char，所以p is a const pointer to char，即为p是指向char的const指针。等号左边的变量p一旦指向了，就不能更改。</p>
 <p><strong>简单来理解就是const 修饰的对象不同，一个是修饰左值，一个修饰右值，* 就如一座大山，若const在 * 的左边，则修饰等号右边的值，若在 * 的右边，则修饰变量p，一旦初始化了就不能更改的指针。</strong></p>
 <h4 id="指向常量的常量指针"><a href="#指向常量的常量指针" class="headerlink" title="指向常量的常量指针"></a>指向常量的常量指针</h4><p>看了我上面的解释，应该知道这个怎么写了吧？没错就是下面那样:</p>
