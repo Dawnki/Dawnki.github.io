@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-28T06:16:00.074Z</updated>
+  <updated>2017-08-28T06:23:22.237Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://dawnki.github.io/2017/08/28/c++%E5%8F%98%E9%87%8F%E7%AF%87/"/>
     <id>https://dawnki.github.io/2017/08/28/c++变量篇/</id>
     <published>2017-08-28T01:36:38.000Z</published>
-    <updated>2017-08-28T06:16:00.074Z</updated>
+    <updated>2017-08-28T06:23:22.237Z</updated>
     
     <content type="html"><![CDATA[<p>今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。</p>
 <table>
