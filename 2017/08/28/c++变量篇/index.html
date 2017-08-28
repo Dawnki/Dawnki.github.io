@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>C++:变量篇 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="cpp,全局变量,静态变量,常量指针">
+    <meta name="description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
+<meta name="keywords" content="cpp,全局变量,静态变量,常量指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++:变量篇">
+<meta property="og:url" content="https://dawnki.github.io/2017/08/28/c++变量篇/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-28T06:12:18.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++:变量篇">
+<meta name="twitter:description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">C++:变量篇</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">C++:变量篇</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-28T01:36:38.000Z" itemprop="datePublished" class="page-time">
+  2017-08-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/C/">C++</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#全局变量与局部变量"><span class="post-toc-number">1.</span> <span class="post-toc-text">全局变量与局部变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#静态变量"><span class="post-toc-number">2.</span> <span class="post-toc-text">静态变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#const修饰的变量"><span class="post-toc-number">3.</span> <span class="post-toc-text">const修饰的变量</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修饰普通变量"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">修饰普通变量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修饰返回值"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">修饰返回值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修饰参数"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">修饰参数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修饰函数"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">修饰函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#const-char-char-const-char-const-傻傻分不清"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">const char* , char const* , char* const 傻傻分不清</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#指向常量的指针"><span class="post-toc-number">3.5.1.</span> <span class="post-toc-text">指向常量的指针</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#常量指针"><span class="post-toc-number">3.5.2.</span> <span class="post-toc-text">常量指针</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#指向常量的常量指针"><span class="post-toc-number">3.5.3.</span> <span class="post-toc-text">指向常量的常量指针</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-c++变量篇"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">C++:变量篇</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-28 09:36:38" datetime="2017-08-28T01:36:38.000Z"  itemprop="datePublished">2017-08-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/C/">C++</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">初始化默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">char</td>
+<td style="text-align:center">‘\0’</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">pointer</td>
+<td style="text-align:center">NULL</td>
+</tr>
+</tbody>
+</table>
+<p>C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有String类的实现。另外C++不适合做web开发很大一部分与其比较弱的字符串处理有关，毕竟web开发很大一部分都是跟字符串打交道比如最好的语言PHP(滑稽)。</p>
+<h2 id="全局变量与局部变量"><a href="#全局变量与局部变量" class="headerlink" title="全局变量与局部变量"></a>全局变量与局部变量</h2><p>简单的理解就是写在所有函数外部的就是全局变量，写在函数内部的就是局部变量，包括main函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a;   <span class="comment">//全局变量</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> c;  <span class="comment">//局部变量</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> b;  <span class="comment">//局部变量</span></div><div class="line">    call();</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>全局变量，一般情况下在被其他源文件include之后，可以直接使用，但前提是没有static关键字修饰。全局变量在本文件的哪个地方都能使用。</p>
+<p>局部变量，通常包括被调用函数内部声明定义的变量以及形参，其声明周期在被调用函数结束后销毁。</p>
+<h2 id="静态变量"><a href="#静态变量" class="headerlink" title="静态变量"></a>静态变量</h2><p>C++静态变量通常是指被static修饰的变量，这种变量在 <strong>程序运行之前就已经分配好内存</strong>，在程序结束时才释放。这中变量的内存被分配到全局静态区，由系统进行管控。除此之外，static关键字还有以下几种功能。</p>
+<ul>
+<li><p>static修饰全局变量，会使得该全局变量 <strong>只能在本文件中使用</strong> ，当其他源文件include了此文件后，不能使用该static修饰的全局变量。</p>
+</li>
+<li><p>static修饰局部变量，会使该局部变量只能限定在自己所在的作用域(即所在函数)，这和其他局部变量一样，但是唯一不同的是由于静态变量是 <strong>程序结束时才会进行回收</strong>，因此回收阶段不在所在函数退出调用时，即 <strong>一次分配全程有效</strong>，所以下次调用该静态变量所在函数时，该变量的值不会重新申请内存以及重新初始化。</p>
+</li>
+<li><p>static修饰的类成员变量，能在该类 <strong>所有所属的对象中共享</strong>。static修饰的类成员方法，<strong>不需该类实例化</strong> 就才能使用，直接 类::静态方法 即可使用。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> a ;   <span class="comment">//静态全局变量</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> b = <span class="number">0</span> ;   <span class="comment">//静态局部变量</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; b &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    b++;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c ;  <span class="comment">//静态局部变量</span></div><div class="line">    call();         <span class="comment">//输出0</span></div><div class="line">    call();         <span class="comment">//输出1</span></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="const修饰的变量"><a href="#const修饰的变量" class="headerlink" title="const修饰的变量"></a>const修饰的变量</h2><p>const原义是constant，意为永恒的，不变的。一看就觉得这个修饰词很强壮<del>Rua!</del>,这个const作用很大，可以修饰变量，修饰返回值，修饰参数，修饰函数。通常被它修饰过的多多少少代表着不会变化，不过具体情况具体分析。</p>
+<h3 id="修饰普通变量"><a href="#修饰普通变量" class="headerlink" title="修饰普通变量"></a>修饰普通变量</h3><p>被const修饰的普通变量就成为了C++中的常量，在声明一定要初始化。在代码里一旦修改了const修饰的变量会出现编译错误。另外，<strong>const修饰的位置可以在类型前面，也可以在类型后面，意义一致</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> a =<span class="number">3</span>;</div><div class="line"><span class="comment">//等同于 int const a=3；</span></div></pre></td></tr></table></figure>
+<h3 id="修饰返回值"><a href="#修饰返回值" class="headerlink" title="修饰返回值"></a>修饰返回值</h3><p>被const修饰的函数返回值，要分两种情况讨论。第一种是，如果返回值是非指针应用类型,那么它跟没有const修饰的函数返回值一样，没有特别的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">int</span> <span class="title">call</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// ....</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第二种情况是，如果返回值时指针类型，那么如果函数返回值（即指针）的内容不能被修改，<strong>该返回值只能被赋给加const修饰的同类型指针</strong>，否则会出现编译错误。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">call</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// .....</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* str= call();  <span class="comment">//str指针务必是const修饰的</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="修饰参数"><a href="#修饰参数" class="headerlink" title="修饰参数"></a>修饰参数</h3><p>对于非基础数据类型的输入参数，应该将“值传递”的方式改为“const 引用传递”，目的是 <strong>提高效率</strong>。例如将void Func(A a) 改为void Func(const A &amp;a)。这样既免去了对象的复制(临时对象的构造、复制、析构消耗时间)，又可以不改变原引用内容。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">(<span class="keyword">const</span> A &amp;a)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// your code</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于基础数据类型的输入参数，不要将“值传递”的方式改为“const 引用传递”。否则既达不到提高效率的目的，又降低了函数的可理解性。例如void Func(int x) 不应该改为void Func(const int &amp;x)。基础数据类型的参数不存在构造、析构的过程，而复制也非常快，“值传递”和“引用传递”的效率几乎相当。</p>
+<h3 id="修饰函数"><a href="#修饰函数" class="headerlink" title="修饰函数"></a>修饰函数</h3><p>在一个类成员函数中，如果被const修饰后，该成员函数 <strong>不能改变成员变量的内容</strong>，除非成员变量带有 <strong>mutable修饰符</strong>，否则会提示编译错误。另外，const修饰的位置在函数名(含参数)后。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">mutable</span> b;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">this</span>-&gt;b = <span class="number">3</span>;    <span class="comment">//可以修改</span></div><div class="line">        <span class="comment">// this-&gt;a =4;  不能修改</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="const-char-char-const-char-const-傻傻分不清"><a href="#const-char-char-const-char-const-傻傻分不清" class="headerlink" title="const char* , char const* , char* const 傻傻分不清"></a>const char* , char const* , char* const 傻傻分不清</h3><p>相信刚入门的小朋友肯定会对这几个变量的声明形式搞得头晕脑胀，下面就顺便说一下吧。</p>
+<p>在此之前，先介绍一个声明指针变量的读法，有助于大家记忆。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * p;</div></pre></td></tr></table></figure>
+<p>从右往做读，* 读作pointer to意为指向。即变量p为指向char类型的指针(p is a pointer to char)</p>
+<h4 id="指向常量的指针"><a href="#指向常量的指针" class="headerlink" title="指向常量的指针"></a>指向常量的指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> * p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char const * p = "123";</span></div><div class="line"></div><div class="line">p = <span class="string">"234"</span> ; <span class="comment">//p仍能指向别的</span></div><div class="line">*p = <span class="string">"111"</span> ; <span class="comment">//编译错误 不能改变指向的内容</span></div></pre></td></tr></table></figure>
+<p>因为const可以放在类型的前面或者后面，所以上面两个意思等价。同为 p is a pointer to const char，即变量p是一个 指向const的char 指针。等号右边的内容为const不能改变。</p>
+<h4 id="常量指针"><a href="#常量指针" class="headerlink" title="常量指针"></a>常量指针</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * <span class="keyword">const</span> p = <span class="string">"123"</span>;</div><div class="line"><span class="comment">//char * p const = "123";</span></div><div class="line"></div><div class="line">p = <span class="string">"234"</span> ;  <span class="comment">//编译错误 p不能再指向别的</span></div><div class="line">*p = <span class="string">"111"</span> ;  <span class="comment">//无编译错误 可以改变指向的内容</span></div></pre></td></tr></table></figure>
+<p>上面两种等价，const修饰的是p变量而不是char，所以p is a const pointer to char，即为p是指向char的const指针。等号左边的变量p一旦指向了，就不能更改。</p>
+<p><strong>简单来理解就是const 修饰的对象不同，一个是修饰左值，一个修饰右值，<em> 就如一座大山，若const在 </em> 的左边，则修饰等号右边的值，若在 * 的右边，则修饰变量p，一旦初始化了就不能更改的指针。</strong></p>
+<h4 id="指向常量的常量指针"><a href="#指向常量的常量指针" class="headerlink" title="指向常量的常量指针"></a>指向常量的常量指针</h4><p>看了我上面的解释，应该知道这个怎么写了吧？没错就是下面那样:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> p =<span class="string">"123"</span>;</div><div class="line"><span class="comment">//char const * const p ="123";  //同上 等价</span></div></pre></td></tr></table></figure>
+<p>港真，这种变量真的没什么用….p因为常量指针，所以自身不能改变指向。p指向的内容是常量，所以p不能改变内容，所以感觉实用性不大，仅供学习参考。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上知识不是光看就能明白，还需要动手打一下验证一下！编程是一门实践性极强的技术。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/lz20120808/article/details/46662569" target="_blank" rel="external">const 修饰函数参数，返回值，函数体</a></p>
+<p><a href="http://blog.csdn.net/yingxunren/article/details/3968800" target="_blank" rel="external">const char<em>, char const</em>, char*const的区别</a></p>
+<p><a href="http://www.cnblogs.com/yc_sunniwell/archive/2010/07/14/1777441.html" target="_blank" rel="external">C/C++中static关键字详解</a></p>
+<p><a href="http://blog.csdn.net/melody_fhm/article/details/6683504" target="_blank" rel="external">指针常量与常量指针</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-28T06:12:18.414Z" itemprop="dateUpdated">2017-08-28 14:12:18</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/全局变量/">全局变量</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/常量指针/">常量指针</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/静态变量/">静态变量</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/28/c++变量篇/&title=《C++:变量篇》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/28/c++变量篇/&title=《C++:变量篇》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/28/c++变量篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《C++:变量篇》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/28/c++变量篇/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/28/c++变量篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/26/c++:内存篇/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">C++:内存篇</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2017/08/28/c++变量篇/&title=《C++:变量篇》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2017/08/28/c++变量篇/&title=《C++:变量篇》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2017/08/28/c++变量篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《C++:变量篇》 — Dawnki's Blog&url=https://dawnki.github.io/2017/08/28/c++变量篇/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2017/08/28/c++变量篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIklEQVR42u3a0W7DIAwF0P7/T3evk6qm1zatFDg8TRkLnEyybMPjEY/ny/j//N2c1/nJ217nLxsYGBi3ZSTLXz9JNp0DeqtgYGCcwHgXwa63cv0kn5+s+2HPGBgYGMV0MA/TGBgYGL9hVGvMamGMgYGBkRex19tKNj1JOpfV4hgYGDdk5OHy9z9/5XwDAwPjVoxncfQCdC99LOwKAwNja0a+THXT1YPMKhsDA+McxqrLE9HXipPO6xULr8DAwNiCMWlpVZtfkwZcBMbAwNiU0Wt+5SG4GqxHoRYDA+MwRnJsmRef+aWx6hEFBgbGOYz8wlaS6uVXNFZd7MDAwDiHUa19r3nzxLGwBwwMjAMYvVZaFT9PEKN2GwYGxnaMXqurnLoVQ/bocBQDA2M7Rh5wJ1fHJmVw9IkxMDAOYOTXUpPtJmXnpFX3NsPFwMDYlJEkdkkArf5t8p5qoomBgbErY7JM3uhvtvt7/wcMDIztGNVjy7x8zZevJo4YGBgY1bZXL4yuOkj40DvEwMDYjjEf1XZ/9RNgYGBg9JaZhOYk6Sw0/jAwMDZlfCOk9q5oJCXx27dhYGBszegFuzx0lltmQftvErIxMDDuy8iDbHXJaso4OmbAwMA4gNHbYnXJSRL5AYmBgYERhM78yarLGY/kFxgYGEcy8gZZrwzuXR3DwMA4gZEfBixI44ptvsW1OAYGxg0Zk9dV5yRhNP8cGBgYBzD+ACwliYf8C9uGAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

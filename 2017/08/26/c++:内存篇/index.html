@@ -19,16 +19,16 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="cpp,内存泄露,内存分配">
+    <meta name="keywords" content="cpp,内存分配,内存泄露">
     <meta name="description" content="C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。 五种内存分配类型栈内存栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 由系统分配并且进行回收，效率较高但最大栈内存受到编译器限">
-<meta name="keywords" content="cpp,内存泄露,内存分配">
+<meta name="keywords" content="cpp,内存分配,内存泄露">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++:内存篇">
 <meta property="og:url" content="https://dawnki.github.io/2017/08/26/c++:内存篇/index.html">
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。 五种内存分配类型栈内存栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 由系统分配并且进行回收，效率较高但最大栈内存受到编译器限">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-26T18:29:07.556Z">
+<meta property="og:updated_time" content="2017-08-28T02:50:02.696Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++:内存篇">
 <meta name="twitter:description" content="C++的内存知识是关键中的关键，有一些C++的内存坑点，因为C++没有垃圾回收机制(Garbage Collection),因此稍不注意容易发生内存泄露等问题。接下来就说说内存的各种要点。 五种内存分配类型栈内存栈(stack)内存，编译根据代码来分配并释放，通常为代码的局部变量，函数形参等，其结构类型与数据结构的栈相似，先进后出。这种内存 由系统分配并且进行回收，效率较高但最大栈内存受到编译器限">
@@ -209,7 +209,7 @@
 <p>如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a;           <span class="comment">//全局变量</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> b;    <span class="comment">//全局静态变量</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> c;    <span class="comment">//局部静态变量</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这种变量只会申请一次，比如在函数A里申请了局部静态变量b，当下次再次调用A时，b仍是那个内存块。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">A</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a=<span class="number">0</span>;  <span class="comment">// 仅第一次申请内存并初始化时有效</span></div><div class="line">    a++;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 1</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">A</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> a=<span class="number">0</span>;  <span class="comment">// 程序运行前以及申请内存并初始化</span></div><div class="line">    a++;</div><div class="line">    <span class="keyword">return</span> a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 1</span></div><div class="line">    <span class="built_in">cout</span> &lt;&lt; A();   <span class="comment">// 输出 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="文字常量区"><a href="#文字常量区" class="headerlink" title="文字常量区"></a>文字常量区</h3><p>常量字符串存放的地方，由系统自行释放。有点像java中的字符串常量，因为同一段文字分配的是同一个内存区。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> *p = <span class="string">"hello,world!"</span>;  <span class="comment">//字符指针p在栈区 “hello,world!\0”在文字常量区</span></div></pre></td></tr></table></figure>
 <h3 id="程序代码区"><a href="#程序代码区" class="headerlink" title="程序代码区"></a>程序代码区</h3><p>用于存放函数体的而二进制代码。</p>
@@ -236,7 +236,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-08-26T18:29:07.556Z" itemprop="dateUpdated">2017-08-27 02:29:07</time>
+    最后更新时间：<time datetime="2017-08-28T02:50:02.696Z" itemprop="dateUpdated">2017-08-28 10:50:02</time>
 </span><br>
 
 
@@ -312,7 +312,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/28/c++变量篇/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">C++:变量篇</h4>
+      </a>
+    </div>
   
 
   

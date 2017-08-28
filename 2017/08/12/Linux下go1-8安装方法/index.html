@@ -19,9 +19,9 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="Linux,Go1.8">
+    <meta name="keywords" content="Go1.8,Linux">
     <meta name="description" content="之前迷上了神奇的Go语言，就在windows上装上了Go1.8，挺顺风顺水的，不过最近换上了Linux时，编译安装就炸了，各种报错。今天就留个记录，备个份！ 编译安装Go1.8的主体思路:  从github中clone下来 确保linux系统安装较新的libc,gcc(apt,yum随便搞上) 切换库分支至1.4(刚clone下来的库)，去到src目录，执行all.bash 把编译安装完的1.4目">
-<meta name="keywords" content="Linux,Go1.8">
+<meta name="keywords" content="Go1.8,Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下go1.8安装方法">
 <meta property="og:url" content="https://dawnki.github.io/2017/08/12/Linux下go1-8安装方法/index.html">
@@ -214,7 +214,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># cmd/pprof</div><div class="line">.../go1.4/pkg/linux_amd64/runtime/cgo.a(_all.o): unknown relocation type 42; compiled without -fpic?</div><div class="line">.../go1.4/pkg/linux_amd64/runtime/cgo.a(_all.o): unknown relocation type 42; compiled without -fpic?</div><div class="line">runtime/cgo(.text): unexpected relocation type 298</div><div class="line">runtime/cgo(.text): unexpected relocation type 298</div></pre></td></tr></table></figure>
 <p> <a href="https://stackoverflow.com/questions/37192696/error-building-go-compiler-from-source" target="_blank" rel="external">拿去不用谢我.jpg</a></p>
 <p> 所以解决方案是</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/go1.4/src</span></div><div class="line"><span class="meta">$</span><span class="bash"> CGO_ENABLED=0 ./make.bash</span></div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/go1.4/src</div><div class="line"><span class="meta">$</span> CGO_ENABLED=0 ./make.bash</div></pre></td></tr></table></figure>
 <blockquote>
 <p>导致的原因是:CGO_ENABLED: Controls cgo usage during the build. Set it to 1 to include all cgo related files, .c and .go file with “cgo” build directive, in the build. Set it to 0 to ignore them.在构建过程中控制cgo的使用。当设置为1，在构建时，会包含所有cgo相关的文件，如带有”cgo”编译指令的.c和.go文件。当设置为0，则忽略它们（即禁用CGO）</p>
 </blockquote>
