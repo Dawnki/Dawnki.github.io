@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Dawnki&#39;s Blog">
 <meta property="og:description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-28T06:29:20.823Z">
+<meta property="og:updated_time" content="2017-08-29T05:21:58.099Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++:变量篇">
 <meta name="twitter:description" content="今天来讲讲C++的变量知识。C++的基础类型与C一样，都有int，char，float，double,pointer,下面是未初始化时，各个基础类型的初始值。    数据类型 初始化默认值     int 0   char ‘\0’   float 0   double 0   pointer NULL    C++没有字符串基础类型，字符串则是由字符数组表示，这点跟C一致。不过C++标准库有St">
@@ -253,7 +253,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">(<span class="keyword">const</span> A &amp;a)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// your code</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>对于基础数据类型的输入参数，不要将“值传递”的方式改为“const 引用传递”。否则既达不到提高效率的目的，又降低了函数的可理解性。例如void Func(int x) 不应该改为void Func(const int &amp;x)。基础数据类型的参数不存在构造、析构的过程，而复制也非常快，“值传递”和“引用传递”的效率几乎相当。</p>
 <h3 id="修饰函数"><a href="#修饰函数" class="headerlink" title="修饰函数"></a>修饰函数</h3><p>在一个类成员函数中，如果被const修饰后，该成员函数 <strong>不能改变成员变量的内容</strong>，除非成员变量带有 <strong>mutable修饰符</strong>，否则会提示编译错误。另外，const修饰的位置在函数名(含参数)后。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">mutable</span> b;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">this</span>-&gt;b = <span class="number">3</span>;    <span class="comment">//可以修改</span></div><div class="line">        <span class="comment">// this-&gt;a =4;  不能修改</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">mutable</span> <span class="keyword">int</span> b;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">this</span>-&gt;b = <span class="number">3</span>;    <span class="comment">//可以修改</span></div><div class="line">        <span class="comment">// this-&gt;a =4;  不能修改</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="const-char-char-const-char-const-傻傻分不清"><a href="#const-char-char-const-char-const-傻傻分不清" class="headerlink" title="const char* , char const* , char* const 傻傻分不清"></a>const char* , char const* , char* const 傻傻分不清</h3><p>相信刚入门的小朋友肯定会对这几个变量的声明形式搞得头晕脑胀，下面就顺便说一下吧。</p>
 <p>在此之前，先介绍一个声明指针变量的读法，有助于大家记忆。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> * p;</div></pre></td></tr></table></figure>
@@ -278,7 +278,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-08-28T06:29:20.823Z" itemprop="dateUpdated">2017-08-28 14:29:20</time>
+    最后更新时间：<time datetime="2017-08-29T05:21:58.099Z" itemprop="dateUpdated">2017-08-29 13:21:58</time>
 </span><br>
 
 
