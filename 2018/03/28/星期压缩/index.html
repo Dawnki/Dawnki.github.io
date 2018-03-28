@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>星期压缩 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="算法,编程题">
+    <meta name="description" content="百词斩的第二道编程题，题目不难，事后码出来了，留个档。 题目:给定一组1~7组成(包含1和7)的有序且非重复数字数组, 每个数字的字面值n表示一周里面的第n天, 要求按照如下规则压缩后, 输出压缩以后的描述: 1) 对于三个及三个以上的连续数字, 需要压缩成”起始-结束”的格式; 2) 对于三个以下的连续或不连续数字, 不需要压缩, 按照原样输出; 输入:第一行输入n，为数组的长度，比如5天的话，">
+<meta name="keywords" content="算法,编程题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="星期压缩">
+<meta property="og:url" content="https://dawnki.github.io/2018/03/28/星期压缩/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="百词斩的第二道编程题，题目不难，事后码出来了，留个档。 题目:给定一组1~7组成(包含1和7)的有序且非重复数字数组, 每个数字的字面值n表示一周里面的第n天, 要求按照如下规则压缩后, 输出压缩以后的描述: 1) 对于三个及三个以上的连续数字, 需要压缩成”起始-结束”的格式; 2) 对于三个以下的连续或不连续数字, 不需要压缩, 按照原样输出; 输入:第一行输入n，为数组的长度，比如5天的话，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-28T07:44:33.708Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="星期压缩">
+<meta name="twitter:description" content="百词斩的第二道编程题，题目不难，事后码出来了，留个档。 题目:给定一组1~7组成(包含1和7)的有序且非重复数字数组, 每个数字的字面值n表示一周里面的第n天, 要求按照如下规则压缩后, 输出压缩以后的描述: 1) 对于三个及三个以上的连续数字, 需要压缩成”起始-结束”的格式; 2) 对于三个以下的连续或不连续数字, 不需要压缩, 按照原样输出; 输入:第一行输入n，为数组的长度，比如5天的话，">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">星期压缩</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">星期压缩</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-28T07:32:31.000Z" itemprop="datePublished" class="page-time">
+  2018-03-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/算法/">算法</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#题目"><span class="post-toc-number">1.</span> <span class="post-toc-text">题目:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#输入"><span class="post-toc-number">2.</span> <span class="post-toc-text">输入:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#输出："><span class="post-toc-number">3.</span> <span class="post-toc-text">输出：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#具体Java代码实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">具体Java代码实现:</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-星期压缩"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">星期压缩</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-28 15:32:31" datetime="2018-03-28T07:32:31.000Z"  itemprop="datePublished">2018-03-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/算法/">算法</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>百词斩的第二道编程题，题目不难，事后码出来了，留个档。</p>
+<h3 id="题目"><a href="#题目" class="headerlink" title="题目:"></a>题目:</h3><p>给定一组1~7组成(包含1和7)的有序且非重复数字数组, 每个数字的字面值n表示一周里面的第n天, 要求按照如下规则压缩后, 输出压缩以后的描述:</p>
+<p>1) 对于三个及三个以上的连续数字, 需要压缩成”起始-结束”的格式;</p>
+<p>2) 对于三个以下的连续或不连续数字, 不需要压缩, 按照原样输出;</p>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入:"></a>输入:</h3><p>第一行输入n，为数组的长度，比如5天的话，n=5，接下几行为具体的星期</p>
+<p>如：</p>
+<p>3   (3天)<br>1   (星期一)<br>2   (星期二)<br>4   (星期四)</p>
+<h3 id="输出："><a href="#输出：" class="headerlink" title="输出："></a>输出：</h3><p>压缩后的数字序列，序列的每一段之间使用英文逗号分隔。</p>
+<p>如输入：</p>
+<p>5<br>1<br>2<br>4<br>5<br>6</p>
+<p>则输出：</p>
+<p>1，2，4-6</p>
+<h3 id="具体Java代码实现"><a href="#具体Java代码实现" class="headerlink" title="具体Java代码实现:"></a>具体Java代码实现:</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n = in.nextInt();</div><div class="line">        <span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</div><div class="line">            array[i] = in.nextInt();</div><div class="line">        &#125;</div><div class="line">        check(array);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</div><div class="line">        <span class="comment">//记录连续数的开头值</span></div><div class="line">        <span class="keyword">int</span> min = <span class="number">0</span>;</div><div class="line">        <span class="comment">//标记当前数是否与前一个连续</span></div><div class="line">        <span class="keyword">int</span> flag = <span class="number">0</span>;</div><div class="line">        <span class="comment">//连续数的个数 题目要求超过3个才用 "-" 连接</span></div><div class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">        <span class="comment">//记录结果</span></div><div class="line">        String result = <span class="string">""</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;</div><div class="line">            <span class="comment">//遍历到最后一个数的情况</span></div><div class="line">            <span class="keyword">if</span> (i == array.length - <span class="number">1</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;   <span class="comment">//与前面的数不连续</span></div><div class="line">                    result += array[i];</div><div class="line">                &#125; <span class="keyword">else</span> &#123;   <span class="comment">//与前面的数连续</span></div><div class="line">                    <span class="keyword">if</span> (count &gt;= <span class="number">2</span>) &#123;   <span class="comment">//超过3个连续数 用 - 连接</span></div><div class="line">                        result += min + <span class="string">"-"</span> + array[i];</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        result += min + <span class="string">","</span> + array[i];</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//非最后一个数</span></div><div class="line">            <span class="keyword">if</span> (array[i] + <span class="number">1</span> != array[i + <span class="number">1</span>]) &#123;</div><div class="line">                <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;  <span class="comment">//当前数前后都不连续</span></div><div class="line">                    result += array[i] + <span class="string">","</span>;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;  <span class="comment">//当前数与前一个连续但与后一个不连续的情况</span></div><div class="line">                    <span class="keyword">if</span> (count &gt;= <span class="number">2</span>) &#123;</div><div class="line">                        result += min + <span class="string">"-"</span> + array[i] + <span class="string">","</span>;</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        result += min + <span class="string">","</span> + array[i] + <span class="string">","</span>;</div><div class="line">                    &#125;</div><div class="line">                    <span class="comment">//重置计算</span></div><div class="line">                    min = <span class="number">0</span>;</div><div class="line">                    count = <span class="number">0</span>;</div><div class="line">                    flag = <span class="number">0</span>;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;  <span class="comment">//当前数与前一个不连续与后一个连续</span></div><div class="line">                    min = array[i];</div><div class="line">                    count = <span class="number">1</span>;</div><div class="line">                    flag = <span class="number">1</span>;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;   <span class="comment">//当前数前后都连续</span></div><div class="line">                    count++;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        System.out.println(result);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-03-28T07:44:33.708Z" itemprop="dateUpdated">2018-03-28 15:44:33</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编程题/">编程题</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/03/28/星期压缩/&title=《星期压缩》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/03/28/星期压缩/&title=《星期压缩》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/03/28/星期压缩/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《星期压缩》 — Dawnki's Blog&url=https://dawnki.github.io/2018/03/28/星期压缩/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/03/28/星期压缩/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/10/09/docker实践/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">docker实践</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2018</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/03/28/星期压缩/&title=《星期压缩》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/03/28/星期压缩/&title=《星期压缩》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/03/28/星期压缩/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《星期压缩》 — Dawnki's Blog&url=https://dawnki.github.io/2018/03/28/星期压缩/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/03/28/星期压缩/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIklEQVR42u3aQY6DMAwF0N7/0p1tpSnMtw0jkbysKtoSHgvLdvx6xev9sT6vHP3m9zr/5dEuFy8MDIzHMpLtz69c9a/eLhgYGPswjiLY0edeCE4C6/k9D69jYGBgBOlaL4BiYGBg3Bdwq2VnTsLAwMCYFLHnj5W355I731iLY2BgPJCRd93///Mt5xsYGBiPYryLq9d6yx/r3VoYGBhrMyattKQ0zRO+pKj+IzHFwMBYmjFPCifbVF/BjbktBgbGoxiTQYrePScDHxgYGDswkkTtqqGu/NtyqMXAwFiUcdXAVn6cWY39SejHwMBYm5G35vMytZdQNkfBMDAwNmBUw1nhQLHVsOuFbAwMjB0Y1QetPnQyupGniV9iLAYGxpaMq5K8ycFAISXFwMBYmlE9dOx9W4XdeO6BgYHxQEae/OVDq5Px1urx55daHAMDYzlGfjDZG8KoFsPltK96voqBgfFARvIQ84I2b+o1gzsGBsbSjLwc7T3EZDgjf1kYGBj7MKqAaquu2lZrNt0wMDCWZuSJWpXawyfjHRgYGDszqgE32XI0MJHsgoGBsSjjXVy9QFnFVMtjDAyMtRm9YNcrO6thPT9excDA2IGRj0HMC9deKRu9VgwMjA0Y+bhYtXydp54REgMDA6M1TjFpzJVDNgYGBsZp2tcbv6jibwm4GBgYj2IkRWw1yeslf/kwBwYGxj6M3u2qTbQkoFdfBwYGxgaMH7VjiYe2Wq6KAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

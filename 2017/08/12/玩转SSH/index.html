@@ -205,23 +205,23 @@
 <li>修改bashrc，自定义自己的 <del>骚操作</del> 命令，简化命令</li>
 </ol>
 <h2 id="开工"><a href="#开工" class="headerlink" title="开工"></a>开工</h2><h3 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h3><p>老套路</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa</span></div></pre></td></tr></table></figure>
 <p>三个回车，ssh公钥私钥就搞到手了。</p>
 <p>此时，公私钥存放的位置时用户目录的.ssh文件夹</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></div></pre></td></tr></table></figure>
 <p>私钥存着不管，把公钥内容拿了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cat id_rsa.pub</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> cat id_rsa.pub</span></div></pre></td></tr></table></figure>
 <h3 id="设置被登录服务器的授权key"><a href="#设置被登录服务器的授权key" class="headerlink" title="设置被登录服务器的授权key"></a>设置被登录服务器的授权key</h3><p>登录服务器，并且找到</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div><div class="line"><span class="meta">$</span> vim authorized_keys</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></div><div class="line"><span class="meta">$</span><span class="bash"> vim authorized_keys</span></div></pre></td></tr></table></figure>
 <p>此时将你的ssh公钥添加到授权key文件中</p>
 <p>然后回到本机，先ssh登录一波机器，然后之后就能免密码登录了。</p>
 <blockquote>
 <p>也可以用scp直接传公钥到服务器,具体命令 scp ~/.ssh/id_rsa.pub server_user_name@server_ip:server_targer_path ,具体内容根据自己实际情况填写</p>
 </blockquote>
 <h3 id="设置命令别名，简化命令"><a href="#设置命令别名，简化命令" class="headerlink" title="设置命令别名，简化命令"></a>设置命令别名，简化命令</h3><p>设置命令别名(alias)，能够有效减少命令的长度，提高工作效率</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vim ~/.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> vim ~/.bashrc</span></div></pre></td></tr></table></figure>
 <p>在里面找个空白位置添加上</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> My aliases</div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span> eg  alias dawnki='ssh root@123.123.123.123'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> My aliases</span></div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span><span class="bash"> eg  <span class="built_in">alias</span> dawnki=<span class="string">'ssh root@123.123.123.123'</span></span></div></pre></td></tr></table></figure>
 <p>然后保存并退出，执行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source .bashrc</div></pre></td></tr></table></figure>
 <p>接下来你就可以用到别名命令了</p>
@@ -383,7 +383,7 @@
     <div class="bottom">
         <p>
             <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
-            <span>Dawnki &copy; 2015 - 2017</span>
+            <span>Dawnki &copy; 2015 - 2018</span>
         </p>
     </div>
 </footer>

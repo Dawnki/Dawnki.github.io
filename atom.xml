@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dawnki.github.io/"/>
-  <updated>2017-08-29T05:21:58.100Z</updated>
+  <updated>2018-03-28T07:44:33.708Z</updated>
   <id>https://dawnki.github.io/</id>
   
   <author>
@@ -15,6 +15,64 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>星期压缩</title>
+    <link href="https://dawnki.github.io/2018/03/28/%E6%98%9F%E6%9C%9F%E5%8E%8B%E7%BC%A9/"/>
+    <id>https://dawnki.github.io/2018/03/28/星期压缩/</id>
+    <published>2018-03-28T07:32:31.000Z</published>
+    <updated>2018-03-28T07:44:33.708Z</updated>
+    
+    <content type="html"><![CDATA[<p>百词斩的第二道编程题，题目不难，事后码出来了，留个档。</p><h3 id="题目"><a href="#题目" class="headerlink" title="题目:"></a>题目:</h3><p>给定一组1~7组成(包含1和7)的有序且非重复数字数组, 每个数字的字面值n表示一周里面的第n天, 要求按照如下规则压缩后, 输出压缩以后的描述:</p><p>1) 对于三个及三个以上的连续数字, 需要压缩成”起始-结束”的格式;</p><p>2) 对于三个以下的连续或不连续数字, 不需要压缩, 按照原样输出;</p><h3 id="输入"><a href="#输入" class="headerlink" title="输入:"></a>输入:</h3><p>第一行输入n，为数组的长度，比如5天的话，n=5，接下几行为具体的星期</p><p>如：</p><p>3   (3天)<br>1   (星期一)<br>2   (星期二)<br>4   (星期四)</p><h3 id="输出："><a href="#输出：" class="headerlink" title="输出："></a>输出：</h3><p>压缩后的数字序列，序列的每一段之间使用英文逗号分隔。</p><p>如输入：</p><p>5<br>1<br>2<br>4<br>5<br>6</p><p>则输出：</p><p>1，2，4-6</p><h3 id="具体Java代码实现"><a href="#具体Java代码实现" class="headerlink" title="具体Java代码实现:"></a>具体Java代码实现:</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</div><div class="line">        <span class="keyword">int</span> n = in.nextInt();</div><div class="line">        <span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</div><div class="line">            array[i] = in.nextInt();</div><div class="line">        &#125;</div><div class="line">        check(array);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</div><div class="line">        <span class="comment">//记录连续数的开头值</span></div><div class="line">        <span class="keyword">int</span> min = <span class="number">0</span>;</div><div class="line">        <span class="comment">//标记当前数是否与前一个连续</span></div><div class="line">        <span class="keyword">int</span> flag = <span class="number">0</span>;</div><div class="line">        <span class="comment">//连续数的个数 题目要求超过3个才用 "-" 连接</span></div><div class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">        <span class="comment">//记录结果</span></div><div class="line">        String result = <span class="string">""</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++) &#123;</div><div class="line">            <span class="comment">//遍历到最后一个数的情况</span></div><div class="line">            <span class="keyword">if</span> (i == array.length - <span class="number">1</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;   <span class="comment">//与前面的数不连续</span></div><div class="line">                    result += array[i];</div><div class="line">                &#125; <span class="keyword">else</span> &#123;   <span class="comment">//与前面的数连续</span></div><div class="line">                    <span class="keyword">if</span> (count &gt;= <span class="number">2</span>) &#123;   <span class="comment">//超过3个连续数 用 - 连接</span></div><div class="line">                        result += min + <span class="string">"-"</span> + array[i];</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        result += min + <span class="string">","</span> + array[i];</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//非最后一个数</span></div><div class="line">            <span class="keyword">if</span> (array[i] + <span class="number">1</span> != array[i + <span class="number">1</span>]) &#123;</div><div class="line">                <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;  <span class="comment">//当前数前后都不连续</span></div><div class="line">                    result += array[i] + <span class="string">","</span>;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;  <span class="comment">//当前数与前一个连续但与后一个不连续的情况</span></div><div class="line">                    <span class="keyword">if</span> (count &gt;= <span class="number">2</span>) &#123;</div><div class="line">                        result += min + <span class="string">"-"</span> + array[i] + <span class="string">","</span>;</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        result += min + <span class="string">","</span> + array[i] + <span class="string">","</span>;</div><div class="line">                    &#125;</div><div class="line">                    <span class="comment">//重置计算</span></div><div class="line">                    min = <span class="number">0</span>;</div><div class="line">                    count = <span class="number">0</span>;</div><div class="line">                    flag = <span class="number">0</span>;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;  <span class="comment">//当前数与前一个不连续与后一个连续</span></div><div class="line">                    min = array[i];</div><div class="line">                    count = <span class="number">1</span>;</div><div class="line">                    flag = <span class="number">1</span>;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;   <span class="comment">//当前数前后都连续</span></div><div class="line">                    count++;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        System.out.println(result);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;百词斩的第二道编程题，题目不难，事后码出来了，留个档。&lt;/p&gt;
+&lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目:&quot;&gt;&lt;/a&gt;题目:&lt;/h3&gt;&lt;p&gt;给定一组1~7组成(包含1和7)的有序且非重复数字数组, 每个数字
+      
+    
+    </summary>
+    
+      <category term="算法" scheme="https://dawnki.github.io/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="https://dawnki.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="编程题" scheme="https://dawnki.github.io/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker实践</title>
+    <link href="https://dawnki.github.io/2017/10/09/docker%E5%AE%9E%E8%B7%B5/"/>
+    <id>https://dawnki.github.io/2017/10/09/docker实践/</id>
+    <published>2017-10-09T05:20:45.000Z</published>
+    <updated>2017-10-24T17:05:34.026Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近忙于工作，荒废了博客，在此反省一波～～好了，今天聊聊docker。docker作为一种快速部署生产环境的工具，利用了其自动化的优点，减少在部署中人为繁琐操作，从而提高了部署环境的速度以及准确度，在部署服务器集群中尤为便利，今天就简单入门一下docker吧！</p><h2 id="Docker基本概念"><a href="#Docker基本概念" class="headerlink" title="Docker基本概念"></a>Docker基本概念</h2><p>  入门Docker的初心者来说肯定要面对这三个名词，镜像(Image)，容器(Container)，仓库(Repository)。</p><p>  镜像就好比我们装系统时的镜像，包含着原始系统，镜像一般要求比较干净，比如一个nginx镜像，一个php-fpm容器这样子，负责不同共功能的要将镜像划分开。容器则是我们实际的操作环境，容器是基于镜像构建，容器是镜像的示例，就如对象是类的实例一样。而仓库的话是用来存放镜像的，仓库有分私人仓库与公有仓库，公有仓库中有许多官方镜像，比如redis，nginx等等。</p><h2 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h2><ul><li>镜像类 Image</li></ul><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull &lt;image&gt;</div></pre></td></tr></table></figure><p>用于从网络拉取镜像，比如想要拉取nginx镜像时，就打docker pull nginx，默认拉取最新版本，如需拉取其他版本，可使用docker pull nginx:xxxx</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker images</div></pre></td></tr></table></figure><p>用于列出本地已拉取的镜像</p><ul><li>容器类 Container</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近忙于工作，荒废了博客，在此反省一波～～好了，今天聊聊docker。docker作为一种快速部署生产环境的工具，利用了其自动化的优点，减少在部署中人为繁琐操作，从而提高了部署环境的速度以及准确度，在部署服务器集群中尤为便利，今天就简单入门一下docker吧！&lt;/p&gt;
+&lt;h
+      
+    
+    </summary>
+    
+      <category term="系统部署" scheme="https://dawnki.github.io/categories/%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2/"/>
+    
+    
+      <category term="docker" scheme="https://dawnki.github.io/tags/docker/"/>
+    
+      <category term="部署技术" scheme="https://dawnki.github.io/tags/%E9%83%A8%E7%BD%B2%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="docker-composer" scheme="https://dawnki.github.io/tags/docker-composer/"/>
+    
+  </entry>
   
   <entry>
     <title>C++:变量篇</title>
@@ -177,7 +235,7 @@
     <published>2017-08-12T04:30:03.000Z</published>
     <updated>2017-08-12T05:59:52.565Z</updated>
     
-    <content type="html"><![CDATA[<p>我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？</p><p>  <strong>答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置</strong></p><h2 id="主体思路"><a href="#主体思路" class="headerlink" title="主体思路"></a>主体思路</h2><ol><li>登录方先生成SSH密钥和公钥</li><li>将公钥内容添加到被被登录方的authorized_keys中</li><li>先登录一波，记录下。此时以后登录就能免密码了</li><li>修改bashrc，自定义自己的 <del>骚操作</del> 命令，简化命令</li></ol><h2 id="开工"><a href="#开工" class="headerlink" title="开工"></a>开工</h2><h3 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h3><p>老套路</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ssh-keygen -t rsa</div></pre></td></tr></table></figure><p>三个回车，ssh公钥私钥就搞到手了。</p><p>此时，公私钥存放的位置时用户目录的.ssh文件夹</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div></pre></td></tr></table></figure><p>私钥存着不管，把公钥内容拿了</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cat id_rsa.pub</div></pre></td></tr></table></figure><h3 id="设置被登录服务器的授权key"><a href="#设置被登录服务器的授权key" class="headerlink" title="设置被登录服务器的授权key"></a>设置被登录服务器的授权key</h3><p>登录服务器，并且找到</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> cd ~/.ssh</div><div class="line"><span class="meta">$</span> vim authorized_keys</div></pre></td></tr></table></figure><p>此时将你的ssh公钥添加到授权key文件中</p><p>然后回到本机，先ssh登录一波机器，然后之后就能免密码登录了。</p><blockquote><p>也可以用scp直接传公钥到服务器,具体命令 scp ~/.ssh/id_rsa.pub server_user_name@server_ip:server_targer_path ,具体内容根据自己实际情况填写</p></blockquote><h3 id="设置命令别名，简化命令"><a href="#设置命令别名，简化命令" class="headerlink" title="设置命令别名，简化命令"></a>设置命令别名，简化命令</h3><p>设置命令别名(alias)，能够有效减少命令的长度，提高工作效率</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vim ~/.bashrc</div></pre></td></tr></table></figure><p>在里面找个空白位置添加上</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> My aliases</div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span> eg  alias dawnki='ssh root@123.123.123.123'</div></pre></td></tr></table></figure><p>然后保存并退出，执行</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source .bashrc</div></pre></td></tr></table></figure><p>接下来你就可以用到别名命令了</p><p>就上面那个例子，免登陆+别名，我直接打短命令就能直接ssh登录到服务器了，大大提高工作效率</p><p>如果你想要原始命令只需在命令前加反斜杠</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\ls</div></pre></td></tr></table></figure><blockquote><p>若要每次登入就自动生效别名，则把别名加在/etc/profile或~/.bashrc中。然后# source ~/.bashrc。若要让每一位用户都生效别名，则把别名加在/etc/bashrc最后面，然后# source /etc/bashrc。</p></blockquote><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  还有其他短命令就自己自定义吧！！不过 <strong>刚入门linux</strong> 的小伙伴还是先熟悉命令在偷懒，不然连原始命令都忘了( ⊙ o ⊙ )啊！</p>]]></content>
+    <content type="html"><![CDATA[<p>我们知道，连接linux服务器最好用的是ssh，linux机器连接linux机器，直接使用ssh命令即可，不过每次都要一堆登录参数，也是十分麻烦，最重要的是ssh连接时需要填写要登录服务器的ip，ip什么的又难记，难免会影响到工作效率，那有没有办法像window上的xshell一样，免登陆密码，并且登录时命令不用这么复杂呢？</p><p>  <strong>答案是有的！今天就讲讲SSH免登录密码+Bash里的alias配置</strong></p><h2 id="主体思路"><a href="#主体思路" class="headerlink" title="主体思路"></a>主体思路</h2><ol><li>登录方先生成SSH密钥和公钥</li><li>将公钥内容添加到被被登录方的authorized_keys中</li><li>先登录一波，记录下。此时以后登录就能免密码了</li><li>修改bashrc，自定义自己的 <del>骚操作</del> 命令，简化命令</li></ol><h2 id="开工"><a href="#开工" class="headerlink" title="开工"></a>开工</h2><h3 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h3><p>老套路</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa</span></div></pre></td></tr></table></figure><p>三个回车，ssh公钥私钥就搞到手了。</p><p>此时，公私钥存放的位置时用户目录的.ssh文件夹</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></div></pre></td></tr></table></figure><p>私钥存着不管，把公钥内容拿了</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> cat id_rsa.pub</span></div></pre></td></tr></table></figure><h3 id="设置被登录服务器的授权key"><a href="#设置被登录服务器的授权key" class="headerlink" title="设置被登录服务器的授权key"></a>设置被登录服务器的授权key</h3><p>登录服务器，并且找到</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></div><div class="line"><span class="meta">$</span><span class="bash"> vim authorized_keys</span></div></pre></td></tr></table></figure><p>此时将你的ssh公钥添加到授权key文件中</p><p>然后回到本机，先ssh登录一波机器，然后之后就能免密码登录了。</p><blockquote><p>也可以用scp直接传公钥到服务器,具体命令 scp ~/.ssh/id_rsa.pub server_user_name@server_ip:server_targer_path ,具体内容根据自己实际情况填写</p></blockquote><h3 id="设置命令别名，简化命令"><a href="#设置命令别名，简化命令" class="headerlink" title="设置命令别名，简化命令"></a>设置命令别名，简化命令</h3><p>设置命令别名(alias)，能够有效减少命令的长度，提高工作效率</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> vim ~/.bashrc</span></div></pre></td></tr></table></figure><p>在里面找个空白位置添加上</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> My aliases</span></div><div class="line">alias your_command='ssh server_user_name@server_ip' #里面的内容根据自己实际情况填写</div><div class="line"><span class="meta">#</span><span class="bash"> eg  <span class="built_in">alias</span> dawnki=<span class="string">'ssh root@123.123.123.123'</span></span></div></pre></td></tr></table></figure><p>然后保存并退出，执行</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source .bashrc</div></pre></td></tr></table></figure><p>接下来你就可以用到别名命令了</p><p>就上面那个例子，免登陆+别名，我直接打短命令就能直接ssh登录到服务器了，大大提高工作效率</p><p>如果你想要原始命令只需在命令前加反斜杠</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\ls</div></pre></td></tr></table></figure><blockquote><p>若要每次登入就自动生效别名，则把别名加在/etc/profile或~/.bashrc中。然后# source ~/.bashrc。若要让每一位用户都生效别名，则把别名加在/etc/bashrc最后面，然后# source /etc/bashrc。</p></blockquote><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  还有其他短命令就自己自定义吧！！不过 <strong>刚入门linux</strong> 的小伙伴还是先熟悉命令在偷懒，不然连原始命令都忘了( ⊙ o ⊙ )啊！</p>]]></content>
     
     <summary type="html">
     
@@ -373,9 +431,9 @@
       <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
     
     
-      <category term="JWT" scheme="https://dawnki.github.io/tags/JWT/"/>
-    
       <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
+    
+      <category term="JWT" scheme="https://dawnki.github.io/tags/JWT/"/>
     
       <category term="Tymon/jwt-auth" scheme="https://dawnki.github.io/tags/Tymon-jwt-auth/"/>
     
@@ -433,9 +491,9 @@
       <category term="服务器部署" scheme="https://dawnki.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/"/>
     
     
-      <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
-    
       <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
+    
+      <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
     
   </entry>
   
@@ -461,11 +519,11 @@
       <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
     
     
-      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
+      <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
     
       <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
     
-      <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
+      <category term="Linux" scheme="https://dawnki.github.io/tags/Linux/"/>
     
       <category term="Redis" scheme="https://dawnki.github.io/tags/Redis/"/>
     
@@ -522,9 +580,9 @@
       <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
     
     
-      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
-    
       <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
+    
+      <category term="Laravel" scheme="https://dawnki.github.io/tags/Laravel/"/>
     
       <category term="链式操作" scheme="https://dawnki.github.io/tags/%E9%93%BE%E5%BC%8F%E6%93%8D%E4%BD%9C/"/>
     
@@ -552,67 +610,9 @@
       <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
     
     
+      <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
+    
       <category term="Phar" scheme="https://dawnki.github.io/tags/Phar/"/>
-    
-      <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>(转) 2017年PHP程序员未来路在何方</title>
-    <link href="https://dawnki.github.io/2017/07/01/2017PHP%E7%A8%8B%E5%BA%8F%E5%87%BA%E8%B7%AF/"/>
-    <id>https://dawnki.github.io/2017/07/01/2017PHP程序出路/</id>
-    <published>2017-07-01T09:19:41.000Z</published>
-    <updated>2017-07-01T09:52:50.586Z</updated>
-    
-    <content type="html"><![CDATA[<p>作者: 韩天峰<br>转载连接: <a href="https://segmentfault.com/a/1190000008888700" target="_blank" rel="external">2017年PHP程序员未来路在何方</a></p><p>PHP 从诞生到现在已经有20多年历史，从Web时代兴起到移动互联网退潮，互联网领域各种编程语言和技术层出不穷， Node.js 、 GO 、 Python 不断地在挑战 PHP 的地位。这些技术的推动者非常热衷于唱衰 PHP ， PHP 语言的未来在哪里？PHP 程序员当如何应对未来的变革？</p><p>作为老牌的Web后端编程语言，PHP 在全球市场占有率非常高，仅次于 Java ，从各个招聘网站的数据上来看PHP 开发的职位非常多，薪资水平也非常不错。实际在中小企业、互联网创业公司PHP的市场地位是高于 Java 的。Java 在超大型企业、传统软件行业、金融领域优势更大。目前来看 Node.js、 GO 、 Python 、 Ruby 等语言还难以企及PHP和Java。</p><p>PHP 语言之所以能有今天的地位，得益于PHP语言设计者一直遵从实用主义，将技术的复杂性隐藏在底层。PHP 语言入门简单，容易掌握，程序健壮性好，不容易出现像 Java 、 C++ 等其他语言那样复杂的问题，如内存泄漏和 Crash ，跟踪调试相对轻松很多。PHP 官方提供的标准库非常强大，各种功能函数都能在官方的标准库中找到，包括MySQL、Memcache、Redis、GD图形库、CURL、XML、JSON等等，免除了开发者到处找库的烦恼。PHP 的文档非常棒，每个函数都有详细的说明和使用示例。第三方类库和工具、代码、项目也很丰富。开发者可以快速、高效地使用 PHP 编写开发各类软件。到目前为止市面上仍然没有出现比 PHP 更简单易用的编程语言。所以 PHP 的前景还是很广阔的，与其纠结于编程语言的选择，不如好好地深入学习使用 PHP 。</p><p>作为一个资深的 PHP 开发者，在技术上给各位 PHP 程序十点未来的建议，希望对大家有所帮助。</p><h1 id="Composer"><a href="#Composer" class="headerlink" title="Composer"></a>Composer</h1><p>第一点就要提 Composer ，自从 Composer 出现后，PHP 的依赖管理可以变得非常简单。程序内依赖一些类库和框架，直接使用 Composer 引入即可，通过使用 composer update 安装依赖的包。解决了过去加载外部库的各种难题。Composer 也有国内镜像，速度非常快。现在绝大部分PHP开源的项目都提供了 Composer 的支持，建议大家在项目中使用 Composer 来解决 PHP 代码包管理的问题，不要再使用下载源码、手工 include 的原始方法。</p><hr><h1 id="PHP7"><a href="#PHP7" class="headerlink" title="PHP7"></a>PHP7</h1><p>PHP7 版本对 Zend 引擎做了大量修改，大幅提升了 PHP 语言的性能，使用 PHP7 可以使你的程序性能瞬间翻倍。即使是 WordPress 这样重量级的软件运行在 PHP7 都能有上千 QPS ，相当于一台服务器每天就能处理 8000 万次请求。使用 PHP7 ，做好 MySQL 优化，使用 Memcache 和 Redis 进行加速，这套技术架构完全可以应对相当大规模的系统。除了某些亿级用户的平台之外，一般规模的系统完全没有压力。 </p><hr><h1 id="PSR"><a href="#PSR" class="headerlink" title="PSR"></a>PSR</h1><p>PSR 是 <a href="http://www.php-fig.org/" target="_blank" rel="external">http://www.php-fig.org/</a> 组织制定的PHP语言开发规范，约定了很多方面的规则，如命名空间、类名<br>规范、编码风格标准、Autoload、公共接口等。现在已经成为PHP技术社区事实上的标准了。很多知名的 PHP 框架和类库都遵守了 PSR 规范。PHP 开发者应当学习掌握 PSR 规范，在开发程序时应当尽量遵循 PSR 规范。</p><hr><h1 id="Swoole"><a href="#Swoole" class="headerlink" title="Swoole"></a>Swoole</h1><p>2017 年 PHP 还局限于做 Web 网站吗？No ，如果你还不知道 Swoole ，赶快去了解一下吧。Swoole 的口号是重新定义 PHP 语言，Swoole 是一个异步并行的通信引擎，作为 PHP 的扩展来运行。Node.js 的异步回调 Swoole 有，Go语言的协程 Swoole 也有，这完全颠覆了对 PHP 的认知。使用 Swoole PHP 可以实现常驻内存的 Server 程序，可以实现 TCP 、 UDP 异步网络通信的编程开发。过去PHP只能做一个 Web 网站，现在使用 Swoole 可以做 Java 、C++ 才能实现的通信服务，比如 WebSocket 即使通信、聊天、推送服务器、RPC 远程调用服务、网关、代理、游戏服务器等。如果你想用 PHP 做点 Web 系统之外的东西，Swoole 是最好的选择。</p><hr><h1 id="Laravel"><a href="#Laravel" class="headerlink" title="Laravel"></a>Laravel</h1><p>最近几年最火热的 PHP 框架，官网号称是为 Web 艺术家设计的框架，可见这套框架有多优雅。Laravel 提供的功能模块丰富，API 设计简洁，表达力强。而且它的社区非常活跃，代码贡献者众多，第三方的插件非常多，生态系统相当繁荣。 Laravel 底层使用了很多 symfony2 组件，通过 composer 实现了依赖管理。如果还在纠结使用什么PHP框架，不如选择 Laravel 。 Laravel 提供的命令行工具基于 symfony.console 实现，功能强大，集成了各种项目管理、自动生成代码的功能。</p><hr><h1 id="Phar"><a href="#Phar" class="headerlink" title="Phar"></a>Phar</h1><p>PHP5.3 之后支持了类似 Java 的 jar 包，名为 phar。用来将多个 PHP 文件打包为一个文件。这个特性使得 PHP 也可以像 Java 一样方便地实现应用程序打包和组件化。一个应用程序可以打成一个 Phar 包，直接放到<br>PHP-FPM 中运行。配合 Swoole ，可以在命令行下执行 php server.phar 一键启动服务器。PHP 的代码包可以用 Phar 打包成组件，放到 Swoole 的服务器容器中去加载执行。</p><hr><h1 id="C-C-GO"><a href="#C-C-GO" class="headerlink" title="C/C++/GO"></a>C/C++/GO</h1><p>任何技术有优点就有缺点，PHP 作为一门动态脚本语言，优点是开发方便效率高。缺点就是性能差。在密集运算的场景下比 C 、 C++ 相差几十倍甚至上百倍。另外 PHP 不可以直接操作底层，需要依赖扩展库来提供 API 实现。PHP 程序员可以学习一门静态编译语言作为补充实现动静互补，C/C++/Go 都是不错的选择。而且静态语言的编程体验与动态语言完全不同，学习过程可以让你得到更大的提升。</p><p>掌握 C/C++ 语言后，还可以阅读 PHP 、 Swoole 、 Nginx 、Redis 、 Linux内核 等开源软件的源码，了解其底层运行原理。</p><p>现在最新版本的Swoole提供了C++扩展模块的支持，封装了Zend API，用C++操作PHP变得很简单，可以用C++实现PHP扩展函数和类。</p><hr><h1 id="HTML5"><a href="#HTML5" class="headerlink" title="HTML5"></a>HTML5</h1><p>作为 Web 前端新一代标准，HTML5 未来前景非常广阔，市场需求量非常大。从 PC 网站、B/S 企业软件、移动端网页、APP，这些领域都在拥抱 HTML5，掌握了 HTML5 才能在下一波互联网技术大潮中存活下来。</p><hr><h1 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h1><p>PHP 程序员除了写后台程序之外，还有很大一部分工作在展现层，和浏览器前端打交道。2017 年你还在用 jQuery 操作 DOM 实现界面渲染吗？已经完全 out 了。现在用 Vue.js 可以非常方便地实现数据和 DOM 元素的绑定。通过 Ajax 请求后台接口返回数据后，更新前端数据自动实现界面渲染。2017 年再不学 Vue 就晚了。</p><p>如果你不光要写 Web 程序，同时还希望兼顾 Android 、IOS 、PC 客户端等平台，React Native 是一个不错的选择。</p><hr><h1 id="深度学习-人工智能"><a href="#深度学习-人工智能" class="headerlink" title="深度学习/人工智能"></a>深度学习/人工智能</h1><p>互联网的未来属于人工智能，如果你还不了解机器学习、深度学习、人工智能这些概念，那你需要尽快学习了解一下。现在互联网巨头们都在布局人工智能，包括 Google 、 Facebook 、微软、亚马逊 和国内的百度。虽然现在还处于科学研究的阶段，但未来互联网的各个领域都会应用到人工智能，包括自动驾驶、大数据分析、网络游戏、图像识别、语言处理等。当然现在普通的工程师可能还无法参与到人工智能产品中，但至少应该理解深度学习/人工智能的基本概念和原理。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;作者: 韩天峰&lt;br&gt;转载连接: &lt;a href=&quot;https://segmentfault.com/a/1190000008888700&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;2017年PHP程序员未来路在何方&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;PHP 从诞
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://dawnki.github.io/categories/PHP/"/>
-    
-    
-      <category term="PHP" scheme="https://dawnki.github.io/tags/PHP/"/>
-    
-      <category term="技术栈" scheme="https://dawnki.github.io/tags/%E6%8A%80%E6%9C%AF%E6%A0%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>mysql开启Innodb引擎</title>
-    <link href="https://dawnki.github.io/2017/07/01/Mysql%E5%BC%80%E5%90%AFInnodb%E5%BC%95%E6%93%8E/"/>
-    <id>https://dawnki.github.io/2017/07/01/Mysql开启Innodb引擎/</id>
-    <published>2017-06-30T19:41:26.000Z</published>
-    <updated>2017-07-02T03:02:20.271Z</updated>
-    
-    <content type="html"><![CDATA[<p>Innodb引擎是我们经常用到的mysql存储引擎，在我们需要事务管理以及外键等功能的时候，单单的Myisam引擎并不满足我们的需求，此时就需要我们启用innodb引擎。不过在我们安装数据库或者用lnmp一键安装配置，没有选开启innodb引擎，那该怎么办呢？</p><h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><ul><li>关闭mysql服务</li></ul><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> service mysql stop</div></pre></td></tr></table></figure><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo lnmp stop   # lnmp一键安装的用户</div></pre></td></tr></table></figure><ul><li><p>修改mysql配置文件(my.ini / my.cnf)</p><p>linux用户需要修改的是my.cnf文件.</p></li></ul><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> vi /etc/my.cnf</div></pre></td></tr></table></figure><p>  在里面一行加入 innodb = ON ，然后保存退出</p><ul><li>重启mysql或lnmp即可开启innodb引擎</li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul><li>以上方法仅适用于<strong>已经安装</strong>了innodb引擎，但是没有开启的情况</li><li>可以在mysql的shell里面输入 show engines; 来查看是否安装了innodb引擎</li><li>网上查到的结果说my.cnf中如果有 skip-innodb 就用#号注释掉，然后并没找到，只找到loose-skip-innodb，然而当我一注释时，启动mysql就出错，因此不能随便注释..</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Innodb引擎是我们经常用到的mysql存储引擎，在我们需要事务管理以及外键等功能的时候，单单的Myisam引擎并不满足我们的需求，此时就需要我们启用innodb引擎。不过在我们安装数据库或者用lnmp一键安装配置，没有选开启innodb引擎，那该怎么办呢？&lt;/p&gt;
-&lt;h
-      
-    
-    </summary>
-    
-      <category term="数据库" scheme="https://dawnki.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="linux" scheme="https://dawnki.github.io/tags/linux/"/>
-    
-      <category term="mysql" scheme="https://dawnki.github.io/tags/mysql/"/>
-    
-      <category term="开启Innodb" scheme="https://dawnki.github.io/tags/%E5%BC%80%E5%90%AFInnodb/"/>
     
   </entry>
   
