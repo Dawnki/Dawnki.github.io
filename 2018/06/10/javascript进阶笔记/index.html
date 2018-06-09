@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Javascript进阶笔记 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="学习笔记,Javascript进阶">
+    <meta name="description" content="Javascript进阶笔记Promise基本用法123456789101112131415161718const promise = new Promise(  (resolve,reject) =&amp;gt; &amp;#123;    if(/*异步操作*/) &amp;#123;      resolve(result);    &amp;#125; else &amp;#123;      reject(error);">
+<meta name="keywords" content="学习笔记,Javascript进阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript进阶笔记">
+<meta property="og:url" content="https://dawnki.github.io/2018/06/10/javascript进阶笔记/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="Javascript进阶笔记Promise基本用法123456789101112131415161718const promise = new Promise(  (resolve,reject) =&amp;gt; &amp;#123;    if(/*异步操作*/) &amp;#123;      resolve(result);    &amp;#125; else &amp;#123;      reject(error);">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-09T18:55:46.960Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javascript进阶笔记">
+<meta name="twitter:description" content="Javascript进阶笔记Promise基本用法123456789101112131415161718const promise = new Promise(  (resolve,reject) =&amp;gt; &amp;#123;    if(/*异步操作*/) &amp;#123;      resolve(result);    &amp;#125; else &amp;#123;      reject(error);">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Javascript进阶笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Javascript进阶笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-09T18:18:00.000Z" itemprop="datePublished" class="page-time">
+  2018-06-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Javascript/">Javascript</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Javascript进阶笔记"><span class="post-toc-number">1.</span> <span class="post-toc-text">Javascript进阶笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Promise"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Promise</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本用法"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">基本用法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#被吃掉的错误"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">被吃掉的错误</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#不能被吃掉的错误"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">不能被吃掉的错误</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#catch之后可以继续"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">catch之后可以继续</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Promise-prototype-finally"><span class="post-toc-number">1.1.5.</span> <span class="post-toc-text">Promise.prototype.finally()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Promise-all"><span class="post-toc-number">1.1.6.</span> <span class="post-toc-text">Promise.all()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Promise-race"><span class="post-toc-number">1.1.7.</span> <span class="post-toc-text">Promise.race()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#将多个异步变为同步操作"><span class="post-toc-number">1.1.8.</span> <span class="post-toc-text">将多个异步变为同步操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#async-await"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">async/await</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数节流"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">函数节流</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数防抖"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">函数防抖</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数分时"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">函数分时</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-javascript进阶笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Javascript进阶笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-10 02:18:00" datetime="2018-06-09T18:18:00.000Z"  itemprop="datePublished">2018-06-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Javascript/">Javascript</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Javascript进阶笔记"><a href="#Javascript进阶笔记" class="headerlink" title="Javascript进阶笔记"></a>Javascript进阶笔记</h1><h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">  (resolve,reject) =&gt; &#123;</div><div class="line">    <span class="keyword">if</span>(<span class="comment">/*异步操作*/</span>) &#123;</div><div class="line">      resolve(result);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      reject(error);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">);</div><div class="line">promise.then(</div><div class="line">  (res) =&gt; &#123;</div><div class="line">    <span class="comment">//成功操作</span></div><div class="line">  &#125;</div><div class="line">).catch(</div><div class="line">  (error) =&gt; &#123;</div><div class="line">    <span class="comment">//错误操作</span></div><div class="line">  &#125;</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>初始化Promise对象时需要传入一个函数，函数内部用来处理异步操作。该函数内置了两个参数resolve和reject。resolve则将padding状态变为fulfilled，进入下一个then。而reject则将状态变为reject，进入下一个catch。</p>
+<h3 id="被吃掉的错误"><a href="#被吃掉的错误" class="headerlink" title="被吃掉的错误"></a>被吃掉的错误</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> someAsyncThing = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve,reject) =&gt; &#123;</div><div class="line">      resolve(x);  <span class="comment">// ReferenceError</span></div><div class="line">    &#125;</div><div class="line">  );</div><div class="line">&#125;;</div><div class="line"></div><div class="line">someAsyncThing().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'everything is great'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="number">123</span>) &#125;, <span class="number">2000</span>);</div></pre></td></tr></table></figure>
+<p>Promise内的函数new出来的时候会立即执行，尽管Promise内的函数发生了错误，但是不会终止脚本的执行，会等到脚本结束时，错误信息随其他输出一并输出。因而最好使用catch方法捕获错误。</p>
+<h3 id="不能被吃掉的错误"><a href="#不能被吃掉的错误" class="headerlink" title="不能被吃掉的错误"></a>不能被吃掉的错误</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">p1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</div><div class="line">    x  <span class="comment">//ReferenceError</span></div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">p1().catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(e.message);  <span class="comment">//x is not defined</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>对于Promise内部非异步语句，Promise都能吃掉，如果有catch方法的话能被catch方法捕获到，不过遇到以下情况的话:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">p1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'xxx'</span>)&#125;,<span class="number">2000</span>); <span class="comment">//无法捕获</span></div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">p1().catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(e.message);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这种情况将无法捕获，因此有延时函数在，此时延时函数的回调执行将跟Promise不在同一轮，轮到回调执行时，Promise已经运行完，此时的异常为Promise外的异常。</p>
+<p>遇到这种情况的异常应该异步的回调函数内部使用try,catch捕获，然后catch内可以使用reject方法将错误抛给Promise的catch。</p>
+<h3 id="catch之后可以继续"><a href="#catch之后可以继续" class="headerlink" title="catch之后可以继续"></a>catch之后可以继续</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> someAsyncThing = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve,reject) =&gt; &#123;</div><div class="line">      resolve(x);  <span class="comment">// ReferenceError</span></div><div class="line">    &#125;</div><div class="line">  );</div><div class="line">&#125;;</div><div class="line"></div><div class="line">someAsyncThing().catch(</div><div class="line">  (e) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"error"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="string">"from-catch"</span></div><div class="line">  &#125;</div><div class="line">).then(</div><div class="line">  (str)=&gt;&#123;</div><div class="line">    <span class="built_in">console</span>.log(str);</div><div class="line">  &#125;</div><div class="line">);</div><div class="line"><span class="comment">//output: error from-catch</span></div></pre></td></tr></table></figure>
+<h3 id="Promise-prototype-finally"><a href="#Promise-prototype-finally" class="headerlink" title="Promise.prototype.finally()"></a>Promise.prototype.finally()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">promise</div><div class="line">.then(<span class="function"><span class="params">result</span> =&gt;</span> &#123;···&#125;)</div><div class="line">.catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;···&#125;)</div><div class="line">.finally(<span class="function"><span class="params">()</span> =&gt;</span> &#123;···&#125;);</div></pre></td></tr></table></figure>
+<p>finally回调函数不接受任何参数，因此finally的执行与Promise的执行状态无关，一旦前面操作完成后，必定执行。</p>
+<h3 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">p1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;resolve(<span class="number">1</span>)&#125;,<span class="number">5000</span>);</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">p2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve) =&gt; &#123;</div><div class="line">      resolve(<span class="number">2</span>)</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">p3</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve) =&gt; &#123;</div><div class="line">      resolve(<span class="number">3</span>)</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> p = <span class="built_in">Promise</span>.all([p1(),p2(),p3()]);</div><div class="line"></div><div class="line">p.then(</div><div class="line">  ([r1,r2,r3]) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"success"</span>+r1+r2+r3);</div><div class="line">  &#125;</div><div class="line">).catch(</div><div class="line">  (e) =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(e.name+<span class="string">":"</span>+e.message);</div><div class="line">  &#125;</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>all方法，当数组内的Promise对象的状态都是fulfilled时，p的状态才是fulfilled。否则，当中有一个为reject时，p的状态将设置为reject，然后将第一被reject的实例传给catch,后面的实例虽然仍继续运行，但是尽管reject或者抛出异常也不会传给catch方法。</p>
+<h3 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race()"></a>Promise.race()</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> p = <span class="built_in">Promise</span>.race([p1, p2, p3]);</div></pre></td></tr></table></figure>
+<p>只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。</p>
+<h3 id="将多个异步变为同步操作"><a href="#将多个异步变为同步操作" class="headerlink" title="将多个异步变为同步操作"></a>将多个异步变为同步操作</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">  (resolve,reject) =&gt; &#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">"start"</span>);resolve();&#125;,<span class="number">1000</span>);</div><div class="line">  &#125;</div><div class="line">);</div><div class="line"></div><div class="line">p.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve,reject) =&gt; &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">"1"</span>);resolve();&#125;,<span class="number">4000</span>);</div><div class="line">    &#125;</div><div class="line">  );</div><div class="line">&#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve,reject) =&gt; &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">"2"</span>);resolve();&#125;,<span class="number">1000</span>);</div><div class="line">    &#125;</div><div class="line">  );</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>以上将会将3个异步操作按同步的方式依次执行。此方法若没有业务需求，尽量少用。</p>
+<h2 id="async-await"><a href="#async-await" class="headerlink" title="async/await"></a>async/await</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve,reject) =&gt; &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;resolve(<span class="string">"result"</span>);&#125;,<span class="number">2000</span>);</div><div class="line">    &#125;</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">exec</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> asyncFunc();  <span class="comment">//阻塞后面的操作</span></div><div class="line">  <span class="built_in">console</span>.log(result);</div><div class="line">&#125;</div><div class="line"></div><div class="line">exec();</div></pre></td></tr></table></figure>
+<p>async表示这里有异步操作，await表示需要等待后面异步操作结果的获取。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</div><div class="line">    (resolve,reject) =&gt; &#123;</div><div class="line">      setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;resolve(<span class="string">"result"</span>);&#125;,<span class="number">2000</span>);</div><div class="line">    &#125;</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">exec</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> asyncFunc();</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div><div class="line"></div><div class="line">exec().then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(res);  <span class="comment">// result</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>async函数返回一个Promise包装的对象，因此可以使用then进行后续操作。</p>
+<h2 id="函数节流"><a href="#函数节流" class="headerlink" title="函数节流"></a>函数节流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">func,duration</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> saveFunc = func;</div><div class="line">  <span class="keyword">var</span> timmer;</div><div class="line">  <span class="keyword">var</span> firstTime = <span class="literal">true</span>;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> args = <span class="built_in">arguments</span>;</div><div class="line">    <span class="keyword">var</span> _this = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">if</span> (firstTime) &#123;  <span class="comment">// 首次调用</span></div><div class="line">      saveFunc.apply(_this,args);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (timmer) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// 仍在执行前的计时</span></div><div class="line">    timer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      clearTimeout(time);     <span class="comment">// 清除定时器</span></div><div class="line">      timer = <span class="literal">null</span>;</div><div class="line">      saveFunc(_this,args);</div><div class="line">    &#125;,duration);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>降低func函数的频率。func函数除了第一次执行以外，每次调用的有一定的间隔。</p>
+<h2 id="函数防抖"><a href="#函数防抖" class="headerlink" title="函数防抖"></a>函数防抖</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">func,wait,immediate</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> timer,args,context,triggerTime,result;</div><div class="line">  <span class="keyword">var</span> later = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> last = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - triggerTime;</div><div class="line">    <span class="keyword">if</span>(last&lt;wait &amp;&amp; last&gt;=<span class="number">0</span>) &#123;</div><div class="line">      timer = setTimeout(later,wait-last);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      timer = <span class="literal">null</span>;</div><div class="line">      <span class="keyword">if</span>(!immediate) &#123;</div><div class="line">        result = func.apply(context,args);</div><div class="line">        <span class="keyword">if</span>(!timer) context = args = <span class="literal">null</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    context = <span class="keyword">this</span>;</div><div class="line">    args = <span class="built_in">arguments</span>;</div><div class="line">    triggerTime = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</div><div class="line">    <span class="keyword">var</span> callNow = immediate &amp;&amp; !timer;</div><div class="line">    <span class="keyword">if</span>(!timer) timer = setTimeout(later,wait);</div><div class="line">    <span class="keyword">if</span>(callNow) &#123;</div><div class="line">      result = func.appply(context,args);</div><div class="line">      context = args = <span class="literal">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>函数防抖即在离最近触发要经过一段时间才能生效，否则每次触发都会重置计时器，重新算下一次生效时间。wait参数为规定的固定时间，immediate为true时表示前缘触发(生效条件成立时一触发就生效)，为false为后缘触发(生效条件成立后经过固定时间才生效)。</p>
+<p>每当调用函数内的闭包时，就会更新触发时间。later延时执行，每当到执行时间，就会检查是否固定时间内是否有过触发，如果有，就需要补时间(wait-last)。前缘触发的执行在闭包的apply中，后缘触发的执行在later函数中。</p>
+<h2 id="函数分时"><a href="#函数分时" class="headerlink" title="函数分时"></a>函数分时</h2><p>分时函数可以将大量的dom操作或者性能耗费大的任务按时间分批执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = setInterval(func,millisec);</div><div class="line">clearInterval(x);</div></pre></td></tr></table></figure>
+<p>分时函数需要setInterval和clearInterval来实现，setInterval函数会按周期性执行回调函数。而clearInterval函数则用来取消设定的Interval。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> timeChunk = <span class="function"><span class="keyword">function</span>(<span class="params">dataArray,func,count,duration</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> timer;</div><div class="line">  <span class="keyword">var</span> isRunning = <span class="literal">false</span>;</div><div class="line">  <span class="keyword">var</span> exec = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span>(count&lt;=<span class="number">0</span>) count = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">Math</span>.min(count,dataArray.length); i++) &#123;</div><div class="line">      <span class="keyword">var</span> data = dataArray.shift();</div><div class="line">      func(data);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (isRunning) <span class="keyword">return</span>;</div><div class="line">    isRunning = <span class="literal">true</span>;</div><div class="line">    timer = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (dataArray.length == <span class="number">0</span>) &#123;</div><div class="line">        clearInterval(timer);</div><div class="line">        isRunning = <span class="literal">false</span>;</div><div class="line">      &#125;</div><div class="line">      exec();</div><div class="line">    &#125;,duration);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-06-09T18:55:46.960Z" itemprop="dateUpdated">2018-06-10 02:55:46</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript进阶/">Javascript进阶</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/&title=《Javascript进阶笔记》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/&title=《Javascript进阶笔记》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/06/10/javascript进阶笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Javascript进阶笔记》 — Dawnki's Blog&url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/10/nodejs笔记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Nodejs学习笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2018</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/&title=《Javascript进阶笔记》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/&title=《Javascript进阶笔记》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/06/10/javascript进阶笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Javascript进阶笔记》 — Dawnki's Blog&url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/06/10/javascript进阶笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aS27DMAwFwNz/0um2QJDkPVotYGm8CvKRNC7AkiYfj/h6/rpe30mu19XevX79/rILAwPjtoxk+8/H+kz9vEK779szYGBgHMB4d6z2QPkK7a++nBkDAwMjXjpJCpNPMTAwMK4w8mQxqToxMDAwckZSTM4Ca5to/nktjoGBcUNGGxz/8/Wf9DcwMDBuxZi1IWeNyfY2FafCwMDYmtFuk5e7SdGb3I7iPBgYGFszVpWyOXt2CxYPh2FgYNycsbbIzEfK2vN8CbgYGBhbMJKw2I5NtCNfyTt1kMXAwNiI0X613bJF5rcPAwPjHEYeENsB1nbAIgnBxd8BAwNjO0bepLzenmxTwOgkGBgYhzFmo6uzIdQrDctiZgQDA2MLRr5ZGyjbNDQprb9Mi2BgYGzHaENqnibmv50NW2BgYJzMaAcd8sZAmzi27U8MDIxdGUkoXNUYaFdOGpxFFomBgXFbxmzAK08BV5GiNTEwMLZm5A/9H/H1GdY+pCvaCRgYGJsy8uSsHa3IV8vTyijPxcDAOIyRBNwkvK5abXj/MDAwtmC041nDzeLwmuyOgYFxAuNZXmtL3zxML6i/MTAwbsuYPT673tS8MmrW/pPAwMDYg5EPb7UJYtvUbKkYGBinMWaP4fLDJSF4FvoxMDAwZs2DvIhd1h7AwMDAiA+0qtBt18fAwDiBkRSx+Zazka9ZQwIDA+MERl46Ju+0oxtXClcMDIwDGD8qYPoIdkUooAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
