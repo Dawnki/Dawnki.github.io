@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Python基础学习笔记 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python基础">
+    <meta name="description" content="Python笔记版本Python 2.7 控制流while循环12while True:  pass 判断条件为真则继续循环 for循环123L = [1,2,3,4]for i in L:  print L[i] 可遍历序列结构的类型 12for i in range(1,3):  #range能生成等差数列，这种方式可转换成C语言的for循环  pass if123456if x&amp;lt;5:">
+<meta name="keywords" content="Python基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python基础学习笔记">
+<meta property="og:url" content="https://dawnki.github.io/2018/06/10/python笔记/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="Python笔记版本Python 2.7 控制流while循环12while True:  pass 判断条件为真则继续循环 for循环123L = [1,2,3,4]for i in L:  print L[i] 可遍历序列结构的类型 12for i in range(1,3):  #range能生成等差数列，这种方式可转换成C语言的for循环  pass if123456if x&amp;lt;5:">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-09T18:24:53.700Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python基础学习笔记">
+<meta name="twitter:description" content="Python笔记版本Python 2.7 控制流while循环12while True:  pass 判断条件为真则继续循环 for循环123L = [1,2,3,4]for i in L:  print L[i] 可遍历序列结构的类型 12for i in range(1,3):  #range能生成等差数列，这种方式可转换成C语言的for循环  pass if123456if x&amp;lt;5:">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Python基础学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Python基础学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-09T18:18:00.000Z" itemprop="datePublished" class="page-time">
+  2018-06-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Python笔记"><span class="post-toc-number">1.</span> <span class="post-toc-text">Python笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#版本"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#控制流"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">控制流</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#while循环"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">while循环</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#for循环"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">for循环</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#if"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">if</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#else的特别用法"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">else的特别用法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#有用的杂项"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">有用的杂项</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#range"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">range</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pass"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">pass</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#逻辑运算"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">逻辑运算</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#is-in"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">is,in</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#切片"><span class="post-toc-number">1.3.5.</span> <span class="post-toc-text">切片</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#普通函数"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">普通函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#匿名函数"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">匿名函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据结构"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">数据结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#List"><span class="post-toc-number">1.5.1.</span> <span class="post-toc-text">List</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tuples-元组"><span class="post-toc-number">1.5.2.</span> <span class="post-toc-text">Tuples(元组)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Set-集合"><span class="post-toc-number">1.5.3.</span> <span class="post-toc-text">Set(集合)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Dictionary-字典"><span class="post-toc-number">1.5.4.</span> <span class="post-toc-text">Dictionary(字典)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#遍历技巧"><span class="post-toc-number">1.5.5.</span> <span class="post-toc-text">遍历技巧</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模块化"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">模块化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#执行模块"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">执行模块</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#导入其他文件夹里的模块"><span class="post-toc-number">1.6.2.</span> <span class="post-toc-text">导入其他文件夹里的模块</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#输入输出相关"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">输入输出相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#输出方式"><span class="post-toc-number">1.7.1.</span> <span class="post-toc-text">输出方式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#将其他类型转换为字符串"><span class="post-toc-number">1.7.2.</span> <span class="post-toc-text">将其他类型转换为字符串</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字符串格式化"><span class="post-toc-number">1.7.3.</span> <span class="post-toc-text">字符串格式化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#标准输入"><span class="post-toc-number">1.7.4.</span> <span class="post-toc-text">标准输入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文件操作"><span class="post-toc-number">1.7.5.</span> <span class="post-toc-text">文件操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#json操作"><span class="post-toc-number">1.7.6.</span> <span class="post-toc-text">json操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">异常</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异常处理"><span class="post-toc-number">1.8.1.</span> <span class="post-toc-text">异常处理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#被捕获的异常重新抛出"><span class="post-toc-number">1.8.2.</span> <span class="post-toc-text">被捕获的异常重新抛出</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#自定义异常"><span class="post-toc-number">1.8.3.</span> <span class="post-toc-text">自定义异常</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常见异常"><span class="post-toc-number">1.8.4.</span> <span class="post-toc-text">常见异常</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#面向对象"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">面向对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#类"><span class="post-toc-number">1.9.1.</span> <span class="post-toc-text">类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#继承"><span class="post-toc-number">1.9.2.</span> <span class="post-toc-text">继承</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多继承"><span class="post-toc-number">1.9.3.</span> <span class="post-toc-text">多继承</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#私有变量"><span class="post-toc-number">1.9.4.</span> <span class="post-toc-text">私有变量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#迭代器"><span class="post-toc-number">1.9.5.</span> <span class="post-toc-text">迭代器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成器"><span class="post-toc-number">1.9.6.</span> <span class="post-toc-text">生成器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#常用的标准库"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">常用的标准库</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-python笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Python基础学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-10 02:18:00" datetime="2018-06-09T18:18:00.000Z"  itemprop="datePublished">2018-06-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Python/">Python</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Python笔记"><a href="#Python笔记" class="headerlink" title="Python笔记"></a>Python笔记</h1><h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>Python 2.7</p>
+<h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>判断条件为真则继续循环</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">L = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> L:</div><div class="line">  <span class="keyword">print</span> L[i]</div></pre></td></tr></table></figure>
+<p>可遍历序列结构的类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">3</span>):  <span class="comment">#range能生成等差数列，这种方式可转换成C语言的for循环</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<h3 id="if"><a href="#if" class="headerlink" title="if"></a>if</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> x&lt;<span class="number">5</span>:</div><div class="line">  <span class="keyword">pass</span></div><div class="line"><span class="keyword">elif</span> x&lt;=<span class="number">10</span>:</div><div class="line">  <span class="keyword">pass</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>if常见三段式</p>
+<h3 id="else的特别用法"><a href="#else的特别用法" class="headerlink" title="else的特别用法"></a>else的特别用法</h3><p>当循环中存在break时，可以配合else使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> x&gt;<span class="number">5</span>:</div><div class="line">  <span class="keyword">if</span> x&lt;<span class="number">7</span>:</div><div class="line">    <span class="keyword">break</span></div><div class="line">  x*=<span class="number">2</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure></p>
+<p>当循环的条件为假并且非break打破循环条件时，就会执行else语句</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">  <span class="keyword">raise</span> MyError</div><div class="line"><span class="keyword">except</span> NameError:</div><div class="line">  <span class="keyword">pass</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>如上，当try块的语句执行完并且没有异常时，就会执行else中的语句</p>
+<h2 id="有用的杂项"><a href="#有用的杂项" class="headerlink" title="有用的杂项"></a>有用的杂项</h2><h3 id="range"><a href="#range" class="headerlink" title="range"></a>range</h3><p>生成等差数列的列表<br>用法:range(起点,不包含的终点,步长)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">range(<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>) <span class="comment">#[1,3,5]</span></div><div class="line">range(<span class="number">1</span>,<span class="number">4</span>) <span class="comment">#[1,2,3]</span></div></pre></td></tr></table></figure>
+<h3 id="pass"><a href="#pass" class="headerlink" title="pass"></a>pass</h3><p>代表什么都不做,忽略至少一条语句的要求<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> x&gt;<span class="number">5</span>:</div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure></p>
+<h3 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h3><p>python的逻辑运算使用”or”,”and”,”not”关键字,其中or和and都是短路操作</p>
+<h3 id="is-in"><a href="#is-in" class="headerlink" title="is,in"></a>is,in</h3><p>is,is not用于判断是否为相同对象。in,not in用于判断一个值是否存在于序列或集合中</p>
+<h3 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">alist = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</div><div class="line"><span class="keyword">print</span> alist[:]    <span class="comment"># 从头到尾输出</span></div><div class="line"><span class="keyword">print</span> alist[<span class="number">1</span>:]   <span class="comment"># 从index为1开始到末尾输出</span></div><div class="line"><span class="keyword">print</span> alist[<span class="number">2</span>:<span class="number">4</span>]  <span class="comment"># 从index为2开始到index为4输出，但不包括4</span></div><div class="line"><span class="keyword">print</span> alist[<span class="number">-1</span>]   <span class="comment"># 输出倒数列表的倒数第一个</span></div><div class="line"><span class="keyword">print</span> alist[<span class="number">-3</span>:<span class="number">-1</span>] <span class="comment"># 输出倒数第3到倒数第1(不包括倒数第一)</span></div></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="普通函数"><a href="#普通函数" class="headerlink" title="普通函数"></a>普通函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(value1, value2=<span class="number">3</span>)</span>:</span></div><div class="line">  <span class="keyword">return</span> value1*value2  <span class="comment">#可以没有return</span></div></pre></td></tr></table></figure>
+<p>当函数给出默认值时可以不传对应的参</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f = func</div><div class="line">f(<span class="number">1</span>,<span class="number">2</span>)</div></pre></td></tr></table></figure>
+<p>函数名还可以赋值给变量</p>
+<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f = <span class="keyword">lambda</span> x1,x2: x1*x2</div><div class="line">f(<span class="number">1</span>,<span class="number">2</span>)</div></pre></td></tr></table></figure>
+<p>常用于简单的函数</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>用”[]”表示<br>常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list.append(x)</td>
+<td>将x元素添加到list末尾</td>
+</tr>
+<tr>
+<td>list.extend(L)</td>
+<td>将列表L加入到list末尾</td>
+</tr>
+<tr>
+<td>list.insert(index,x)</td>
+<td>在list的index索引之前插入x</td>
+</tr>
+<tr>
+<td>list.remove(x)</td>
+<td>删除列表中第一个值为x的元素，如果没有这样的元素会报错</td>
+</tr>
+<tr>
+<td>list.index(x)</td>
+<td>返回第一个元素为x的的索引，没有的话会报错</td>
+</tr>
+<tr>
+<td>list.pop(index)</td>
+<td>index参数可选,删除指定位置并且返回该元素,index不选默认删除最后一个</td>
+</tr>
+<tr>
+<td>list.count(x)</td>
+<td>返回列表中x出现的次数</td>
+</tr>
+<tr>
+<td>list.reverse()</td>
+<td>原地反转列表中的元素</td>
+</tr>
+<tr>
+<td>list.sort(cmp=None,key=None,reverse=False)</td>
+<td>列表排序</td>
+</tr>
+<tr>
+<td>filter(function,List)</td>
+<td>eg. filter(lanmbda x:x%2==0,range(0,9)),迭代List每一项，根据function判断是否过滤</td>
+</tr>
+<tr>
+<td>map(function,List)</td>
+<td>List的每一项都调用function(item)并返回结果</td>
+</tr>
+<tr>
+<td>reduce(function,List,value)</td>
+<td>List的前两项放入function(x,y)中,返回结果后和下一个元素继续调用,value为初始值可选,以免列表为空时返回异常,一般初始值设置0</td>
+</tr>
+</tbody>
+</table>
+<p>列表推导式:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">squares = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)] <span class="comment"># [0,1,4,9,16,25,36,49,64,81]</span></div></pre></td></tr></table></figure></p>
+<p>del语句可以用于从列表中删除切片或者清除整个列表<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">del</span> a[<span class="number">2</span>:<span class="number">4</span>]</div><div class="line"><span class="keyword">del</span> a[<span class="number">2</span>]</div><div class="line"><span class="keyword">del</span> a[:]  <span class="comment"># 清除列表</span></div><div class="line"><span class="keyword">del</span> a     <span class="comment">#删除a这个变量</span></div></pre></td></tr></table></figure></p>
+<h3 id="Tuples-元组"><a href="#Tuples-元组" class="headerlink" title="Tuples(元组)"></a>Tuples(元组)</h3><p>用”()”表示</p>
+<p>可变类型与不可变类型:</p>
+<table>
+<thead>
+<tr>
+<th>是否可变</th>
+<th>具体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可变类型</td>
+<td>列表,字典</td>
+</tr>
+<tr>
+<td>不可变类型</td>
+<td>元组,数字,字符串</td>
+</tr>
+</tbody>
+</table>
+<p>元组 <strong>不能</strong> 改变(删除)组内元素值，元组可以拆分赋值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">t1 = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) <span class="comment"># t1 = 1,2,3  亦可</span></div><div class="line"><span class="comment"># t1[0] = 2  # 错误</span></div><div class="line">x,y,z = t1   <span class="comment"># 此时 x=1 y=2 z=3</span></div></pre></td></tr></table></figure></p>
+<p>元组常用操作:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">t.count(x)</td>
+<td>计算x在元组内出现的次数</td>
+</tr>
+<tr>
+<td style="text-align:center">t.index(‘a’,1,4)</td>
+<td>在索引1,3内寻找元素a，并返回其索引,后两个参数可选</td>
+</tr>
+<tr>
+<td style="text-align:center">len(t)</td>
+<td>计算t的长度</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Set-集合"><a href="#Set-集合" class="headerlink" title="Set(集合)"></a>Set(集合)</h3><p>用”{}”表示,不过打印的时候会变成”set([k,w,x])”<br>无顺序且不重复,常用于去重<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</div></pre></td></tr></table></figure></p>
+<p>常用操作:</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s.add(x)</td>
+<td>将x元素添加到集合中</td>
+</tr>
+<tr>
+<td>s.remove(x)</td>
+<td>在集合中删除x元素</td>
+</tr>
+<tr>
+<td>s.update([1,2,3])</td>
+<td>用于更新多项</td>
+</tr>
+<tr>
+<td>x in s</td>
+<td>判断x元素是否在集合内,反操作not in</td>
+</tr>
+<tr>
+<td>s.issubset(t)</td>
+<td>判断s是否是t的子集,反操作issuperset</td>
+</tr>
+<tr>
+<td>s.union(t)</td>
+<td>将s与t合并</td>
+</tr>
+<tr>
+<td>s.intersection(t)</td>
+<td>s与t的交集</td>
+</tr>
+<tr>
+<td>s.difference(t)</td>
+<td>s-t</td>
+</tr>
+<tr>
+<td>s.copy()</td>
+<td>返回s的浅克隆</td>
+</tr>
+</tbody>
+</table>
+<p>集合推导式:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">a = &#123;x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="string">'xdsfsd'</span> <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">'abc'</span>&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Dictionary-字典"><a href="#Dictionary-字典" class="headerlink" title="Dictionary(字典)"></a>Dictionary(字典)</h3><p>用{key1:value1,key2:value2}表示<br>实质为键值对,key为不可变类型,可以用于不包含对象的元组表示<br>常用操作:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">di = &#123;<span class="string">"name1"</span>:<span class="number">1</span> , <span class="string">"name2"</span>:<span class="number">2</span>&#125;</div><div class="line">di[<span class="string">"name3"</span>] = <span class="number">3</span></div><div class="line">dict([(<span class="string">'kkk'</span>,<span class="number">213</span>),(<span class="string">'dff'</span>,<span class="number">324</span>)])  <span class="comment">#函数方法创建字典</span></div><div class="line">di.keys()  <span class="comment">#获取字典键的集合</span></div></pre></td></tr></table></figure></p>
+<h3 id="遍历技巧"><a href="#遍历技巧" class="headerlink" title="遍历技巧"></a>遍历技巧</h3><p>对于序列类型(List,String,Tuples,range)遍历方法:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> index,value <span class="keyword">in</span> enumerate([<span class="string">'abc'</span>,<span class="string">'cba'</span>]):</div><div class="line">  <span class="keyword">print</span> index , value</div></pre></td></tr></table></figure></p>
+<p>对于集合:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> item <span class="keyword">in</span> &#123;<span class="string">'a'</span>,<span class="string">'b'</span>&#125;:</div><div class="line">  <span class="keyword">print</span> item</div></pre></td></tr></table></figure></p>
+<p>对于字典:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> &#123;<span class="string">'aaa'</span>:<span class="number">1</span>&#125;.iteritems():</div><div class="line">  <span class="keyword">print</span> k,v</div></pre></td></tr></table></figure></p>
+<h2 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h2><p>在python中一个python文件可以看作是一个模块，而文件夹可以看作是一个包。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 假设存在同目录下 test.py</span></div><div class="line"><span class="keyword">import</span> test</div><div class="line">test.xx()  <span class="comment">#调用test模块定义的函数</span></div><div class="line"><span class="comment"># import的变体</span></div><div class="line"><span class="keyword">from</span> test <span class="keyword">import</span> func</div><div class="line">func()</div><div class="line"><span class="keyword">from</span> A <span class="keyword">import</span> B  <span class="comment">#这里的B可以是函数,类,变量</span></div></pre></td></tr></table></figure></p>
+<h3 id="执行模块"><a href="#执行模块" class="headerlink" title="执行模块"></a>执行模块</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">  <span class="keyword">import</span> sys</div><div class="line">  func(sys.argv[<span class="number">1</span>])</div></pre></td></tr></table></figure>
+<p>此时该py文件可以作为执行脚本使用,其中argv[0]为脚本的名字,argv[1]为往后给脚本的传值</p>
+<h3 id="导入其他文件夹里的模块"><a href="#导入其他文件夹里的模块" class="headerlink" title="导入其他文件夹里的模块"></a>导入其他文件夹里的模块</h3><p>第一种方法是在其他文件夹内创建”<strong>init</strong>.py”文件,使该文件夹成一个包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在创建的__init__.py中可以设置__all__变量</span></div><div class="line">__all__ = [<span class="string">'xxxxxMod'</span>,<span class="string">'xxMod'</span>]  <span class="comment"># 此时当其他模块使用from xx import * 引入该模块时才会生效</span></div></pre></td></tr></table></figure>
+<p>第二种方法可以利用sys.path<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line">sys.path.append(<span class="string">'./xxx'</span>)</div></pre></td></tr></table></figure></p>
+<h2 id="输入输出相关"><a href="#输入输出相关" class="headerlink" title="输入输出相关"></a>输入输出相关</h2><h3 id="输出方式"><a href="#输出方式" class="headerlink" title="输出方式"></a>输出方式</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">"xxx"</span></div><div class="line">sys.stdout.write(<span class="string">'xxxx'</span>)</div></pre></td></tr></table></figure>
+<h3 id="将其他类型转换为字符串"><a href="#将其他类型转换为字符串" class="headerlink" title="将其他类型转换为字符串"></a>将其他类型转换为字符串</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">str(<span class="number">12312.55</span>)</div><div class="line">repr(<span class="number">255.332131</span>)</div></pre></td></tr></table></figure>
+<h3 id="字符串格式化"><a href="#字符串格式化" class="headerlink" title="字符串格式化"></a>字符串格式化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">"test:&#123;0&#125;,&#123;text&#125;"</span>.format(<span class="string">"content"</span>,text=<span class="string">"text"</span>)</div><div class="line"><span class="string">"float:&#123;0:.3f&#125;"</span>.format(<span class="number">0.1</span>)  <span class="comment"># 如果有精度需求的话</span></div></pre></td></tr></table></figure>
+<h3 id="标准输入"><a href="#标准输入" class="headerlink" title="标准输入"></a>标准输入</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sys.stdin.readline().strip(<span class="string">'\n'</span>)  <span class="comment"># strip函数用于去除头尾的字符</span></div></pre></td></tr></table></figure>
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">f = open(filename,mod)  <span class="comment"># mod 可选w,r,a</span></div><div class="line">f.write(xxx)  <span class="comment"># 写文件</span></div><div class="line">f.readline()  <span class="comment"># 读文件</span></div><div class="line">f.close()     <span class="comment"># 关文件</span></div><div class="line"><span class="keyword">with</span> open(<span class="string">'filename.txt'</span>,<span class="string">'a'</span>) <span class="keyword">as</span> f:   <span class="comment"># with语句可以在使用完文件时关闭</span></div><div class="line">  f.read()</div></pre></td></tr></table></figure>
+<h3 id="json操作"><a href="#json操作" class="headerlink" title="json操作"></a>json操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> json</div><div class="line">str = json.dumps(&#123;<span class="string">"key1"</span>:<span class="number">1</span>&#125;)  <span class="comment"># 内置类型转json字符串</span></div><div class="line">di  = json.loads(str)         <span class="comment"># json字符串转内置类型</span></div></pre></td></tr></table></figure>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">  <span class="keyword">raise</span> NameError(<span class="string">'abc'</span>,<span class="string">'bcd'</span>)</div><div class="line"><span class="keyword">except</span> NameError <span class="keyword">as</span> e:</div><div class="line">  <span class="keyword">print</span> e.args</div><div class="line"><span class="keyword">except</span> (xxError,xxxError):</div><div class="line">  <span class="keyword">pass</span></div><div class="line"><span class="keyword">else</span>:      <span class="comment"># 在try语句中灭有抛出异常后则执行else操作</span></div><div class="line">  <span class="keyword">pass</span></div><div class="line"><span class="keyword">finally</span>:   <span class="comment"># finally语句总会执行</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<h3 id="被捕获的异常重新抛出"><a href="#被捕获的异常重新抛出" class="headerlink" title="被捕获的异常重新抛出"></a>被捕获的异常重新抛出</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">  <span class="keyword">raise</span> MyError()</div><div class="line"><span class="keyword">except</span> MyError:</div><div class="line">  <span class="keyword">raise</span></div></pre></td></tr></table></figure>
+<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h3><p>自定义的异常只需直接或间接继承Exception即可:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyError</span><span class="params">(Exception)</span>:</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,value)</span>:</span></div><div class="line">    self.value = value</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="keyword">return</span> repr(self.value)</div></pre></td></tr></table></figure></p>
+<h3 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">异常名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AssertionError</td>
+<td>assert（断言）语句失败</td>
+</tr>
+<tr>
+<td style="text-align:center">AttributeError</td>
+<td>试图访问一个对象没有的属性</td>
+</tr>
+<tr>
+<td style="text-align:center">IOError</td>
+<td>输入/输出异常,文件无法打开等</td>
+</tr>
+<tr>
+<td style="text-align:center">ImportError</td>
+<td>无法引入模块或者包,导入路径可能出现问题</td>
+</tr>
+<tr>
+<td style="text-align:center">IndentationError</td>
+<td>语法错误,缩进问题</td>
+</tr>
+<tr>
+<td style="text-align:center">IndexError</td>
+<td>下标越界</td>
+</tr>
+<tr>
+<td style="text-align:center">KeyError</td>
+<td>试图访问字典里不存在的键</td>
+</tr>
+<tr>
+<td style="text-align:center">KerboardInterrupt</td>
+<td>键盘中断</td>
+</tr>
+<tr>
+<td style="text-align:center">NameError</td>
+<td>使用一个还未被赋值予对象的变量</td>
+</tr>
+<tr>
+<td style="text-align:center">SyntaxError</td>
+<td>Python代码非法</td>
+</tr>
+<tr>
+<td style="text-align:center">TypeError</td>
+<td>传入对象类型与要求的不符</td>
+</tr>
+<tr>
+<td style="text-align:center">UnboundLocalError</td>
+<td>全局变量与局部变量同名，并且局部变量还没赋值</td>
+</tr>
+<tr>
+<td style="text-align:center">ValueError</td>
+<td>传入一个调用者不期望的值，即使值的类型是正确的</td>
+</tr>
+</tbody>
+</table>
+<p>针对UnboundLocalError,全局变量在内部的作用域是 <strong>只读的</strong> ，若进行赋值操作的话，解析器会认为在局部创建了同名的局部变量<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">value = <span class="number">10</span>    <span class="comment">#全局变量</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">  <span class="keyword">print</span> value <span class="comment"># 此时局部还没有value变量,因此输出全局的value变量</span></div><div class="line">  value = <span class="number">20</span>  <span class="comment"># 创建了"value"同名局部变量</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">value = <span class="number">10</span></div><div class="line"><span class="comment"># 以下会引发UnboundLocalError错误:</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">  value = value + <span class="number">10</span></div><div class="line"></div><div class="line"><span class="comment"># 若想在内部作用域改变全局变量:</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">()</span>:</span></div><div class="line">  <span class="keyword">global</span> value</div><div class="line">  value = value + <span class="number">10</span></div></pre></td></tr></table></figure>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><h3 id="类"><a href="#类" class="headerlink" title="类"></a>类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span>:</span></div><div class="line">  data = <span class="number">1</span>                     <span class="comment"># 类变量,所有实例都共享</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name)</span>:</span>     <span class="comment"># 构造函数</span></div><div class="line">    self.name = name           <span class="comment"># 实例变量,实例间不共享</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(self)</span>:</span>              <span class="comment"># 成员方法,因语法需要self必加,调用时无需关注self</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">  @classmethod</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(cls)</span>:</span>                <span class="comment"># 类方法,因语法需要cls必加,调用时无需关注cls</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">obj = Myclass(<span class="number">1</span>)               <span class="comment"># 实例化</span></div><div class="line">obj.func()</div></pre></td></tr></table></figure>
+<p>若成员变量与成员方法同名时,会覆盖成员方法</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 如果与父类在同一个全局域</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(FatherClass)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div><div class="line"><span class="comment"># 如果与父类不在同个全局域</span></div><div class="line"><span class="keyword">import</span> OtherMod</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(OtherMod.Father)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>子类可以重写父类方法,只需同名覆盖即可</p>
+<p>继承相关的方法</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isinstance(obj,class)</td>
+<td>检查obj是不是class的实例</td>
+</tr>
+<tr>
+<td>issubclass(SonClass,FatherClass)</td>
+<td>判断是否是子类</td>
+</tr>
+</tbody>
+</table>
+<h3 id="多继承"><a href="#多继承" class="headerlink" title="多继承"></a>多继承</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(F1,F2,F3)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>对于调用父类成员,按照顺序先搜索F1,再搜索F2</p>
+<h3 id="私有变量"><a href="#私有变量" class="headerlink" title="私有变量"></a>私有变量</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">    self.__age = <span class="number">10</span>      <span class="comment"># 私有实例成员变量</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__func</span><span class="params">(self)</span>:</span>      <span class="comment"># 私有成员方法</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="comment"># obj.__func()           # 不能成功调用</span></div><div class="line">obj._A__func()           <span class="comment"># 可以成功调用</span></div></pre></td></tr></table></figure>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>若类实现了<strong>iter</strong>和<strong>next</strong>方法,则可以使用迭代器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reverse</span>:</span></div><div class="line">    <span class="string">"""Iterator for looping over a sequence backwards."""</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></div><div class="line">        self.data = data</div><div class="line">        self.index = len(data)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">if</span> self.index == <span class="number">0</span>:</div><div class="line">            <span class="keyword">raise</span> StopIteration</div><div class="line">        self.index = self.index - <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> self.data[self.index]</div><div class="line"></div><div class="line">rev = Reverse(<span class="string">'test'</span>)</div><div class="line">it = iter(rev)</div><div class="line">it.next() <span class="comment"># 若下一个元素为空时则抛出StopIteration异常</span></div></pre></td></tr></table></figure></p>
+<h3 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h3><p>带有yield的函数都是生成器.<br>yield与return一样,可以返回一个值,不过当返回了一个值后,会接着执行yield下一行的语句.<br>生成器也是可以迭代的,常用的就是循环里面使用yield,这样可以节省内存.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(data)</span>:</span></div><div class="line">  <span class="keyword">for</span> index <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</div><div class="line">    <span class="keyword">yield</span> data[index]</div></pre></td></tr></table></figure></p>
+<h2 id="常用的标准库"><a href="#常用的标准库" class="headerlink" title="常用的标准库"></a>常用的标准库</h2><table>
+<thead>
+<tr>
+<th>模块名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>os模块</td>
+<td>可以与操作系统交互的模块,如执行系统命令</td>
+</tr>
+<tr>
+<td>glob模块</td>
+<td>通配符搜索指定路径的文件 glob.glob(pathname)</td>
+</tr>
+<tr>
+<td>sys模块</td>
+<td>常用于与命令行执行脚本时,获取命令行参数,标准输入输出错误输出. sys.exit()/sys.stderr.write()</td>
+</tr>
+<tr>
+<td>re模块</td>
+<td>正则表达式匹配字符串</td>
+</tr>
+<tr>
+<td>math模块</td>
+<td>提供数学运算</td>
+</tr>
+<tr>
+<td>random模块</td>
+<td>提供随机选择</td>
+</tr>
+<tr>
+<td>urllib2,smtplib模块</td>
+<td>访问网络和发送邮件</td>
+</tr>
+<tr>
+<td>datetime模块</td>
+<td>处理日期时间</td>
+</tr>
+<tr>
+<td>zlib模块</td>
+<td>数据压缩</td>
+</tr>
+<tr>
+<td>threading模块</td>
+<td>多线程相关</td>
+</tr>
+<tr>
+<td>logging模块</td>
+<td>日志系统</td>
+</tr>
+<tr>
+<td>decimal模块</td>
+<td>十进制浮点数,用于财务等精度需求</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-06-09T18:24:53.700Z" itemprop="dateUpdated">2018-06-10 02:24:53</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python基础/">Python基础</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/06/10/python笔记/&title=《Python基础学习笔记》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/06/10/python笔记/&title=《Python基础学习笔记》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/06/10/python笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python基础学习笔记》 — Dawnki's Blog&url=https://dawnki.github.io/2018/06/10/python笔记/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/06/10/python笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/28/星期压缩/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">星期压缩</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2018</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/06/10/python笔记/&title=《Python基础学习笔记》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/06/10/python笔记/&title=《Python基础学习笔记》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/06/10/python笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python基础学习笔记》 — Dawnki's Blog&url=https://dawnki.github.io/2018/06/10/python笔记/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/06/10/python笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOklEQVR42u3aS47bMBAFwLn/pZ1tAI3k95pKAFHFlSETFsuLRn/48xOvz2H9/fxsf/v8+Ps3LwwMjMcyPpfr+Prj52Qlf0fy/JSKgYHxAsZ1cJztaQ89ey8GBgbG9Z7jsWbUs9/BwMDAaBlJiMypbRqKgYGB0RafK4ljmxreXItjYGA8kJF33f//538y38DAwHgU41Ou9ZbcLLB+ORUGBsbWjHtHmNettzw1nDXyMDAw9mbkr2+TyHZPW6xiYGC8jXH9dd56a0Nn/jwJ6xgYGPsx8jI1D8TtsHOWMhavxMDA2IJx16Hb1n+780vXEAMDY1PGLO3LG2RtwtfGz3rOgIGB8UBGW4JeH3R2OWwF8EsRi4GBsSkjGUbOUsaWnb89SgoxMDBew0hCYR52V4LvaQjGwMB4DSOfdt51qasN+qdIDAyMrRl5wZkXmfnocTZUqIeaGBgYWzDasHudFOZrNpY4hWFgYLyAkSdwbfhOksvZtY9f8lwMDIytGXU7/tZwnF/UqHuHGBgYmzKG17PKAnWlDRcFXAwMjO0Y+SuLdK1s7uelLwYGxtsYs55VXoLmzbV2dFFXzxgYGA9kzFr5+eBzdhWjvXCGgYGxN2PW4m+bYu3h8usXw7skGBgYD2S0LfsEmf8dK3vqfxoDA+PhjPXWfH6sNvWMkBgYGBijlC6/nJF3B79U5BgYGBhxSrfeOKuvemBgYLyA0Raxn9FqA3QxVMDAwNiasX5TYzZcnF2wWBpqYmBgPI/xB59FJ83rasNcAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
