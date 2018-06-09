@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Nodejs学习笔记 | Dawnki&#39;s Blog | From Apprentice To Artisan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="学习笔记,Nodejs基础">
+    <meta name="description" content="nodejs笔记模块化基本node的模块化采用CommonJs规范。有一下三个特点:  所有代码运行在模块作用域，不会污染全局作用域 模块可以多次加载，但是只运行一次，之后将会被缓存 模块加载顺序按照其代码中出现的顺序  每个模块(js文件)都有一个内置的module对象，拥有以下属性。    对象属性 描述     id 模块标识符   filename 模块文件名(绝对路径)   loaded">
+<meta name="keywords" content="学习笔记,Nodejs基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs学习笔记">
+<meta property="og:url" content="https://dawnki.github.io/2018/06/10/nodejs笔记/index.html">
+<meta property="og:site_name" content="Dawnki&#39;s Blog">
+<meta property="og:description" content="nodejs笔记模块化基本node的模块化采用CommonJs规范。有一下三个特点:  所有代码运行在模块作用域，不会污染全局作用域 模块可以多次加载，但是只运行一次，之后将会被缓存 模块加载顺序按照其代码中出现的顺序  每个模块(js文件)都有一个内置的module对象，拥有以下属性。    对象属性 描述     id 模块标识符   filename 模块文件名(绝对路径)   loaded">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-09T18:52:43.453Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nodejs学习笔记">
+<meta name="twitter:description" content="nodejs笔记模块化基本node的模块化采用CommonJs规范。有一下三个特点:  所有代码运行在模块作用域，不会污染全局作用域 模块可以多次加载，但是只运行一次，之后将会被缓存 模块加载顺序按照其代码中出现的顺序  每个模块(js文件)都有一个内置的module对象，拥有以下属性。    对象属性 描述     id 模块标识符   filename 模块文件名(绝对路径)   loaded">
+    
+        <link rel="alternate" type="application/atom+xml" title="Dawnki&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="http://opobbao46.bkt.clouddn.com/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Dawnki</h5>
+          <a href="mailto:DawnkiChow@outlook.com" title="DawnkiChow@outlook.com" class="mail">DawnkiChow@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Dawnki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/2025272310" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                微博
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/aboutMe"  >
+                <i class="icon icon-lg icon-link"></i>
+                关于我
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Nodejs学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Nodejs学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-09T18:18:00.000Z" itemprop="datePublished" class="page-time">
+  2018-06-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Nodejs/">Nodejs</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#nodejs笔记"><span class="post-toc-number">1.</span> <span class="post-toc-text">nodejs笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模块化"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">模块化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">基本</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#module-exports"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">module.exports</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#exports"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">exports</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#require"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">require</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#package-json"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">package.json</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#错误处理"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">错误处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#uncaughtException处理器"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">uncaughtException处理器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#异步操作的异常"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">异步操作的异常</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#全局作用域"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">全局作用域</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#node中的this究竟是谁"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">node中的this究竟是谁?</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-nodejs笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Nodejs学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-10 02:18:00" datetime="2018-06-09T18:18:00.000Z"  itemprop="datePublished">2018-06-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Nodejs/">Nodejs</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="nodejs笔记"><a href="#nodejs笔记" class="headerlink" title="nodejs笔记"></a>nodejs笔记</h1><h2 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h2><h3 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h3><p>node的模块化采用CommonJs规范。有一下三个特点:</p>
+<ul>
+<li>所有代码运行在模块作用域，不会污染全局作用域</li>
+<li>模块可以多次加载，但是只运行一次，之后将会被缓存</li>
+<li>模块加载顺序按照其代码中出现的顺序</li>
+</ul>
+<p>每个模块(js文件)都有一个内置的module对象，拥有以下属性。</p>
+<table>
+<thead>
+<tr>
+<th>对象属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>模块标识符</td>
+</tr>
+<tr>
+<td>filename</td>
+<td>模块文件名(绝对路径)</td>
+</tr>
+<tr>
+<td>loaded</td>
+<td>是否已经加载(bool)</td>
+</tr>
+<tr>
+<td>parent</td>
+<td>调用该模块的模块</td>
+</tr>
+<tr>
+<td>children</td>
+<td>数组,该模块依赖的其他模块</td>
+</tr>
+<tr>
+<td>exports</td>
+<td>模块对外输出的值</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-exports"><a href="#module-exports" class="headerlink" title="module.exports"></a>module.exports</h3><p>调用方引入模块时，实质获取的是被依赖模块中的module.exports变量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  name : <span class="string">'xxx'</span>,</div><div class="line">  age  : <span class="number">1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>module.exports可以导出单值，也可以导出对象。</p>
+<h3 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//相当于</span></div><div class="line"><span class="keyword">var</span> exports = <span class="built_in">module</span>.exports;</div></pre></td></tr></table></figure>
+<p>每个node脚步里都自带了一个exports变量指向module.exports</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">exports.name = <span class="string">'xx'</span>;</div><div class="line"></div><div class="line">exports = &#123;    <span class="comment">// 将会切断与module.exports的关联</span></div><div class="line">  age : <span class="number">1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而且只能通过点语法来添加输出的变量。一般情况下还是选择使用.exports更为稳妥。</p>
+<h3 id="require"><a href="#require" class="headerlink" title="require"></a>require</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> redis = <span class="built_in">require</span>(<span class="string">'redis'</span>);</div><div class="line">redis.createClient();</div></pre></td></tr></table></figure>
+<p>使用require即可获取对应模块的module.exports变量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span>(<span class="string">'./lib.js'</span>);</div><div class="line"><span class="built_in">require</span>(<span class="string">'./lib.js'</span>).message = <span class="string">"hello"</span>;</div><div class="line"><span class="built_in">require</span>(<span class="string">'./lib.js'</span>).message</div></pre></td></tr></table></figure>
+<p>第一次加载模块之后，将会缓存模块。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 删除指定模块的缓存</span></div><div class="line"><span class="keyword">delete</span> <span class="built_in">require</span>.cache[moduleName];</div><div class="line"></div><div class="line"><span class="comment">// 删除所有模块的缓存</span></div><div class="line"><span class="built_in">Object</span>.keys(<span class="built_in">require</span>.cache).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</div><div class="line">  <span class="keyword">delete</span> <span class="built_in">require</span>.cache[key];</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>可用delete关键字清理缓存模块。</p>
+<h2 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> npm init</div><div class="line"><span class="meta">$</span> npm init --yes  # 跳过交互式初始化</div></pre></td></tr></table></figure>
+<p>可用以上两种方式初始化package.json文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"node"</span>,</div><div class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</div><div class="line">  <span class="attr">"description"</span>: <span class="string">""</span>,</div><div class="line">  <span class="attr">"main"</span>: <span class="string">"hello.js"</span>,</div><div class="line">  <span class="attr">"dependencies"</span>: &#123;</div><div class="line">    <span class="attr">"axios"</span>: <span class="string">"^0.18.0"</span>,</div><div class="line">    <span class="attr">"redis"</span>: <span class="string">"^2.8.0"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"devDependencies"</span>: &#123;&#125;,</div><div class="line">  <span class="attr">"scripts"</span>: &#123;</div><div class="line">    <span class="attr">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"keywords"</span>: [],</div><div class="line">  <span class="attr">"author"</span>: <span class="string">""</span>,</div><div class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>项目名称</td>
+</tr>
+<tr>
+<td>version</td>
+<td>项目版本</td>
+</tr>
+<tr>
+<td>description</td>
+<td>项目描述</td>
+</tr>
+<tr>
+<td>main</td>
+<td>项目入口文件,require时就会加载该文件</td>
+</tr>
+<tr>
+<td>dependencies</td>
+<td>依赖列表</td>
+</tr>
+<tr>
+<td>devDependencies</td>
+<td>开发版本的依赖列表</td>
+</tr>
+<tr>
+<td>scripts</td>
+<td>执行脚本命令</td>
+</tr>
+<tr>
+<td>keywords</td>
+<td>关键字,用于npm搜库时分类</td>
+</tr>
+<tr>
+<td>author</td>
+<td>作者</td>
+</tr>
+<tr>
+<td>license</td>
+<td>开源证书</td>
+</tr>
+</tbody>
+</table>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><h3 id="uncaughtException处理器"><a href="#uncaughtException处理器" class="headerlink" title="uncaughtException处理器"></a>uncaughtException处理器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">process.on(<span class="string">'uncaughtException'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">"Exception!"</span>);</div><div class="line">  <span class="built_in">console</span>.log(err.message);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'error'</span>);</div></pre></td></tr></table></figure>
+<p>uncaughtException处理器能够处理进程里未被catch的异常</p>
+<h3 id="异步操作的异常"><a href="#异步操作的异常" class="headerlink" title="异步操作的异常"></a>异步操作的异常</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'test-error'</span>);</div><div class="line">  &#125;,<span class="number">100</span>)</div><div class="line">&#125; <span class="keyword">catch</span>(e)&#123;</div><div class="line">  <span class="built_in">console</span>.log(e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>node无法捕获未来才执行的函数所抛出的异常，异步的异常不能通过不同的try-catch来捕获，需要回调里进行捕获或者注册异常处理器处理。</p>
+<h2 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h2><p>node的作用域与浏览器(全局和函数)的不同，node的作用域为顶级全局作用域和模块作用域。</p>
+<h3 id="node中的this究竟是谁"><a href="#node中的this究竟是谁" class="headerlink" title="node中的this究竟是谁?"></a>node中的this究竟是谁?</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span> === global);          <span class="comment">// false</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span> === <span class="built_in">module</span>.exports);  <span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span> === global);        <span class="comment">// true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">foo();</div><div class="line"></div><div class="line">x = <span class="number">5</span>;</div><div class="line"><span class="built_in">console</span>.log(global.x);  <span class="comment">// 5</span></div></pre></td></tr></table></figure>
+<ul>
+<li>如上，模块内的全局this并非等于真正的顶级作用域global(这个作用域可以跨模块也访问到)，模块内的全局this绑定的是module.exports</li>
+<li>模块内定义的函数，其this却绑定的是顶级作用域</li>
+<li>模块内添加或更改顶级全局(global)变量不应该添加var关键字</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-06-09T18:52:43.453Z" itemprop="dateUpdated">2018-06-10 02:52:43</time>
+</span><br>
+
+
+        
+        对本文内容有任何意见,建议,疑问etc,均可通过邮箱联系我,逗比博主尽最大努力回复O(∩_∩)O,如需转载(tan90°,不存在的(°Д°)),注明出处即可!
+        
+    </div>
+    <footer>
+        <a href="https://dawnki.github.io">
+            <img src="http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" alt="Dawnki">
+            Dawnki
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nodejs基础/">Nodejs基础</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/06/10/nodejs笔记/&title=《Nodejs学习笔记》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/06/10/nodejs笔记/&title=《Nodejs学习笔记》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/06/10/nodejs笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Nodejs学习笔记》 — Dawnki's Blog&url=https://dawnki.github.io/2018/06/10/nodejs笔记/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/06/10/nodejs笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/10/javascript笔记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Javascript学习笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Dawnki &copy; 2015 - 2018</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://dawnki.github.io/2018/06/10/nodejs笔记/&title=《Nodejs学习笔记》 — Dawnki's Blog&pic=http://opobbao46.bkt.clouddn.com/%E8%89%BE%E7%B1%B3%E7%BB%BF%E4%BA%9A.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://dawnki.github.io/2018/06/10/nodejs笔记/&title=《Nodejs学习笔记》 — Dawnki's Blog&source=不正经的技术博客(*^▽^*)" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://dawnki.github.io/2018/06/10/nodejs笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Nodejs学习笔记》 — Dawnki's Blog&url=https://dawnki.github.io/2018/06/10/nodejs笔记/&via=https://dawnki.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://dawnki.github.io/2018/06/10/nodejs笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aUXKDMAxF0ex/03QBLXCfBM1Yvv5iGsf49EORLX0+eBwng8w5m3n2/Hv+Y0OGDBnLMsjrr/9S+9b1HtJ/jQwZMnZgnEWw2nO6OfLemz3LkCFDxmW6doDBATJkyJDxbMAlSJ5cfu13Q4YMGYswSKDk4Zhvjqz88FlchgwZCzL4rfv/P79S35AhQ8ZSjCMc723raAwZMmTMZnReUytSpoUBfiSWIUPGbEaaCJIlanM6MBkyZExlkNekjRQprFbO/CPDlSFDxgaMdLlaiwZPK4MCgAwZMjZg1JqxeALHD8BpC4gMGTJ2YHTSPn6tRgoAtYs5GTJk7MCoXZ89lSySkI2O2TJkyNiAQcIcbyRN20/TQy+6bpMhQ8ZQBlm0fwDuBN+gW0SGDBmjGbxhgn+awuKUUYYMGaMZtYDYD7IEkJY/ZciQMZXBv8x55JKudqC9+d2QIUPGBgwe/njJk7Sa8XTwdCcyZMgYzailgE+lif1UMqiUypAhYwSjnyamCWValkB3hzJkyBjNiO/n8HyyQidyypAhYzdGGnD5obQWuIO3yJAhYyjjCEcacPnmOg1nMmTImM3go7Z07eKs1vAhQ4aM2Yx+G0RavKwF3JskVYYMGRswgraGRpGglnoipAwZMmQ02sJqF3Npu5gMGTJkXB9H02v9NHCj6zwZMmRswCCHWD6nUySotZ3JkCFjNoMfHWufpt96sagpQ4aM9Rg/x5r6CIZWHDsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '点我!⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Dawnki的技术博客';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
